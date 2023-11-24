@@ -11,17 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
-      Modul.belongsTo(models.Chapter, {
-        foreignKey: 'chapter_id'
+      Modul.belongsTo(models.Course, {
+        foreignKey: 'course_id'
       })
     }
   }
   Modul.init({
-    chapter_id: DataTypes.UUID,
-    modul_name: DataTypes.STRING,
-    modul_video: DataTypes.STRING,
+    course_id: DataTypes.UUID,
+    code_course: DataTypes.STRING,
+    name: DataTypes.STRING,
+    materi: DataTypes.STRING,
+    video: DataTypes.STRING,
+    isComplate: DataTypes.BOOLEAN,
     duration: DataTypes.INTEGER,
-    is_complate: DataTypes.BOOLEAN
+    chapter: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Modul'

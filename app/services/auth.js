@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const ApplicationError = require('../../error')
+const { ApplicationError } = require('../../error')
 require('dotenv').config()
 
 const encryptedKode = async (password) => {

@@ -2,31 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('Chapters', {
+    await queryInterface.createTable('Categories', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal('gen_random_uuid()')
       },
-      class_id: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'Classes',
-          key: 'id'
-        }
+      name: {
+        type: Sequelize.STRING
       },
-      chapter_number: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      chapter_title: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      is_locked: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
+      image: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +26,6 @@ module.exports = {
     })
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('Chapters')
+    await queryInterface.dropTable('Categories')
   }
 }

@@ -2,47 +2,47 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('Classes', {
+    await queryInterface.createTable('Moduls', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal('gen_random_uuid()')
       },
-      class_code: {
+      course_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Courses',
+          key: 'id'
+        }
+      },
+      code_course: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      level: {
-        type: Sequelize.ENUM('beginer', 'intermediate', 'advanced'),
-        allowNull: false
-      },
-      category_id: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      facilitator: {
+      materi: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      rate: {
+      video: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      isComplate: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      duration: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
       },
-      price: {
+      chapter: {
         type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      type: {
-        type: Sequelize.ENUM('premium', 'free'),
-        allowNull: false
-      },
-      class_description: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      class_target: {
-        type: Sequelize.STRING,
         allowNull: false
       },
       createdAt: {
@@ -56,6 +56,6 @@ module.exports = {
     })
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('Classes')
+    await queryInterface.dropTable('Moduls')
   }
 }

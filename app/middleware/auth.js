@@ -18,11 +18,11 @@ const authorization = (req, res, next) => {
   }
 }
 
-const onlyAdmin = (req, res, next) => {
+const onlyAdmin = async (req, res, next) => {
   try {
     const currentUser = req.user
-    const userId = currentUser.userId
-    const user = detailUserServices(userId)
+    const userId = currentUser.id
+    const user = await detailUserServices(userId)
     if (user.role !== 'admin') {
       return res.status(403).json({ message: 'Forbidden' })
     }
