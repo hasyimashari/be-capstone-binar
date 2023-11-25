@@ -3,30 +3,7 @@ const { ApplicationError } = require('../../error')
 
 const createCourseServices = async (argRequest) => {
   try {
-    const {
-      name,
-      code,
-      price,
-      facilitator,
-      level,
-      type,
-      link_tele,
-      video_intro,
-      onBoarding,
-      description
-    } = argRequest
-    const course = await create({
-      name,
-      code,
-      price,
-      facilitator,
-      level,
-      type,
-      link_tele,
-      video_intro,
-      onBoarding,
-      description
-    })
+    const course = await create(argRequest)
     return course
   } catch (error) {
     throw new ApplicationError(error.message, 500)

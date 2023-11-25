@@ -6,6 +6,6 @@ const { uploadStorage, uploadToCloudinary } = require('../middleware/uploadImage
 const router = express.Router()
 
 router.put('/users', authorization, uploadStorage, uploadToCloudinary, updateUser)
-router.put('/reset-password', authorization, resetPassword)
+router.put('/password', authorization, resetPassword)
 
 module.exports = router

@@ -18,13 +18,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Modul.init({
     course_id: DataTypes.UUID,
-    code_course: DataTypes.STRING,
-    name: DataTypes.STRING,
-    materi: DataTypes.STRING,
-    video: DataTypes.STRING,
-    isComplate: DataTypes.BOOLEAN,
-    duration: DataTypes.INTEGER,
-    chapter: DataTypes.INTEGER
+    course_code: DataTypes.STRING,
+    module_name: DataTypes.STRING,
+    module_number: DataTypes.INTEGER,
+    module_video: DataTypes.STRING,
+    is_complete: DataTypes.BOOLEAN,
+    is_locked: DataTypes.BOOLEAN,
+    duration: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Modul'

@@ -12,10 +12,17 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/', authRouter)
-app.use('/', userRouter)
-app.use('/', courseRouter)
-app.use('/', modulRouter)
+app.get('/api', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'API is up and running'
+  })
+})
+
+app.use('/api', authRouter)
+app.use('/api', userRouter)
+app.use('/api', courseRouter)
+app.use('/api', modulRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

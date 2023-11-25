@@ -5,6 +5,6 @@ const router = express.Router()
 
 router.post('/registrasi', register)
 router.post('/login', loginUser)
-router.post('/login/admin', loginAdmin)
+router.post('/admin/login', loginAdmin)
 
 module.exports = router

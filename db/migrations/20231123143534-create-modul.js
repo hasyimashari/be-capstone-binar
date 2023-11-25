@@ -17,33 +17,34 @@ module.exports = {
           key: 'id'
         }
       },
-      code_course: {
+      course_code: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      name: {
+      module_name: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      materi: {
+      module_number: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true
+      },
+      module_video: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      video: {
-        type: Sequelize.STRING,
-        allowNull: false
+      is_complete: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
-      isComplate: {
+      is_locked: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
       duration: {
         type: Sequelize.INTEGER,
         allowNull: true
-      },
-      chapter: {
-        type: Sequelize.INTEGER,
-        allowNull: false
       },
       createdAt: {
         allowNull: false,
