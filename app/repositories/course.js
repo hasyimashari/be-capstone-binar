@@ -1,4 +1,4 @@
-const { Course, Modul } = require('../models')
+const { Course } = require('../models')
 
 const create = (argRequest) => {
   return Course.create(argRequest)
@@ -9,13 +9,7 @@ const findAll = () => {
 }
 
 const findByPk = (id) => {
-  return Course.findByPk(id, {
-    include: [
-      {
-        model: Modul
-      }
-    ]
-  })
+  return Course.findByPk(id)
 }
 
 const findByCodeCourse = (code) => {
@@ -24,4 +18,16 @@ const findByCodeCourse = (code) => {
   })
 }
 
-module.exports = { create, findAll, findByPk, findByCodeCourse }
+const updateCourseRepo = (argRequest, id) => {
+  return Course.update(argRequest, {
+    where: { id }, returning: true
+  })
+}
+
+const deleteCourseRepo = (id) => {
+  return Course.destroy({
+    where: { id }
+  })
+}
+
+module.exports = { create, findAll, findByPk, findByCodeCourse, updateCourseRepo, deleteCourseRepo }

@@ -32,7 +32,7 @@ const registeService = async (argRequest) => {
     })
     return newUser
   } catch (error) {
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
@@ -50,7 +50,7 @@ const loginUserSevices = async (argRequest) => {
     }
     return user
   } catch (error) {
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
@@ -68,7 +68,7 @@ const loginAdminSevices = async (argRequest) => {
     }
     return user
   } catch (error) {
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
@@ -89,30 +89,30 @@ const updateUserServices = async (argRequest, id) => {
     const newUser = await updateUser(argRequest, id)
     return newUser
   } catch (error) {
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
 const resetPasswordServices = async (argRequest, id) => {
   try {
-    const { passwordLama, passwordBaru, confPasswordBaru } = argRequest
+    const { old_password, new_password, confirm_password } = argRequest
     const currentUser = await findByPk(id)
     const currentPassword = currentUser.password
-    const matchPassword = await comparePassword(passwordLama, currentPassword)
+    const matchPassword = await comparePassword(old_password, currentPassword)
     if (!matchPassword) {
       throw new ApplicationError('Password baru salah', 401)
     }
-    if (passwordBaru !== confPasswordBaru) {
+    if (new_password !== confirm_password) {
       throw new ApplicationError('Password baru salah', 401)
     }
-    const hashPasswordBaru = await encryptedKode(passwordBaru)
+    const hashNew_password = await encryptedKode(new_password)
     const updateUserPassword = await updateUser(
-      { password: hashPasswordBaru }, id
+      { password: hashNew_password }, id
     )
     return updateUserPassword
   } catch (error) {
     console.log(error)
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 

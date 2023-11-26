@@ -9,7 +9,7 @@ const encryptedKode = async (password) => {
     const kodeEncrypted = await bcrypt.hash(password, salt)
     return kodeEncrypted
   } catch (error) {
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
@@ -18,7 +18,7 @@ const comparePassword = async (pasword, hashPassowrd) => {
     const matchPassowrd = await bcrypt.compare(pasword, hashPassowrd)
     return matchPassowrd
   } catch (error) {
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
@@ -29,7 +29,7 @@ const createAccessToken = (payload) => {
     })
     return accessToken
   } catch (error) {
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
@@ -43,7 +43,7 @@ const verifyToken = (token, env) => {
     })
     return decoded
   } catch (error) {
-    throw new ApplicationError(`${error.message}`, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 

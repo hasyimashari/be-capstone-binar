@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   Course.init({
     name: DataTypes.STRING,
     code: DataTypes.STRING,
-    level: DataTypes.ENUM('Beginer', 'Intermediate', 'Advanced'),
+    level: DataTypes.ENUM('Beginner', 'Intermediate', 'Advanced'),
     category_id: DataTypes.UUID,
     facilitator: DataTypes.STRING,
     rate: DataTypes.INTEGER,
@@ -30,9 +30,9 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.ENUM('Premium', 'Free'),
     description: DataTypes.STRING,
     target_audience: DataTypes.STRING,
-    link_tele: DataTypes.STRING,
-    onBoarding: DataTypes.STRING,
-    video_intro: DataTypes.STRING
+    telegram_group: DataTypes.STRING,
+    on_boarding: DataTypes.STRING,
+    introduction_video: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Course'

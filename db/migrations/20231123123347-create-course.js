@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false
       },
       level: {
-        type: Sequelize.ENUM('Beginer', 'Intermediate', 'Advanced'),
+        type: Sequelize.ENUM('Beginner', 'Intermediate', 'Advanced'),
         allowNull: false
       },
       category_id: {
