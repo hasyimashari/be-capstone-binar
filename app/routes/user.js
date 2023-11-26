@@ -8,5 +8,7 @@ const router = express.Router()
 router.get('/user', authorization, currentUser)
 router.put('/user', authorization, uploadStorage, uploadToCloudinary, updateUser)
 router.put('/user/password', authorization, resetPassword)
+router.put('/users', authorization, uploadStorage, uploadToCloudinary, updateUser)
+router.put('/password', authorization, resetPassword)
 
 module.exports = router

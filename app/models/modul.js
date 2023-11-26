@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
   Modul.init({
     course_id: DataTypes.UUID,
     course_code: DataTypes.STRING,
-    modole_name: DataTypes.STRING,
-    module_number: DataTypes.STRING,
+    module_name: DataTypes.STRING,
+    module_number: DataTypes.INTEGER,
     module_video: DataTypes.STRING,
     is_complete: DataTypes.BOOLEAN,
+    is_locked: DataTypes.BOOLEAN,
     duration: DataTypes.INTEGER
   }, {
     sequelize,

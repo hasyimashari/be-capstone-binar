@@ -13,7 +13,7 @@ const { encryptedKode, comparePassword } = require('./auth.js')
 
 const registeService = async (argRequest) => {
   try {
-    const { name, email, no_tel, password } = argRequest
+    const { name, email, phone_number, password } = argRequest
     const role = 'member'
     const user = await findByEmail(email)
     if (user) {
@@ -26,7 +26,7 @@ const registeService = async (argRequest) => {
     const newUser = await create({
       name,
       email,
-      no_tel: `+62${no_tel}`,
+      phone_number: `+62${phone_number}`,
       password: hashPassword,
       role
     })

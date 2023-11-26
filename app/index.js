@@ -13,6 +13,13 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.get('/api', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'API is up and running'
+  })
+})
+
 app.use('/api', authRouter)
 app.use('/api', userRouter)
 app.use('/api', courseRouter)

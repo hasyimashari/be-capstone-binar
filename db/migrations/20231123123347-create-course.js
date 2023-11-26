@@ -23,11 +23,7 @@ module.exports = {
       },
       category_id: {
         type: Sequelize.UUID,
-        allowNull: true,
-        references: {
-          model: 'Categories',
-          key: 'id'
-        }
+        allowNull: true
       },
       facilitator: {
         type: Sequelize.STRING,
