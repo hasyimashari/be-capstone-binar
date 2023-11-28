@@ -24,9 +24,8 @@ const detailCourse = async (req, res) => {
   try {
     const id = req.params.id
     const response = await detailCourseServices(id)
-    res.status(200).json({ status: 'OK', messsage: 'Success', data: response })
+    res.status(200).json({ status: 'OK', message: 'Success', data: response })
   } catch (error) {
-    console.log(error)
     res.status(500).json({ message: error.message })
   }
 }

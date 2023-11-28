@@ -1,11 +1,16 @@
 const { createAccessToken } = require('../services/auth.js')
+const nodemailer = require('nodemailer')
+const Mailgen = require('mailgen')
+const crypto = require('crypto')
 const {
   registeService,
   loginUserSevices,
   loginAdminSevices,
   updateUserServices,
-  resetPasswordServices,
-  detailUserServices
+  updatePasswordServices,
+  detailUserServices,
+  updateTokenPasswordServices,
+  resetPasswordServices
 } = require('../services/user.js')
 require('dotenv').config()
 
@@ -84,12 +89,84 @@ const updateUser = async (req, res) => {
   }
 }
 
-const resetPassword = async (req, res) => {
+const updatePassword = async (req, res) => {
   try {
     const id = req.user.id
     // eslint-disable-next-line no-unused-vars
-    const [_, response] = await resetPasswordServices(req.body, id)
+    const [_, response] = await updatePasswordServices(req.body, id)
     res.status(201).json({ status: 'OK', message: 'Sucess', data: response })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+const sendLinkPassword = async (req, res) => {
+  const email = req.body.email
+  const tokenResetPassword = crypto.randomBytes(10).toString('hex')
+
+  await updateTokenPasswordServices({ tokenResetPassword }, email)
+
+  const config = {
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD
+    },
+    tls: { rejectUnauthorized: false }
+  }
+
+  const transporter = nodemailer.createTransport(config)
+
+  const MailGenerator = new Mailgen({
+    theme: 'default',
+    product: {
+      name: 'Dev Academy',
+      link: 'https://mailgen.js/'
+    }
+  })
+
+  const response = {
+    body: {
+      intro: 'Reset Password',
+      action: {
+        instructions: 'Clik button to page reset password',
+        button: {
+          color: '#22BC66',
+          text: 'Click this to reset password',
+          link: `http:localhost:3004/api/reset/password/${tokenResetPassword}`
+        }
+      },
+      outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+    }
+  }
+
+  const mail = MailGenerator.generate(response)
+  const message = {
+    from: process.env.EMAIL,
+    to: email,
+    subject: 'Reset Password',
+    html: mail
+  }
+
+  transporter
+    .sendMail(message)
+    .then(() => {
+      return res
+        .status(200)
+        .json({ status: 'OK', message: 'Email sent successfully' })
+    })
+    .catch((error) => {
+      return res
+        .status(500)
+        .json({ status: 'Faild', message: error.message })
+    })
+}
+
+const resetPassword = async (req, res) => {
+  try {
+    const id = req.params.id
+    await resetPasswordServices(req.body, id)
+    res.status(200).json({ status: 'OK', message: 'Success' })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
@@ -101,5 +178,7 @@ module.exports = {
   loginAdmin,
   currentUser,
   updateUser,
+  updatePassword,
+  sendLinkPassword,
   resetPassword
 }

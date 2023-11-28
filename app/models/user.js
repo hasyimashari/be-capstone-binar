@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     country: DataTypes.STRING,
     city: DataTypes.STRING,
     photo: DataTypes.STRING,
-    role: DataTypes.ENUM('admin', 'member')
+    role: DataTypes.ENUM('admin', 'member'),
+    tokenResetPassword: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User'

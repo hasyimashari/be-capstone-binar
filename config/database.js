@@ -16,11 +16,11 @@ module.exports = {
     dialect: 'postgres'
   },
   test: {
-    username: 'root',
-    password: null,
+    username: 'Postgres',
+    password: DB_PASSWORD,
     database: 'database_test',
     host: '127.0.0.1',
-    dialect: 'mysql'
+    dialect: 'postgres'
   },
   production: {
     username: 'root',

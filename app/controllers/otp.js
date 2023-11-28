@@ -1,4 +1,9 @@
-const { confimOtpServices, createOtpServices, updateOtpServices, findOtpCode } = require('../services/otp.js')
+const {
+  confimOtpServices,
+  createOtpServices,
+  updateOtpServices,
+  findOtpCode
+} = require('../services/otp.js')
 const nodemailer = require('nodemailer')
 const Mailgen = require('mailgen')
 const { encryptedKode } = require('../services/auth.js')
@@ -10,6 +15,7 @@ const sendOtp = async (req, res) => {
     const emailPenerima = req.user.email
     const userId = req.user.id
     const name = req.user.name
+    const expire_time = new Date().getTime() + 300000
     const config = {
       service: 'gmail',
       auth: {
@@ -39,8 +45,7 @@ const sendOtp = async (req, res) => {
             text: otp
           }
         },
-        outro:
-          'Kode Verifikasi hanya berlaku hanya dalam waktu 5 menit'
+        outro: 'Kode Verifikasi hanya berlaku hanya dalam waktu 5 menit'
       }
     }
 
@@ -53,15 +58,13 @@ const sendOtp = async (req, res) => {
     }
 
     const hashCode = await encryptedKode(otp.toString())
-
     const currentOtPCode = await findOtpCode(userId)
 
     if (currentOtPCode) {
-      await updateOtpServices({ code: hashCode }, userId)
+      await updateOtpServices({ code: hashCode, expire_time }, userId)
     } else {
-      await createOtpServices({ userId, code: hashCode })
+      await createOtpServices({ userId, code: hashCode, expire_time })
     }
-
     transporter
       .sendMail(message)
       .then(() => {
@@ -83,7 +86,7 @@ const confirimCodeOtp = async (req, res) => {
   try {
     const userId = req.user.id
     await confimOtpServices(userId, req.body)
-    res.redirect('/api/courses')
+    res.status(200).json({ status: 'OK', message: 'Success' })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }

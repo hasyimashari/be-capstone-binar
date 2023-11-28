@@ -20,6 +20,9 @@ const confimOtpServices = async (userId, requestBody) => {
     if (!compareCode) {
       throw new ApplicationError('Kode OTP salah', 403)
     }
+    if (codeOtp.expire_time < new Date().getTime()) {
+      throw new ApplicationError('Kode OTP tidak berlaku', 400)
+    }
     return codeOtp
   } catch (error) {
     throw new Error(error.message, 500)

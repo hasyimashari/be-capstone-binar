@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   OTP.init({
     userId: DataTypes.UUID,
-    code: DataTypes.STRING
+    code: DataTypes.STRING,
+    expire_time: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'OTP'

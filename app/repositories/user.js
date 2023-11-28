@@ -22,4 +22,16 @@ const updateUser = (argRequest, id) => {
   })
 }
 
-module.exports = { create, findByEmail, findByPk, updateUser }
+const updateResetTokenPasswordRepo = (argRequest, email) => {
+  return User.update(argRequest, {
+    where: { email }, returning: true
+  })
+}
+
+const resetPasswordRepo = (argRequest, tokenResetPassword) => {
+  return User.update(argRequest, {
+    where: { tokenResetPassword }, returning: true
+  })
+}
+
+module.exports = { create, findByEmail, findByPk, updateUser, updateResetTokenPasswordRepo, resetPasswordRepo }

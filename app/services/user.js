@@ -7,7 +7,9 @@ const {
   create,
   findByEmail,
   findByPk,
-  updateUser
+  updateUser,
+  updateResetTokenPasswordRepo,
+  resetPasswordRepo
 } = require('../repositories/user.js')
 const { encryptedKode, comparePassword } = require('./auth.js')
 
@@ -93,7 +95,7 @@ const updateUserServices = async (argRequest, id) => {
   }
 }
 
-const resetPasswordServices = async (argRequest, id) => {
+const updatePasswordServices = async (argRequest, id) => {
   try {
     const { old_password, new_password, confirm_password } = argRequest
     const currentUser = await findByPk(id)
@@ -116,11 +118,38 @@ const resetPasswordServices = async (argRequest, id) => {
   }
 }
 
+const updateTokenPasswordServices = async (argRequest, email) => {
+  try {
+    const resetTokenPassword = updateResetTokenPasswordRepo(argRequest, email)
+    return resetTokenPassword
+  } catch (error) {
+    throw new ApplicationError(error.message, 500)
+  }
+}
+
+const resetPasswordServices = async (argRequest, id) => {
+  try {
+    const { new_password, confirm_password } = argRequest
+
+    if (new_password !== confirm_password) {
+      throw new ApplicationError('Password salah', 400)
+    }
+
+    const hashPassword = await encryptedKode(new_password)
+    const password = await resetPasswordRepo({ password: hashPassword }, id)
+    return password
+  } catch (error) {
+    throw new ApplicationError(error.message, 500)
+  }
+}
+
 module.exports = {
   registeService,
   loginUserSevices,
   loginAdminSevices,
   detailUserServices,
   updateUserServices,
+  updatePasswordServices,
+  updateTokenPasswordServices,
   resetPasswordServices
 }
