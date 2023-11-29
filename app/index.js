@@ -5,9 +5,10 @@ const userRouter = require('./routes/user.js')
 const courseRouter = require('./routes/course.js')
 const modulRouter = require('./routes/modul.js')
 const otpRouter = require('./routes/otp.js')
+require('dotenv').config()
 
 const app = express()
-const PORT = 3004
+const PORT = process.env.PORT
 
 app.use(cors())
 app.use(express.json())
