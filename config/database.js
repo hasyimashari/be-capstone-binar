@@ -4,7 +4,11 @@ const {
   DB_USERNAME,
   DB_PASSWORD,
   DB_NAME,
-  DB_HOST
+  DB_HOST,
+  DB_USERNAME_PO,
+  DB_PASSWORD_PO,
+  DB_NAME_PO,
+  DB_HOST_PO
 } = process.env
 
 module.exports = {
@@ -23,10 +27,10 @@ module.exports = {
     dialect: 'postgres'
   },
   production: {
-    username: 'root',
-    password: null,
-    database: 'database_production',
-    host: '127.0.0.1',
-    dialect: 'mysql'
+    username: DB_USERNAME_PO,
+    password: DB_PASSWORD_PO,
+    database: DB_NAME_PO,
+    host: DB_HOST_PO,
+    dialect: 'postgres'
   }
 }

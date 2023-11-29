@@ -19,13 +19,7 @@ const register = async (req, res) => {
     const response = await registeService(req.body)
     const { id, name, email, role } = response
     const accessToken = createAccessToken({ id, name, email, role })
-    res.status(201).json({
-      status: 'OK',
-      message: 'Success',
-      data: {
-        accessToken
-      }
-    })
+    res.status(201).json({ status: 'OK', message: 'Success', data: { accessToken } })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
@@ -133,10 +127,11 @@ const sendLinkPassword = async (req, res) => {
         button: {
           color: '#22BC66',
           text: 'Click this to reset password',
-          link: `http:localhost:3004/api/reset/password/${tokenResetPassword}`
+          link: `http://localhost:3004/api/reset/password/${tokenResetPassword}`
         }
       },
-      outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+      outro:
+        "Need help, or have questions? Just reply to this email, we'd love to help."
     }
   }
 
@@ -156,16 +151,14 @@ const sendLinkPassword = async (req, res) => {
         .json({ status: 'OK', message: 'Email sent successfully' })
     })
     .catch((error) => {
-      return res
-        .status(500)
-        .json({ status: 'Faild', message: error.message })
+      return res.status(500).json({ status: 'Faild', message: error.message })
     })
 }
 
 const resetPassword = async (req, res) => {
   try {
-    const id = req.params.id
-    await resetPasswordServices(req.body, id)
+    const tokenResetPassword = req.params.tokenResetPassword
+    await resetPasswordServices(req.body, tokenResetPassword)
     res.status(200).json({ status: 'OK', message: 'Success' })
   } catch (error) {
     res.status(500).json({ message: error.message })

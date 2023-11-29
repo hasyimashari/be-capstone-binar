@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">61.58% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>115/184</span>
+                <span class='fraction'>109/177</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">61.58% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>115/184</span>
+                <span class='fraction'>109/177</span>
             </div>
         
             
@@ -240,14 +240,7 @@
 <a name='L175'></a><a href='#L175'>175</a>
 <a name='L176'></a><a href='#L176'>176</a>
 <a name='L177'></a><a href='#L177'>177</a>
-<a name='L178'></a><a href='#L178'>178</a>
-<a name='L179'></a><a href='#L179'>179</a>
-<a name='L180'></a><a href='#L180'>180</a>
-<a name='L181'></a><a href='#L181'>181</a>
-<a name='L182'></a><a href='#L182'>182</a>
-<a name='L183'></a><a href='#L183'>183</a>
-<a name='L184'></a><a href='#L184'>184</a>
-<a name='L185'></a><a href='#L185'>185</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L178'></a><a href='#L178'>178</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -266,12 +259,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -350,7 +337,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -452,13 +438,7 @@ const register = async (req, res) =&gt; {
     const response = await registeService(req.body)
     const { id, name, email, role } = response
     const accessToken = createAccessToken({ id, name, email, role })
-    res.status(201).json({
-      status: 'OK',
-      message: 'Success',
-      data: {
-        accessToken
-      }
-    })
+    res.status(201).json({ status: 'OK', message: 'Success', data: { accessToken } })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
@@ -566,10 +546,11 @@ const sendLinkPassword = <span class="fstat-no" title="function not covered" >as
 <span class="cstat-no" title="statement not covered" >        button: {</span>
 <span class="cstat-no" title="statement not covered" >          color: '#22BC66',</span>
 <span class="cstat-no" title="statement not covered" >          text: 'Click this to reset password',</span>
-<span class="cstat-no" title="statement not covered" >          link: `http:localhost:3004/api/reset/password/${tokenResetPassword}`</span>
+<span class="cstat-no" title="statement not covered" >          link: `http://localhost:3004/api/reset/password/${tokenResetPassword}`</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 <span class="cstat-no" title="statement not covered" >      },</span>
-<span class="cstat-no" title="statement not covered" >      outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'</span>
+<span class="cstat-no" title="statement not covered" >      outro:</span>
+<span class="cstat-no" title="statement not covered" >        "Need help, or have questions? Just reply to this email, we'd love to help."</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" ></span>
@@ -589,16 +570,14 @@ const sendLinkPassword = <span class="fstat-no" title="function not covered" >as
 <span class="cstat-no" title="statement not covered" >        .json({ status: 'OK', message: 'Email sent successfully' })</span>
 <span class="cstat-no" title="statement not covered" >    })</span>
 <span class="cstat-no" title="statement not covered" >    .catch((error) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return res</span>
-<span class="cstat-no" title="statement not covered" >        .status(500)</span>
-<span class="cstat-no" title="statement not covered" >        .json({ status: 'Faild', message: error.message })</span>
+<span class="cstat-no" title="statement not covered" >      return res.status(500).json({ status: 'Faild', message: error.message })</span>
 <span class="cstat-no" title="statement not covered" >    })</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 const resetPassword = async (req, res) =&gt; {
   try {
-    const id = req.params.id
-    await resetPasswordServices(req.body, id)
+    const tokenResetPassword = req.params.tokenResetPassword
+    await resetPasswordServices(req.body, tokenResetPassword)
     res.status(200).json({ status: 'OK', message: 'Success' })
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -622,7 +601,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-28T10:10:19.926Z
+                at 2023-11-29T06:26:30.641Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
