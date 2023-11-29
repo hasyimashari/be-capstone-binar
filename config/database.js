@@ -1,10 +1,10 @@
 require('dotenv').config()
 
 const {
-  DB_USERNAME,
+  // DB_USERNAME,
   DB_PASSWORD,
-  DB_NAME,
-  DB_HOST,
+  // DB_NAME,
+  // DB_HOST,
   DB_USERNAME_PO,
   DB_PASSWORD_PO,
   DB_NAME_PO,
@@ -13,10 +13,10 @@ const {
 
 module.exports = {
   development: {
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: DB_NAME,
-    host: DB_HOST,
+    username: DB_USERNAME_PO,
+    password: DB_PASSWORD_PO,
+    database: DB_NAME_PO,
+    host: DB_HOST_PO,
     dialect: 'postgres'
   },
   test: {
