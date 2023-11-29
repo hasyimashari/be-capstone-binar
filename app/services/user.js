@@ -102,7 +102,7 @@ const updatePasswordServices = async (argRequest, id) => {
     const currentPassword = currentUser.password
     const matchPassword = await comparePassword(old_password, currentPassword)
     if (!matchPassword) {
-      throw new ApplicationError('Password baru salah', 401)
+      throw new ApplicationError('Password lama salah', 401)
     }
     if (new_password !== confirm_password) {
       throw new ApplicationError('Password baru salah', 401)
