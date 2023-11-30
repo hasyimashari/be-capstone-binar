@@ -1,14 +1,13 @@
-const { create } = require('../repositories/category.js')
+const { findAllCategory } = require('../repositories/category.js')
 const { ApplicationError } = require('../../error')
 
-const createCategoryServices = async (argRequest) => {
+const getAllCategoryServices = async () => {
   try {
-    const { category } = argRequest
-    const categories = await create({ category })
+    const categories = await findAllCategory()
     return categories
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }
 }
 
-module.exports = { createCategoryServices }
+module.exports = { getAllCategoryServices }

@@ -1,20 +1,76 @@
-const { Course } = require('../models')
+const { Course, Category, Chapter } = require('../models')
 
 const create = (argRequest) => {
   return Course.create(argRequest)
 }
 
 const findAll = () => {
-  return Course.findAll()
+  return Course.findAll({
+    include:
+    [
+      {
+        model: Category,
+        as: 'category',
+        attributes: ['category', 'image']
+      }],
+    attributes:
+      {
+        exclude: [
+          'code',
+          'category_id',
+          'description',
+          'telegram_group',
+          'on_boarding',
+          'introduction_video',
+          'createdAt',
+          'updatedAt']
+      }
+  })
+}
+
+const findAllforAdmin = () => {
+  return Course.findAll({
+    include:
+    [
+      {
+        model: Category,
+        as: 'category',
+        attributes: ['category']
+      }],
+    attributes:
+      {
+        exclude: [
+          'category_id',
+          'description',
+          'telegram_group',
+          'on_boarding',
+          'introduction_video',
+          'createdAt',
+          'updatedAt']
+      }
+  })
 }
 
 const findByPk = (id) => {
-  return Course.findByPk(id)
-}
-
-const findByCodeCourse = (code) => {
-  return Course.findOne({
-    where: { code }
+  return Course.findByPk(id, {
+    include:
+    [
+      {
+        model: Category,
+        as: 'category',
+        attributes: ['category', 'image']
+      }, {
+        model: Chapter,
+        as: 'chapters',
+        attributes: ['id', 'index', 'name', 'is_locked']
+      }],
+    attributes:
+      {
+        exclude: [
+          'category_id',
+          'createdAt',
+          'updatedAt']
+      }
   })
 }
 
@@ -30,4 +86,4 @@ const deleteCourseRepo = (id) => {
   })
 }
 
-module.exports = { create, findAll, findByPk, findByCodeCourse, updateCourseRepo, deleteCourseRepo }
+module.exports = { create, findAll, findAllforAdmin, findByPk, updateCourseRepo, deleteCourseRepo }

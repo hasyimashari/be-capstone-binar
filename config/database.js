@@ -31,6 +31,7 @@ module.exports = {
     password: DB_PASSWORD_PO,
     database: DB_NAME_PO,
     host: DB_HOST_PO,
+    port: 47188,
     dialect: 'postgres'
   }
 }

@@ -1,9 +1,10 @@
 const express = require('express')
-const { createModul } = require('../controllers/modul')
-// const { authorization, onlyAdmin } = require('../middleware/auth.js')
+const { createModule, getAllModule, getDetailModule } = require('../controllers/module')
 
 const router = express.Router()
 
-router.post('/modules', createModul)
+router.post('/admin/modules', createModule)
+router.get('/admin/modules', getAllModule)
+router.get('/modules/:id', getDetailModule)
 
 module.exports = router

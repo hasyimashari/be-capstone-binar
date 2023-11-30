@@ -15,7 +15,8 @@ module.exports = {
       },
       code: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       level: {
         type: Sequelize.ENUM('Beginner', 'Intermediate', 'Advanced'),
@@ -23,30 +24,27 @@ module.exports = {
       },
       category_id: {
         type: Sequelize.UUID,
-        allowNull: true
+        allowNull: false,
+        references: {
+          model: 'Categories',
+          key: 'id'
+        }
       },
       facilitator: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      rate: {
-        type: Sequelize.INTEGER,
-        defaultValue: 4.0
       },
       price: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
       type: {
-        type: Sequelize.ENUM('Premium', 'Free')
+        type: Sequelize.ENUM('Premium', 'Free'),
+        allowNull: false
       },
       description: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      target_audience: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
