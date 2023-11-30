@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('Moduls', {
+    await queryInterface.createTable('Chapters', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -10,41 +10,24 @@ module.exports = {
         defaultValue: Sequelize.literal('gen_random_uuid()')
       },
       course_id: {
-        type: Sequelize.UUID,
         allowNull: false,
+        type: Sequelize.UUID,
         references: {
           model: 'Courses',
           key: 'id'
         }
       },
-      course_code: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      module_name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      module_number: {
-        type: Sequelize.INTEGER,
+      index: {
         allowNull: false,
-        autoIncrement: true
+        type: Sequelize.INTEGER
       },
-      module_video: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      is_complete: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       is_locked: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
-      },
-      duration: {
-        type: Sequelize.INTEGER,
-        allowNull: true
       },
       createdAt: {
         allowNull: false,
@@ -57,6 +40,6 @@ module.exports = {
     })
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('Moduls')
+    await queryInterface.dropTable('Chapters')
   }
 }
