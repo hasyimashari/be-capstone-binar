@@ -1,9 +1,8 @@
 const { createCourse, getAllCourse, detailCourse, updateCourse, deleteCourse } = require('../course.js')
 
 const courseServices = require('../../services/course.js')
-const categoryServices = require('../../services/category.js')
 
-jest.mock('../services/course.js', () => ({
+jest.mock('../../services/course.js', () => ({
   createCourseServices: jest.fn(),
   getAllCourseServices: jest.fn(),
   detailCourseServices: jest.fn(),
@@ -11,16 +10,16 @@ jest.mock('../services/course.js', () => ({
   deteleCourseServices: jest.fn()
 }))
 
-jest.mock('../services/category.js', () => ({
+jest.mock('../../services/category.js', () => ({
   createCategoryServices: jest.fn()
 }))
 
 const course = {
   name: 'Product Management',
   code: 'PM12345',
-  category: 'Product Management',
   level: 'Advanced',
   facilitator: 'Muzani',
+  category_id: '6ysgwygsjabwh8d',
   price: 12000,
   type: 'Premium',
   telegram_group: 'this link tele',
@@ -29,10 +28,21 @@ const course = {
   description: 'description'
 }
 
+const category = {
+  category: 'Android',
+  image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813840/ios_ukp63i.png'
+}
+
+const chapters = [{
+  id: '9e0d7e21-58d6-4b45-aa77-4323357fc826',
+  index: 1,
+  name: 'chapter lorem ipsum',
+  is_locked: false
+}]
+
 describe('#createCourse', () => {
   it('should return 201 response success', async () => {
     const category = {
-      id: '181c73b2-41c7-43bd-932b-56033282e1c8',
       category: 'Product Management',
       image: 'image.png'
     }
@@ -40,7 +50,6 @@ describe('#createCourse', () => {
     const mockRequest = {
       course,
       category
-
     }
 
     const mockResponse = {
@@ -49,16 +58,12 @@ describe('#createCourse', () => {
     }
 
     await courseServices.createCourseServices.mockReturnValue(course)
-    await categoryServices.createCategoryServices.mockReturnValue(category)
     await createCourse(mockRequest, mockResponse)
 
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'Ok',
-      message: 'Sucess',
-      data: {
-        data: course,
-        category
-      }
+      message: 'Success',
+      data: course
     })
   })
 
@@ -108,7 +113,7 @@ describe('#getAllCourse', () => {
 
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'Ok',
-      message: 'Sucess',
+      message: 'Success',
       data: [course]
     })
   })
@@ -127,6 +132,7 @@ describe('#getAllCourse', () => {
 
     expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
       message: error.message
     })
   })
@@ -145,13 +151,13 @@ describe('#detailCourse', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await courseServices.detailCourseServices.mockReturnValue(course)
+    await courseServices.detailCourseServices.mockReturnValue({ course, category, chapters })
     await detailCourse(mockRequest, mockResponse)
 
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success',
-      data: course
+      message: 'Get detail course success',
+      data: { course, category, chapters }
     })
   })
 
@@ -173,6 +179,7 @@ describe('#detailCourse', () => {
     await detailCourse(mockRequest, mockResponse)
 
     expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
       message: error.message
     })
   })
@@ -199,7 +206,7 @@ describe('#updateCourse', () => {
 
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'Ok',
-      message: 'Success',
+      message: 'Update course success',
       data: course
     })
   })
@@ -222,6 +229,7 @@ describe('#updateCourse', () => {
     await updateCourse(mockRequest, mockResponse)
 
     expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
       message: error.message
     })
   })
@@ -247,7 +255,7 @@ describe('#deleteCourse', () => {
 
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message
+      message: 'Detele course success'
     })
   })
 
@@ -270,6 +278,7 @@ describe('#deleteCourse', () => {
 
     expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
       message: error.message
     })
   })

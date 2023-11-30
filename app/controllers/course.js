@@ -6,7 +6,7 @@ const createCourse = async (req, res) => {
 
     res.status(201).json({
       status: 'Ok',
-      message: 'Create course success',
+      message: 'Success',
       data: response
     })
   } catch (error) {
@@ -23,7 +23,7 @@ const getAllCourse = async (req, res) => {
 
     res.status(200).json({
       status: 'Ok',
-      message: 'Get all course success',
+      message: 'Success',
       data: response
     })
   } catch (error) {
