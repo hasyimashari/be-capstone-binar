@@ -11,11 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
-      Course.hasMany(models.Modul, {
-        foreignKey: 'course_id'
+      Course.hasMany(models.Chapter, {
+        foreignKey: 'course_id',
+        as: 'chapters'
       })
       Course.belongsTo(models.Category, {
-        foreignKey: 'category_id'
+        foreignKey: 'category_id',
+        as: 'category'
       })
     }
   }
@@ -25,13 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     level: DataTypes.ENUM('Beginner', 'Intermediate', 'Advanced'),
     category_id: DataTypes.UUID,
     facilitator: DataTypes.STRING,
-    rate: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
     type: DataTypes.ENUM('Premium', 'Free'),
-    description: DataTypes.STRING,
-    target_audience: DataTypes.STRING,
+    description: DataTypes.TEXT,
     telegram_group: DataTypes.STRING,
-    on_boarding: DataTypes.STRING,
+    on_boarding: DataTypes.TEXT,
     introduction_video: DataTypes.STRING
   }, {
     sequelize,
