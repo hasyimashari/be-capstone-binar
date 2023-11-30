@@ -1,13 +1,16 @@
 const express = require('express')
 const cors = require('cors')
+
 const authRouter = require('./routes/auth.js')
 const userRouter = require('./routes/user.js')
+const categoryrouter = require('./routes/category.js')
 const courseRouter = require('./routes/course.js')
+const chapterRouter = require('./routes/chapter.js')
 const modulRouter = require('./routes/modul.js')
 const otpRouter = require('./routes/otp.js')
 
 const app = express()
-const PORT = 3004
+const PORT = 3214
 
 app.use(cors())
 app.use(express.json())
@@ -22,7 +25,9 @@ app.get('/api', (req, res) => {
 
 app.use('/api', authRouter)
 app.use('/api', userRouter)
+app.use('/api', categoryrouter)
 app.use('/api', courseRouter)
+app.use('/api', chapterRouter)
 app.use('/api', modulRouter)
 app.use('/api', otpRouter)
 
