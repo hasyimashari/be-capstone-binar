@@ -2,7 +2,7 @@ const { confirimCodeOtp } = require('../otp.js')
 
 const otpServices = require('../../services/otp.js')
 
-jest.mock('../services/otp.js', () => ({
+jest.mock('../../services/otp.js', () => ({
   confimOtpServices: jest.fn()
 }))
 
