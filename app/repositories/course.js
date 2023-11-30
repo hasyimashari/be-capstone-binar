@@ -58,7 +58,7 @@ const findByPk = (id) => {
       {
         model: Category,
         as: 'category',
-        attributes: ['category', 'image']
+        attributes: ['category']
       }, {
         model: Chapter,
         as: 'chapters',
@@ -67,6 +67,7 @@ const findByPk = (id) => {
     attributes:
       {
         exclude: [
+          'code',
           'category_id',
           'createdAt',
           'updatedAt']

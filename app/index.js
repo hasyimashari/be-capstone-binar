@@ -1,4 +1,7 @@
+require('dotenv').config()
+
 const express = require('express')
+const app = express()
 const cors = require('cors')
 
 const authRouter = require('./routes/auth.js')
@@ -8,7 +11,6 @@ const courseRouter = require('./routes/course.js')
 const chapterRouter = require('./routes/chapter.js')
 const modulRouter = require('./routes/modul.js')
 const otpRouter = require('./routes/otp.js')
-require('dotenv').config()
 
 const { PORT = 3214 } = process.env.PORT
 
