@@ -1,11 +1,18 @@
 const { Category } = require('../models')
 
-const create = (argRequest) => {
-  return Category.create(argRequest)
+const findAllCategory = () => {
+  return Category.findAll({
+    attributes: {
+      exclude: ['createdAt', 'updatedAt']
+    }
+  })
 }
 
-const findIdCategory = (id) => {
+const findByIdCategory = (id) => {
   return Category.findByPk(id)
 }
 
-module.exports = { create, findIdCategory }
+module.exports = {
+  findAllCategory,
+  findByIdCategory
+}
