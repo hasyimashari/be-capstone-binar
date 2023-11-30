@@ -10,9 +10,8 @@ const categoryrouter = require('./routes/category.js')
 const courseRouter = require('./routes/course.js')
 const chapterRouter = require('./routes/chapter.js')
 const modulRouter = require('./routes/modul.js')
-const otpRouter = require('./routes/otp.js')
 
-const { PORT = 3214 } = process.env.PORT
+const PORT = process.env.PORT
 
 app.use(cors())
 app.use(express.json())
