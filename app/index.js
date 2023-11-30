@@ -8,6 +8,7 @@ const courseRouter = require('./routes/course.js')
 const chapterRouter = require('./routes/chapter.js')
 const modulRouter = require('./routes/modul.js')
 const otpRouter = require('./routes/otp.js')
+const app = express()
 require('dotenv').config()
 
 const PORT = process.env.PORT
