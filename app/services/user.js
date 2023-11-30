@@ -127,7 +127,7 @@ const updateTokenPasswordServices = async (argRequest, email) => {
   }
 }
 
-const resetPasswordServices = async (argRequest, id) => {
+const resetPasswordServices = async (argRequest, tokenResetPassword) => {
   try {
     const { new_password, confirm_password } = argRequest
 
@@ -136,8 +136,8 @@ const resetPasswordServices = async (argRequest, id) => {
     }
 
     const hashPassword = await encryptedKode(new_password)
-    const password = await resetPasswordRepo({ password: hashPassword }, id)
-    return password
+    const passwords = await resetPasswordRepo({ password: hashPassword }, tokenResetPassword)
+    return passwords
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }

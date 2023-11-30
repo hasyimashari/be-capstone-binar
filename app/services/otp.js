@@ -23,6 +23,7 @@ const confimOtpServices = async (userId, requestBody) => {
     if (codeOtp.expire_time < new Date().getTime()) {
       throw new ApplicationError('Kode OTP tidak berlaku', 400)
     }
+    await updateOtp({ is_verified: true }, userId)
     return codeOtp
   } catch (error) {
     throw new Error(error.message, 500)

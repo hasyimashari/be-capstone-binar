@@ -1,4 +1,6 @@
 const { createAccessToken } = require('../services/auth.js')
+const { encryptedKode } = require('../services/auth.js')
+const { createOtpServices } = require('../services/otp.js')
 const nodemailer = require('nodemailer')
 const Mailgen = require('mailgen')
 const crypto = require('crypto')
@@ -16,16 +18,64 @@ require('dotenv').config()
 
 const register = async (req, res) => {
   try {
-    const response = await registeService(req.body)
-    const { id, name, email, role } = response
-    const accessToken = createAccessToken({ id, name, email, role })
-    res.status(201).json({
-      status: 'OK',
-      message: 'Success',
-      data: {
-        accessToken
+    const { name, email, phone_number, password } = req.body
+    const otp = Math.floor(Math.random() * 900000) + 100000
+    const expire_time = new Date().getTime() + 300000
+    const config = {
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+      },
+      tls: { rejectUnauthorized: false }
+    }
+    const transporter = nodemailer.createTransport(config)
+
+    const MailGenerator = new Mailgen({
+      theme: 'default',
+      product: {
+        name: 'Dev Academy',
+        link: 'https://mailgen.js/'
       }
     })
+
+    const response = {
+      body: {
+        name,
+        intro: 'OTP Verification',
+        action: {
+          button: {
+            color: '#22BC66',
+            text: otp
+          }
+        },
+        outro: 'Kode Verifikasi hanya berlaku hanya dalam waktu 5 menit'
+      }
+    }
+
+    const mail = MailGenerator.generate(response)
+    const message = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: 'Verifcation OTP',
+      html: mail
+    }
+    const hashCode = await encryptedKode(otp.toString())
+    const user = await registeService({ name, email, phone_number, password })
+    const accessToken = createAccessToken({ id: user.id, name: user.name, email: user.email, role: user.role })
+    await createOtpServices({ userId: user.id, code: hashCode, expire_time })
+    transporter
+      .sendMail(message)
+      .then(() => {
+        return res
+          .status(200)
+          .json({ status: 'OK', message: 'Email deliverd', data: { accessToken } })
+      })
+      .catch((error) => {
+        return res
+          .status(500)
+          .json({ status: 'Faild', message: error.message })
+      })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
@@ -133,10 +183,11 @@ const sendLinkPassword = async (req, res) => {
         button: {
           color: '#22BC66',
           text: 'Click this to reset password',
-          link: `http:localhost:3004/api/reset/password/${tokenResetPassword}`
+          link: `http://localhost:3004/api/reset/password/${tokenResetPassword}`
         }
       },
-      outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+      outro:
+        "Need help, or have questions? Just reply to this email, we'd love to help."
     }
   }
 
@@ -156,16 +207,14 @@ const sendLinkPassword = async (req, res) => {
         .json({ status: 'OK', message: 'Email sent successfully' })
     })
     .catch((error) => {
-      return res
-        .status(500)
-        .json({ status: 'Faild', message: error.message })
+      return res.status(500).json({ status: 'Faild', message: error.message })
     })
 }
 
 const resetPassword = async (req, res) => {
   try {
-    const id = req.params.id
-    await resetPasswordServices(req.body, id)
+    const tokenResetPassword = req.params.tokenResetPassword
+    await resetPasswordServices(req.body, tokenResetPassword)
     res.status(200).json({ status: 'OK', message: 'Success' })
   } catch (error) {
     res.status(500).json({ message: error.message })
