@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for app/services/auth.js</title>
+    <title>Code coverage report for app/services/otp.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">app/services</a> auth.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">app/services</a> otp.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">37.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/50</span>
+                <span class='fraction'>19/51</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>1/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">37.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/50</span>
+                <span class='fraction'>19/51</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -113,11 +113,15 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -126,29 +130,9 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -163,56 +147,75 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const { ApplicationError } = require('../../error')
-require('dotenv').config()
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { ApplicationError } = require('../../error')
+const { findOtp, createOtp, updateOtp } = require('../repositories/otp.js')
+const bcrypt = require('bcrypt')
 &nbsp;
-const encryptedKode = async (password) =&gt; {
+const createOtpServices = async (argRequest) =&gt; {
   try {
-    const salt = await bcrypt.genSalt(10)
-    const kodeEncrypted = await bcrypt.hash(password, salt)
-    return kodeEncrypted
-  } <span class="branch-0 cbranch-no" title="branch not covered" >catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new ApplicationError(error.message, 500)</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+    const otp = await createOtp(argRequest)
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    return otp</span></span>
+  } catch (error) {
+    throw new ApplicationError(error.message, 500)
+  }
 }
 &nbsp;
-const comparePassword = async (pasword, hashPassowrd) =&gt; {
-  try {
-    const matchPassowrd = await bcrypt.compare(pasword, hashPassowrd)
-    return matchPassowrd
-  } <span class="branch-0 cbranch-no" title="branch not covered" >catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new ApplicationError(error.message, 500)</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-}
-&nbsp;
-const createAccessToken = (<span class="fstat-no" title="function not covered" >payload) =&gt; {</span>
+const confimOtpServices = <span class="fstat-no" title="function not covered" >async (userId, requestBody) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN, {</span>
-<span class="cstat-no" title="statement not covered" >      expiresIn: '2h'</span>
-<span class="cstat-no" title="statement not covered" >    })</span>
-<span class="cstat-no" title="statement not covered" >    return accessToken</span>
+<span class="cstat-no" title="statement not covered" >    const { code1, code2, code3, code4, code5, code6 } = requestBody</span>
+<span class="cstat-no" title="statement not covered" >    const code = `${code1}${code2}${code3}${code4}${code5}${code6}`</span>
+<span class="cstat-no" title="statement not covered" >    const codeOtp = await findOtp(userId)</span>
+<span class="cstat-no" title="statement not covered" >    const compareCode = await bcrypt.compare(code, codeOtp.code)</span>
+<span class="cstat-no" title="statement not covered" >    if (!compareCode) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new ApplicationError('Kode OTP salah', 403)</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    if (codeOtp.expire_time &lt; new Date().getTime()) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new ApplicationError('Kode OTP tidak berlaku', 400)</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" >    await updateOtp({ is_verified: true }, userId)</span>
+<span class="cstat-no" title="statement not covered" >    return codeOtp</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new ApplicationError(error.message, 500)</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error(error.message, 500)</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-const verifyToken = <span class="fstat-no" title="function not covered" >(token, env) =&gt; {</span>
+const updateOtpServices = <span class="fstat-no" title="function not covered" >async (argRequest, userId) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const decoded = jwt.verify(token, env, (error, payload) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (error) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new ApplicationError('unauthorized', 401)</span>
-<span class="cstat-no" title="statement not covered" >      }</span>
-<span class="cstat-no" title="statement not covered" >      return payload</span>
-<span class="cstat-no" title="statement not covered" >    })</span>
-<span class="cstat-no" title="statement not covered" >    return decoded</span>
+<span class="cstat-no" title="statement not covered" >    const codeOtp = await updateOtp(argRequest, userId)</span>
+<span class="cstat-no" title="statement not covered" >    return codeOtp</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new ApplicationError(error.message, 500)</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error(error.message, 500)</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
-module.exports = { encryptedKode, comparePassword, createAccessToken, verifyToken }
+const findOtpCode = <span class="fstat-no" title="function not covered" >async (userId) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const otpCode = await findOtp(userId)</span>
+<span class="cstat-no" title="statement not covered" >    return otpCode</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error(error.message, 500)</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+<span class="cstat-no" title="statement not covered" >}</span>
+&nbsp;
+module.exports = { confimOtpServices, createOtpServices, updateOtpServices, findOtpCode }
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -220,7 +223,7 @@ module.exports = { encryptedKode, comparePassword, createAccessToken, verifyToke
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-30T02:25:29.890Z
+                at 2023-11-30T02:08:08.029Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
