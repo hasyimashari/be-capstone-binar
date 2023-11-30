@@ -10,7 +10,7 @@ const modulRouter = require('./routes/modul.js')
 const otpRouter = require('./routes/otp.js')
 require('dotenv').config()
 
-const { PORT = 3214 } = process.env.PORT
+const PORT = process.env.PORT
 
 app.use(cors())
 app.use(express.json())
