@@ -183,7 +183,7 @@ const sendLinkPassword = async (req, res) => {
         button: {
           color: '#22BC66',
           text: 'Click this to reset password',
-          link: `http://localhost:3004/api/reset/password/${tokenResetPassword}`
+          link: `https://befinalprojectbinar-production.up.railway.app/api/reset/password/${tokenResetPassword}`
         }
       },
       outro:
