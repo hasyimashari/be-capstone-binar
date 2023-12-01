@@ -6,11 +6,8 @@ const create = (payload) => {
 
 const findAll = () => {
   return Module.findAll({
-    attributes:
-    {
-      exclude: [
-        'createdAt',
-        'updatedAt']
+    attributes: {
+      exclude: ['createdAt', 'updatedAt']
     }
   })
 }
@@ -22,12 +19,8 @@ const findById = (id) => {
 const findByChapterId = (chapter_id) => {
   return Module.findAll({
     where: { chapter_id },
-    attributes:
-    {
-      exclude: [
-        'chapter_id',
-        'createdAt',
-        'updatedAt']
+    attributes: {
+      exclude: ['chapter_id', 'createdAt', 'updatedAt']
     }
   })
 }

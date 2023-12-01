@@ -6,77 +6,75 @@ const create = (argRequest) => {
 
 const findAll = () => {
   return Course.findAll({
-    include:
-    [
+    include: [
       {
         model: Category,
         as: 'category',
         attributes: ['category', 'image']
-      }],
-    attributes:
-      {
-        exclude: [
-          'code',
-          'category_id',
-          'description',
-          'telegram_group',
-          'on_boarding',
-          'introduction_video',
-          'createdAt',
-          'updatedAt']
       }
+    ],
+    attributes: {
+      exclude: [
+        'code',
+        'category_id',
+        'description',
+        'telegram_group',
+        'on_boarding',
+        'introduction_video',
+        'createdAt',
+        'updatedAt'
+      ]
+    }
   })
 }
 
 const findAllforAdmin = () => {
   return Course.findAll({
-    include:
-    [
+    include: [
       {
         model: Category,
         as: 'category',
         attributes: ['category']
-      }],
-    attributes:
-      {
-        exclude: [
-          'category_id',
-          'description',
-          'telegram_group',
-          'on_boarding',
-          'introduction_video',
-          'createdAt',
-          'updatedAt']
       }
+    ],
+    attributes: {
+      exclude: [
+        'category_id',
+        'description',
+        'telegram_group',
+        'on_boarding',
+        'introduction_video',
+        'createdAt',
+        'updatedAt'
+      ]
+    }
   })
 }
 
 const findByPk = (id) => {
   return Course.findByPk(id, {
-    include:
-    [
+    include: [
       {
         model: Category,
         as: 'category',
         attributes: ['category', 'image']
-      }, {
+      },
+      {
         model: Chapter,
         as: 'chapters',
         attributes: ['id', 'index', 'name', 'is_locked']
-      }],
-    attributes:
-      {
-        exclude: [
-          'category_id',
-          'createdAt',
-          'updatedAt']
       }
+    ],
+    attributes: {
+      exclude: ['category_id', 'createdAt', 'updatedAt']
+    }
   })
 }
 
 const updateCourseRepo = (argRequest, id) => {
   return Course.update(argRequest, {
-    where: { id }, returning: true
+    where: { id },
+    returning: true
   })
 }
 
@@ -86,4 +84,11 @@ const deleteCourseRepo = (id) => {
   })
 }
 
-module.exports = { create, findAll, findAllforAdmin, findByPk, updateCourseRepo, deleteCourseRepo }
+module.exports = {
+  create,
+  findAll,
+  findAllforAdmin,
+  findByPk,
+  updateCourseRepo,
+  deleteCourseRepo
+}

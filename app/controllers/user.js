@@ -1,9 +1,3 @@
-const { createAccessToken } = require('../services/auth.js')
-const { encryptedKode } = require('../services/auth.js')
-const { createOtpServices } = require('../services/otp.js')
-const nodemailer = require('nodemailer')
-const Mailgen = require('mailgen')
-const crypto = require('crypto')
 const {
   registeService,
   loginUserSevices,
@@ -14,6 +8,12 @@ const {
   updateTokenPasswordServices,
   resetPasswordServices
 } = require('../services/user.js')
+const { createAccessToken } = require('../services/auth.js')
+const { encryptedKode } = require('../services/auth.js')
+const { createOtpServices } = require('../services/otp.js')
+const Mailgen = require('mailgen')
+const crypto = require('crypto')
+const transporter = require('../../utils/transporter.js')
 require('dotenv').config()
 
 const register = async (req, res) => {
@@ -21,15 +21,6 @@ const register = async (req, res) => {
     const { name, email, phone_number, password } = req.body
     const otp = Math.floor(Math.random() * 900000) + 100000
     const expire_time = new Date().getTime() + 300000
-    const config = {
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD
-      },
-      tls: { rejectUnauthorized: false }
-    }
-    const transporter = nodemailer.createTransport(config)
 
     const MailGenerator = new Mailgen({
       theme: 'default',
@@ -62,19 +53,26 @@ const register = async (req, res) => {
     }
     const hashCode = await encryptedKode(otp.toString())
     const user = await registeService({ name, email, phone_number, password })
-    const accessToken = createAccessToken({ id: user.id, name: user.name, email: user.email, role: user.role })
+    const accessToken = createAccessToken({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    })
     await createOtpServices({ userId: user.id, code: hashCode, expire_time })
     transporter
       .sendMail(message)
       .then(() => {
         return res
           .status(200)
-          .json({ status: 'OK', message: 'Email deliverd', data: { accessToken } })
+          .json({
+            status: 'OK',
+            message: 'Email terkirim',
+            data: { accessToken }
+          })
       })
       .catch((error) => {
-        return res
-          .status(500)
-          .json({ status: 'Faild', message: error.message })
+        return res.status(500).json({ message: error.message })
       })
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -94,7 +92,7 @@ const loginUser = async (req, res) => {
       }
     })
   } catch (error) {
-    res.status(error.statusCode).json({ message: error.message })
+    res.status(500).json({ status: 'FAIL', message: error.message })
   }
 }
 
@@ -111,7 +109,7 @@ const loginAdmin = async (req, res) => {
       }
     })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ status: 'FAIL', message: error.message })
   }
 }
 
@@ -121,7 +119,7 @@ const currentUser = async (req, res) => {
     const response = await detailUserServices(user.id)
     res.status(200).json({ status: 'OK', message: 'Success', data: response })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ status: 'FAIL', message: error.message })
   }
 }
 
@@ -135,7 +133,7 @@ const updateUser = async (req, res) => {
       .status(201)
       .json({ status: 'OK', message: 'Success updated', data: response })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ status: 'FAIL', message: error.message })
   }
 }
 
@@ -146,27 +144,14 @@ const updatePassword = async (req, res) => {
     const [_, response] = await updatePasswordServices(req.body, id)
     res.status(201).json({ status: 'OK', message: 'Sucess', data: response })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ status: 'FAIL', message: error.message })
   }
 }
 
 const sendLinkPassword = async (req, res) => {
   const email = req.body.email
   const tokenResetPassword = crypto.randomBytes(10).toString('hex')
-
   await updateTokenPasswordServices({ tokenResetPassword }, email)
-
-  const config = {
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD
-    },
-    tls: { rejectUnauthorized: false }
-  }
-
-  const transporter = nodemailer.createTransport(config)
-
   const MailGenerator = new Mailgen({
     theme: 'default',
     product: {
@@ -202,12 +187,10 @@ const sendLinkPassword = async (req, res) => {
   transporter
     .sendMail(message)
     .then(() => {
-      return res
-        .status(200)
-        .json({ status: 'OK', message: 'Email sent successfully' })
+      return res.status(200).json({ status: 'OK', message: 'Email terkirim' })
     })
     .catch((error) => {
-      return res.status(500).json({ status: 'Faild', message: error.message })
+      return res.status(500).json({ message: error.message })
     })
 }
 
@@ -217,7 +200,7 @@ const resetPassword = async (req, res) => {
     await resetPasswordServices(req.body, tokenResetPassword)
     res.status(200).json({ status: 'OK', message: 'Success' })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ status: 'FAIL', message: error.message })
   }
 }
 

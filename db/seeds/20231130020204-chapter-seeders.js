@@ -18,13 +18,29 @@ module.exports = {
     })
     const randomCourseID = getRandomCourse.dataValues.id
 
-    await queryInterface.bulkInsert('Chapters', [{
-      course_id: randomCourseID,
-      index: 1,
-      name: 'chapter lorem ipsum',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {})
+    await queryInterface.bulkInsert('Chapters', [
+      {
+        course_id: randomCourseID,
+        index: 1,
+        name: 'chapter lorem ipsum',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        course_id: randomCourseID,
+        index: 2,
+        name: 'chapter lorem ipsum',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        course_id: randomCourseID,
+        index: 3,
+        name: 'chapter lorem ipsum',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ], {})
   },
 
   async down (queryInterface, Sequelize) {

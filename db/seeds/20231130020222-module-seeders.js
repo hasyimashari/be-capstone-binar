@@ -18,15 +18,35 @@ module.exports = {
     })
     const randomChapteID = getRandomChapter.dataValues.id
 
-    await queryInterface.bulkInsert('Modules', [{
-      chapter_id: randomChapteID,
-      index: 1,
-      name: 'modul lorem ipsum',
-      video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
-      duration: 10,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {}
+    await queryInterface.bulkInsert('Modules', [
+      {
+        chapter_id: randomChapteID,
+        index: 1,
+        name: 'modul lorem ipsum',
+        video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
+        duration: 10,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        chapter_id: randomChapteID,
+        index: 2,
+        name: 'modul lorem ipsum',
+        video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
+        duration: 12,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        chapter_id: randomChapteID,
+        index: 3,
+        name: 'modul lorem ipsum',
+        video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
+        duration: 15,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ], {}
     )
   },
 
