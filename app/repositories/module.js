@@ -13,7 +13,14 @@ const findAll = () => {
 }
 
 const findById = (id) => {
-  return Module.findByPk(id)
+  return Module.findByPk(id, {
+    attributes:
+    {
+      exclude: [
+        'createdAt',
+        'updatedAt']
+    }
+  })
 }
 
 const findByChapterId = (chapter_id) => {

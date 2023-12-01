@@ -57,17 +57,21 @@ const findByPk = (id) => {
       {
         model: Category,
         as: 'category',
-        attributes: ['category', 'image']
-      },
-      {
+        attributes: ['category']
+      }, {
         model: Chapter,
         as: 'chapters',
         attributes: ['id', 'index', 'name', 'is_locked']
+      }],
+    attributes: [
+      {
+        exclude: [
+          'code',
+          'category_id',
+          'createdAt',
+          'updatedAt']
       }
-    ],
-    attributes: {
-      exclude: ['category_id', 'createdAt', 'updatedAt']
-    }
+    ]
   })
 }
 
