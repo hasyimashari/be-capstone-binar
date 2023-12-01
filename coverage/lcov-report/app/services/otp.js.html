@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25.49% </span>
+                <span class="strong">37.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/51</span>
+                <span class='fraction'>19/51</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>1/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25.49% </span>
+                <span class="strong">37.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/51</span>
+                <span class='fraction'>19/51</span>
             </div>
         
             
@@ -119,13 +119,13 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -165,25 +165,25 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { ApplicationError } = require('../../error')
-const { findOtp, createOtp, updateOtp } = require('../repositories/otp.js')
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { findOtp, createOtp, updateOtp } = require('../repositories/otp.js')
+const { ApplicationError } = require('../../error')
 const bcrypt = require('bcrypt')
 &nbsp;
-const createOtpServices = <span class="fstat-no" title="function not covered" >async (argRequest) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const otp = await createOtp(argRequest)</span>
-<span class="cstat-no" title="statement not covered" >    return otp</span>
-<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new ApplicationError(error.message, 500)</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >}</span>
+const createOtpServices = async (argRequest) =&gt; {
+  try {
+    const otp = await createOtp(argRequest)
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    return otp</span></span>
+  } catch (error) {
+    throw new ApplicationError(error.message, 500)
+  }
+}
 &nbsp;
 const confimOtpServices = <span class="fstat-no" title="function not covered" >async (userId, requestBody) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    const { code1, code2, code3, code4, code5, code6 } = requestBody</span>
-<span class="cstat-no" title="statement not covered" >    const code = `${code1}${code2}${code3}${code4}${code5}${code6}`</span>
+<span class="cstat-no" title="statement not covered" >    const codes = `${code1}${code2}${code3}${code4}${code5}${code6}`</span>
 <span class="cstat-no" title="statement not covered" >    const codeOtp = await findOtp(userId)</span>
-<span class="cstat-no" title="statement not covered" >    const compareCode = await bcrypt.compare(code, codeOtp.code)</span>
+<span class="cstat-no" title="statement not covered" >    const compareCode = await bcrypt.compare(codes, codeOtp.code)</span>
 <span class="cstat-no" title="statement not covered" >    if (!compareCode) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new ApplicationError('Kode OTP salah', 403)</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
@@ -193,7 +193,7 @@ const confimOtpServices = <span class="fstat-no" title="function not covered" >a
 <span class="cstat-no" title="statement not covered" >    await updateOtp({ is_verified: true }, userId)</span>
 <span class="cstat-no" title="statement not covered" >    return codeOtp</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new Error(error.message, 500)</span>
+<span class="cstat-no" title="statement not covered" >    throw new ApplicationError(error.message, 500)</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
@@ -202,7 +202,7 @@ const updateOtpServices = <span class="fstat-no" title="function not covered" >a
 <span class="cstat-no" title="statement not covered" >    const codeOtp = await updateOtp(argRequest, userId)</span>
 <span class="cstat-no" title="statement not covered" >    return codeOtp</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new Error(error.message, 500)</span>
+<span class="cstat-no" title="statement not covered" >    throw new ApplicationError(error.message, 500)</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
@@ -211,7 +211,7 @@ const findOtpCode = <span class="fstat-no" title="function not covered" >async (
 <span class="cstat-no" title="statement not covered" >    const otpCode = await findOtp(userId)</span>
 <span class="cstat-no" title="statement not covered" >    return otpCode</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new Error(error.message, 500)</span>
+<span class="cstat-no" title="statement not covered" >    throw new ApplicationError(error.message, 500)</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
@@ -223,7 +223,7 @@ module.exports = { confimOtpServices, createOtpServices, updateOtpServices, find
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-30T10:48:30.146Z
+                at 2023-12-01T07:16:15.292Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

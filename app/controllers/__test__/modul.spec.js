@@ -34,6 +34,7 @@ describe('#createModule', () => {
     await moduleServices.createModuleService.mockReturnValue(modules)
     await createModule(mockRequest, mockResponse)
 
+    expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'Ok',
       message: 'Create module success',
@@ -55,9 +56,12 @@ describe('#createModule', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await moduleServices.createModuleService.mockReturnValue(Promise.reject(error))
+    await moduleServices.createModuleService.mockReturnValue(
+      Promise.reject(error)
+    )
     await createModule(mockRequest, mockResponse)
 
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'FAIL',
       message: error.message
@@ -101,9 +105,12 @@ describe('#getAllModule', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await moduleServices.getAllModulesService.mockReturnValue(Promise.reject(error))
+    await moduleServices.getAllModulesService.mockReturnValue(
+      Promise.reject(error)
+    )
     await getAllModule(mockRequest, mockResponse)
 
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'FAIL',
       message: error.message
@@ -127,6 +134,7 @@ describe('#getDetailModule', () => {
     await moduleServices.getDetailModuleServices.mockReturnValue(modules)
     await getDetailModule(mockRequest, mockResponse)
 
+    expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'Ok',
       message: 'Get detail module success',
@@ -148,9 +156,12 @@ describe('#getDetailModule', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await moduleServices.getDetailModuleServices.mockReturnValue(Promise.reject(error))
+    await moduleServices.getDetailModuleServices.mockReturnValue(
+      Promise.reject(error)
+    )
     await getDetailModule(mockRequest, mockResponse)
 
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'FAIL',
       message: error.message

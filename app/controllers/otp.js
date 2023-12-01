@@ -1,21 +1,14 @@
-const {
-  confimOtpServices,
-  createOtpServices,
-  updateOtpServices,
-  findOtpCode
-} = require('../services/otp.js')
+const { confimOtpServices, createOtpServices, updateOtpServices, findOtpCode } = require('../services/otp.js')
+const { encryptedKode } = require('../services/auth.js')
 const nodemailer = require('nodemailer')
 const Mailgen = require('mailgen')
-const { encryptedKode } = require('../services/auth.js')
 require('dotenv').config()
 
 const sendOtp = async (req, res) => {
   try {
     const otp = Math.floor(Math.random() * 900000) + 100000
-    const emailPenerima = req.user.email
-    const userId = req.user.id
-    const name = req.user.name
     const expire_time = new Date().getTime() + 300000
+    const { email, id, name } = req.user
     const config = {
       service: 'gmail',
       auth: {
@@ -52,7 +45,7 @@ const sendOtp = async (req, res) => {
     const mail = MailGenerator.generate(response)
     const message = {
       from: process.env.EMAIL,
-      to: emailPenerima,
+      to: email,
       subject: 'Verifcation OTP',
       html: mail
     }
@@ -61,9 +54,9 @@ const sendOtp = async (req, res) => {
     const currentOtPCode = await findOtpCode(userId)
 
     if (currentOtPCode) {
-      await updateOtpServices({ code: hashCode, expire_time }, userId)
+      await updateOtpServices({ code: hashCode, expire_time }, id)
     } else {
-      await createOtpServices({ userId, code: hashCode, expire_time })
+      await createOtpServices({ id, code: hashCode, expire_time })
     }
     transporter
       .sendMail(message)
@@ -75,7 +68,7 @@ const sendOtp = async (req, res) => {
       .catch((error) => {
         return res
           .status(500)
-          .json({ status: 'Faild', message: error.message })
+          .json({ message: error.message })
       })
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -88,7 +81,7 @@ const confirimCodeOtp = async (req, res) => {
     await confimOtpServices(userId, req.body)
     res.status(200).json({ status: 'OK', message: 'Success' })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ status: 'FAIL', message: error.message })
   }
 }
 
