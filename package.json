@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node app/index.js",
-    "test": "jest"
+    "dev": "nodemon app/index.js",
+    "test": "jest",
+    "db:create": "sequelize db:create",
+    "db:drop": "sequelize db:drop",
+    "migrate" : "sequelize db:migrate",
+    "migrate:undo:all": "sequelize db:migrate:undo:all",
+    "seed:all": "sequelize db:seed:all",
+    "seed:undo:all": "sequelize db:seed:undo:all"
   },
   "keywords": [],
   "author": "",
