@@ -1,5 +1,5 @@
 const { create, findByPk, findAll, findAllforAdmin, updateCourseRepo, deleteCourseRepo } = require('../repositories/course.js')
-const { findByCourseId, countChapterByCourseId } = require('../repositories/chapter.js')
+const { findByCourseId: findChapterByCourseId, countChapterByCourseId } = require('../repositories/chapter.js')
 
 const { ApplicationError } = require('../../error')
 
@@ -19,7 +19,7 @@ const getTotalChapter = async (id) => {
 }
 
 const getTotalDuration = async (id) => {
-  const chapters = await findByCourseId(id)
+  const chapters = await findChapterByCourseId(id)
 
   const totalDuration = chapters.reduce((sum, chapter) => {
     return sum + chapter.total_module_duration
@@ -32,14 +32,20 @@ const getAllCourseServices = async () => {
   try {
     const courses = await findAll()
 
-    const modifiedData = await Promise.all(
-      courses.map(async (course) => {
-        return {
-          ...course.dataValues,
-          total_chapter: await getTotalChapter(course.id),
-          total_duration: await getTotalDuration(course.id)
-        }
-      }))
+    const additionalData = courses.map(async (course) => {
+      const [totalChapter, totalDuration] = await Promise.all([
+        getTotalChapter(course.id),
+        getTotalDuration(course.id)
+      ])
+
+      return {
+        ...course.dataValues,
+        total_chapter: totalChapter,
+        total_duration: totalDuration
+      }
+    })
+
+    const modifiedData = await Promise.all(additionalData)
 
     return modifiedData
   } catch (error) {
