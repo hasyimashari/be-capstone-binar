@@ -22,7 +22,7 @@ const findById = (id) => {
       }
     ],
     attributes: {
-      exclude: ['category_id', 'createdAt', 'updatedAt']
+      exclude: ['createdAt', 'updatedAt']
     }
   })
 }

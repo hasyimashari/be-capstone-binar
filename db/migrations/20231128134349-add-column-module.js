@@ -9,7 +9,8 @@ module.exports = {
       references: {
         model: 'Chapters',
         key: 'id'
-      }
+      },
+      onDelete: 'CASCADE'
     })
   },
 

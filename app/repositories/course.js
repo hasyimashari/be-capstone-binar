@@ -53,7 +53,8 @@ const findAllforAdmin = () => {
 
 const findByPk = (id) => {
   return Course.findByPk(id, {
-    include: [
+    include:
+    [
       {
         model: Category,
         as: 'category',
@@ -63,7 +64,7 @@ const findByPk = (id) => {
         as: 'chapters',
         attributes: ['id', 'index', 'name', 'is_locked']
       }],
-    attributes: [
+    attributes:
       {
         exclude: [
           'code',
@@ -71,7 +72,6 @@ const findByPk = (id) => {
           'createdAt',
           'updatedAt']
       }
-    ]
   })
 }
 
