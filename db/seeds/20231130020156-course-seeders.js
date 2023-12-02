@@ -14,10 +14,13 @@ module.exports = {
      * }], {});
      */
 
-    const getRandomCategory = await Category.findOne({
-      order: Sequelize.literal('random()')
-    })
-    const randomCategoryID = getRandomCategory.dataValues.id
+    const getRandomCategoryId = async () => {
+      const getRandomCategory = await Category.findOne({
+        order: Sequelize.literal('random()')
+      })
+
+      return getRandomCategory.dataValues.id
+    }
 
     await queryInterface.bulkInsert(
       'Courses',
@@ -26,7 +29,7 @@ module.exports = {
           name: 'test course 1',
           code: 'code_1',
           level: 'Beginner',
-          category_id: randomCategoryID,
+          category_id: await getRandomCategoryId(),
           facilitator: 'facil',
           price: 200000,
           type: 'Premium',
@@ -43,7 +46,7 @@ module.exports = {
           name: 'test course 2',
           code: 'code_2',
           level: 'Beginner',
-          category_id: randomCategoryID,
+          category_id: await getRandomCategoryId(),
           facilitator: 'facil',
           price: 200000,
           type: 'Premium',
@@ -60,7 +63,7 @@ module.exports = {
           name: 'test course 3',
           code: 'code_3',
           level: 'Beginner',
-          category_id: randomCategoryID,
+          category_id: await getRandomCategoryId(),
           facilitator: 'facil',
           price: 200000,
           type: 'Premium',
