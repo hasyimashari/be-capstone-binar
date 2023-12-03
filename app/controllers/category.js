@@ -3,7 +3,7 @@ const { getAllCategoryServices } = require('../services/category')
 const getAllCcategories = async (req, res) => {
   try {
     const response = await getAllCategoryServices()
-    res.status(201).json({
+    res.status(200).json({
       status: 'Ok',
       message: 'Get categories data success',
       data: response

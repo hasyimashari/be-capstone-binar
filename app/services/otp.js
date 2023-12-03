@@ -1,5 +1,5 @@
-const { ApplicationError } = require('../../error')
 const { findOtp, createOtp, updateOtp } = require('../repositories/otp.js')
+const { ApplicationError } = require('../../error')
 const bcrypt = require('bcrypt')
 
 const createOtpServices = async (argRequest) => {
@@ -14,9 +14,9 @@ const createOtpServices = async (argRequest) => {
 const confimOtpServices = async (userId, requestBody) => {
   try {
     const { code1, code2, code3, code4, code5, code6 } = requestBody
-    const code = `${code1}${code2}${code3}${code4}${code5}${code6}`
+    const codes = `${code1}${code2}${code3}${code4}${code5}${code6}`
     const codeOtp = await findOtp(userId)
-    const compareCode = await bcrypt.compare(code, codeOtp.code)
+    const compareCode = await bcrypt.compare(codes, codeOtp.code)
     if (!compareCode) {
       throw new ApplicationError('Kode OTP salah', 403)
     }
@@ -26,7 +26,7 @@ const confimOtpServices = async (userId, requestBody) => {
     await updateOtp({ is_verified: true }, userId)
     return codeOtp
   } catch (error) {
-    throw new Error(error.message, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
@@ -35,7 +35,7 @@ const updateOtpServices = async (argRequest, userId) => {
     const codeOtp = await updateOtp(argRequest, userId)
     return codeOtp
   } catch (error) {
-    throw new Error(error.message, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
@@ -44,7 +44,7 @@ const findOtpCode = async (userId) => {
     const otpCode = await findOtp(userId)
     return otpCode
   } catch (error) {
-    throw new Error(error.message, 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 

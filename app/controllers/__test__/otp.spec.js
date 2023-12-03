@@ -32,6 +32,7 @@ describe('#confirimCodeOtp', () => {
     await otpServices.confimOtpServices.mockReturnValue(message)
     await confirimCodeOtp(mockRequest, mockResponse)
 
+    expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
       message
@@ -63,7 +64,9 @@ describe('#confirimCodeOtp', () => {
     await otpServices.confimOtpServices.mockReturnValue(Promise.reject(error))
     await confirimCodeOtp(mockRequest, mockResponse)
 
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
       message: error.message
     })
   })

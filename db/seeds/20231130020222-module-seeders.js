@@ -13,20 +13,43 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    const getRandomChapter = await Chapter.findOne({
-      order: Sequelize.literal('random()')
-    })
-    const randomChapteID = getRandomChapter.dataValues.id
+    const getRandomChapterId = async () => {
+      const getRandomChapter = await Chapter.findOne({
+        order: Sequelize.literal('random()')
+      })
 
-    await queryInterface.bulkInsert('Modules', [{
-      chapter_id: randomChapteID,
-      index: 1,
-      name: 'modul lorem ipsum',
-      video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
-      duration: 10,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {}
+      return getRandomChapter.dataValues.id
+    }
+
+    await queryInterface.bulkInsert('Modules', [
+      {
+        chapter_id: await getRandomChapterId(),
+        index: 0,
+        name: 'modul lorem ipsum',
+        video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
+        duration: 10,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        chapter_id: await getRandomChapterId(),
+        index: 0,
+        name: 'modul lorem ipsum',
+        video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
+        duration: 12,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        chapter_id: await getRandomChapterId(),
+        index: 0,
+        name: 'modul lorem ipsum',
+        video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
+        duration: 15,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ], {}
     )
   },
 

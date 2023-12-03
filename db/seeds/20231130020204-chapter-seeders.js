@@ -13,18 +13,37 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    const getRandomCourse = await Course.findOne({
-      order: Sequelize.literal('random()')
-    })
-    const randomCourseID = getRandomCourse.dataValues.id
+    const getRandomCourseId = async () => {
+      const getRandomCourse = await Course.findOne({
+        order: Sequelize.literal('random()')
+      })
 
-    await queryInterface.bulkInsert('Chapters', [{
-      course_id: randomCourseID,
-      index: 1,
-      name: 'chapter lorem ipsum',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {})
+      return getRandomCourse.dataValues.id
+    }
+
+    await queryInterface.bulkInsert('Chapters', [
+      {
+        course_id: await getRandomCourseId(),
+        index: 0,
+        name: 'chapter lorem ipsum',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        course_id: await getRandomCourseId(),
+        index: 0,
+        name: 'chapter lorem ipsum',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        course_id: await getRandomCourseId(),
+        index: 0,
+        name: 'chapter lorem ipsum',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ], {})
   },
 
   async down (queryInterface, Sequelize) {

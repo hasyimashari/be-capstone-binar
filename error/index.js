@@ -5,18 +5,4 @@ class ApplicationError extends Error {
   }
 }
 
-class EmailNotFound extends Error {
-  constructor (message) {
-    super(message)
-    this.message = 'Email tidak di temukan'
-  }
-}
-
-class PasswordWrong extends Error {
-  constructor (message) {
-    super(message)
-    this.message = 'Password Salah'
-  }
-}
-
-module.exports = { ApplicationError, EmailNotFound, PasswordWrong }
+module.exports = { ApplicationError }
