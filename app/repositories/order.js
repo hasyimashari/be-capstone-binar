@@ -1,7 +1,7 @@
 const { Order, Course, User, Category } = require('../models')
 
-const createOrderRepo = (argRequest) => {
-  return Order.create(argRequest)
+const createOrderRepo = (payload) => {
+  return Order.create(payload)
 }
 
 const findAllOrder = () => {
@@ -45,4 +45,11 @@ const findByIdOrder = async (id) => {
   })
 }
 
-module.exports = { createOrderRepo, findAllOrder, findByIdOrder }
+const updateOrderRepo = (payload, id) => {
+  return Order.update(payload, {
+    where: { id },
+    returning: true
+  })
+}
+
+module.exports = { createOrderRepo, findAllOrder, findByIdOrder, updateOrderRepo }

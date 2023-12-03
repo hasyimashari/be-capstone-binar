@@ -1,4 +1,4 @@
-const { createOrderRepo, findAllOrder, findByIdOrder } = require('../repositories/order.js')
+const { createOrderRepo, findAllOrder, findByIdOrder, updateOrderRepo } = require('../repositories/order.js')
 
 const { ApplicationError } = require('../../error')
 
@@ -29,4 +29,15 @@ const detailOrderServices = async (id) => {
   }
 }
 
-module.exports = { createOrderServices, getAllOrderServices, detailOrderServices }
+const updateOrderServices = async (id) => {
+  try {
+    const order_method = 'Credit Card'
+    const status = 'Sudah Bayar'
+    const order = await updateOrderRepo({ order_method, status }, id)
+    return order
+  } catch (error) {
+    throw new ApplicationError(error.message, 500)
+  }
+}
+
+module.exports = { createOrderServices, getAllOrderServices, detailOrderServices, updateOrderServices }

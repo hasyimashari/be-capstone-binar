@@ -1,7 +1,8 @@
 const {
   createOrderServices,
   detailOrderServices,
-  getAllOrderServices
+  getAllOrderServices,
+  updateOrderServices
 } = require('../services/order.js')
 
 const createOrder = async (req, res) => {
@@ -41,4 +42,14 @@ const detailOrder = async (req, res) => {
   }
 }
 
-module.exports = { createOrder, getAllOrder, detailOrder }
+const updateOrder = async (req, res) => {
+  try {
+    const { id } = req.params
+    const response = await updateOrderServices(id)
+    res.status(201).json({ status: 'OK', message: 'Success', data: response })
+  } catch (error) {
+    res.status(500).json({ status: 'FAIL', message: error.message })
+  }
+}
+
+module.exports = { createOrder, getAllOrder, detailOrder, updateOrder }
