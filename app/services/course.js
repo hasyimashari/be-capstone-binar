@@ -83,8 +83,7 @@ const updateCourseServices = async (argRequest, id) => {
 
 const deteleCourseServices = async (id) => {
   try {
-    const course = await deleteCourseRepo(id)
-    return course
+    await deleteCourseRepo(id)
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }
