@@ -3,9 +3,10 @@ const {
   detailOrderServices,
   getAllOrderServices
 } = require('../services/order.js')
+
 const createOrder = async (req, res) => {
   try {
-    const { course_id } = req.body
+    const course_id = req.body.course_id
     const user_id = req.user.id
     const order_method = 'Credit Card'
     const status = 'Sudah Bayar'

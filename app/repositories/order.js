@@ -1,7 +1,7 @@
 const { Order, Course, User, Category } = require('../models')
 
-const createOrderRepo = (payload) => {
-  return Order.create(payload)
+const createOrderRepo = (argRequest) => {
+  return Order.create(argRequest)
 }
 
 const findAllOrder = () => {

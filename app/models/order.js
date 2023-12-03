@@ -1,6 +1,6 @@
 'use strict'
 const {
-  Model
+  Model, UUIDV4
 } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
@@ -22,9 +22,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Order.init({
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      allowNull: false,
+      defaultValue: UUIDV4
+    },
     user_id: DataTypes.UUID,
     course_id: DataTypes.UUID,
-    status: DataTypes.ENUM('Sudah Bayar', 'Sudah Bayar'),
+    status: DataTypes.ENUM('Sudah Bayar', 'Belum Bayar'),
     order_method: DataTypes.STRING,
     order_date: DataTypes.DATE
   }, {

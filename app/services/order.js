@@ -1,9 +1,10 @@
 const { createOrderRepo, findAllOrder, findByIdOrder } = require('../repositories/order.js')
+
 const { ApplicationError } = require('../../error')
 
 const createOrderServices = async (payload) => {
   try {
-    const order = await createOrderRepo(payload)
+    const order = await createOrderRepo({ ...payload })
     return order
   } catch (error) {
     throw new ApplicationError(error.message, 500)
