@@ -6,7 +6,7 @@ const createCourse = async (req, res) => {
 
     res.status(201).json({
       status: 'Ok',
-      message: 'Success',
+      message: 'Create module success',
       data: response
     })
   } catch (error) {
@@ -23,7 +23,7 @@ const getAllCourse = async (req, res) => {
 
     res.status(200).json({
       status: 'Ok',
-      message: 'Success',
+      message: 'Get all courses success',
       data: response
     })
   } catch (error) {
@@ -40,7 +40,7 @@ const getAllCourseforAdmin = async (req, res) => {
 
     res.status(200).json({
       status: 'Ok',
-      message: 'Get all course success',
+      message: 'Get all courses success',
       data: response
     })
   } catch (error) {
@@ -70,7 +70,7 @@ const detailCourse = async (req, res) => {
 
 const updateCourse = async (req, res) => {
   try {
-    const id = req.params.id
+    const { id } = req.params
     // eslint-disable-next-line no-unused-vars
     const [_, response] = await updateCourseServices(req.body, id)
 
@@ -103,4 +103,11 @@ const deleteCourse = async (req, res) => {
   }
 }
 
-module.exports = { createCourse, detailCourse, getAllCourse, getAllCourseforAdmin, updateCourse, deleteCourse }
+module.exports = {
+  createCourse,
+  detailCourse,
+  getAllCourse,
+  getAllCourseforAdmin,
+  updateCourse,
+  deleteCourse
+}

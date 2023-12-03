@@ -1,4 +1,4 @@
-const { createChapterService, getAllChaptersService, getDetailChapterServices } = require('../services/chapter')
+const { createChapterService, getAllChaptersService, getDetailChapterServices, updateChapterServices, deleteChapterService } = require('../services/chapter')
 
 const createChapter = async (req, res) => {
   try {
@@ -53,8 +53,45 @@ const getDetailChapter = async (req, res) => {
   }
 }
 
+const updateChapter = async (req, res) => {
+  try {
+    const { id } = req.params
+    const payload = req.body
+
+    const chapter = await updateChapterServices(payload, id)
+    res.status(200).json({
+      status: 'Ok',
+      message: 'Update chapter success',
+      data: chapter
+    })
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      status: 'FAIL',
+      message: error.message
+    })
+  }
+}
+
+const deleteChapter = async (req, res) => {
+  try {
+    const { id } = req.params
+    await deleteChapterService(id)
+    res.status(200).json({
+      status: 'Ok',
+      message: 'Delete chapter success'
+    })
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      status: 'FAIL',
+      message: error.message
+    })
+  }
+}
+
 module.exports = {
   createChapter,
   getAllChapter,
-  getDetailChapter
+  getDetailChapter,
+  updateChapter,
+  deleteChapter
 }

@@ -1,6 +1,6 @@
-const { create, findAll, findById, findByCourseId, countChapterByCourseId } = require('../repositories/chapter')
+const { create, findAll, findById, findByCourseId, countChapterByCourseId, updateChapterById, deleteChapterbyId } = require('../repositories/chapter')
 const { ApplicationError } = require('../../error')
-
+// add prem logic
 const createChapterService = async (payload) => {
   try {
     const { course_id } = payload
@@ -39,8 +39,29 @@ const getDetailChapterServices = async (id) => {
   }
 }
 
+const updateChapterServices = async (payload, id) => {
+  try {
+    // eslint-disable-next-line no-unused-vars
+    const [_, chapter] = await updateChapterById(payload, id)
+
+    return chapter
+  } catch (error) {
+    throw new ApplicationError(error.message, 500)
+  }
+}
+
+const deleteChapterService = async (id) => {
+  try {
+    await deleteChapterbyId(id)
+  } catch (error) {
+    throw new ApplicationError(error.message, 500)
+  }
+}
+
 module.exports = {
   createChapterService,
   getAllChaptersService,
-  getDetailChapterServices
+  getDetailChapterServices,
+  updateChapterServices,
+  deleteChapterService
 }

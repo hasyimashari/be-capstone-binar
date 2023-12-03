@@ -42,10 +42,16 @@ const countChapterByCourseId = (course_id) => {
   })
 }
 
-const updateChapter = (payload, id) => {
+const updateChapterById = (payload, id) => {
   return Chapter.update(payload, {
     where: { id },
     returning: true
+  })
+}
+
+const deleteChapterbyId = (id) => {
+  return Chapter.destroy({
+    where: { id }
   })
 }
 
@@ -54,6 +60,7 @@ module.exports = {
   findAll,
   findById,
   findByCourseId,
-  updateChapter,
-  countChapterByCourseId
+  countChapterByCourseId,
+  updateChapterById,
+  deleteChapterbyId
 }
