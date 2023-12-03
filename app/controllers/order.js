@@ -8,8 +8,8 @@ const createOrder = async (req, res) => {
   try {
     const course_id = req.body.course_id
     const user_id = req.user.id
-    const order_method = 'Credit Card'
-    const status = 'Sudah Bayar'
+    const order_method = '-'
+    const status = 'Belum Bayar'
     const response = await createOrderServices({
       user_id,
       course_id,
