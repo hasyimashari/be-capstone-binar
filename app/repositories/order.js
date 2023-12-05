@@ -10,7 +10,7 @@ const findAllOrder = () => {
       {
         model: Course,
         as: 'course',
-        attributes: ['name'],
+        attributes: ['id', 'name'],
         include: [
           {
             model: Category,
@@ -22,11 +22,39 @@ const findAllOrder = () => {
       {
         model: User,
         as: 'user',
-        attributes: ['email']
+        attributes: ['id', 'email']
       }
     ],
     attributes: {
-      exclude: ['createdAt', 'updatedAt', 'user_id', 'course_id']
+      exclude: ['user_id', 'course_id', 'createdAt', 'updatedAt']
+    }
+  })
+}
+
+const findAllOrderByUserId = (user_id) => {
+  return Order.findAll({
+    where: { user_id },
+    include: [
+      {
+        model: Course,
+        as: 'course',
+        attributes: ['id', 'name'],
+        include: [
+          {
+            model: Category,
+            as: 'category',
+            attributes: ['category']
+          }
+        ]
+      },
+      {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'email']
+      }
+    ],
+    attributes: {
+      exclude: ['user_id', 'course_id', 'createdAt', 'updatedAt']
     }
   })
 }
@@ -37,11 +65,24 @@ const findByIdOrder = async (id) => {
       {
         model: Course,
         as: 'course',
-        attributes: {
-          exclude: ['createdAt', 'updatedAt']
-        }
+        attributes: ['id', 'name'],
+        include: [
+          {
+            model: Category,
+            as: 'category',
+            attributes: ['category']
+          }
+        ]
+      },
+      {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'email']
       }
-    ]
+    ],
+    attributes: {
+      exclude: ['user_id', 'course_id']
+    }
   })
 }
 
@@ -52,4 +93,10 @@ const updateOrderRepo = (payload, id) => {
   })
 }
 
-module.exports = { createOrderRepo, findAllOrder, findByIdOrder, updateOrderRepo }
+module.exports = {
+  createOrderRepo,
+  findAllOrder,
+  findAllOrderByUserId,
+  findByIdOrder,
+  updateOrderRepo
+}
