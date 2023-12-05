@@ -5,7 +5,7 @@ const createModule = async (req, res) => {
     const module = await createModuleService(req.body)
 
     res.status(201).json({
-      status: 'Ok',
+      status: 'OK',
       message: 'Create module success',
       data: module
     })
@@ -23,7 +23,7 @@ const getAllModule = async (req, res) => {
     const modules = await getAllModulesService(chapter_id)
 
     res.status(200).json({
-      status: 'Ok',
+      status: 'OK',
       message: 'Get all modules success',
       data: modules
     })
@@ -41,7 +41,7 @@ const getDetailModule = async (req, res) => {
     const module = await getDetailModuleService(id)
 
     res.status(200).json({
-      status: 'Ok',
+      status: 'OK',
       message: 'Get detail module success',
       data: module
     })
@@ -59,8 +59,8 @@ const updateModule = async (req, res) => {
     const payload = req.body
 
     const module = await updateModuleService(payload, id)
-    res.status(200).json({
-      status: 'Ok',
+    res.status(201).json({
+      status: 'OK',
       message: 'Update module success',
       data: module
     })

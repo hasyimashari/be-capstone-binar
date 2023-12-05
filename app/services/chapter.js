@@ -1,14 +1,18 @@
 const { create, findAll, findById, findByCourseId, countChapterByCourseId, updateChapterById, deleteChapterbyId } = require('../repositories/chapter')
+const { findByPk: findCourseById } = require('../repositories/course')
 const { ApplicationError } = require('../../error')
-// add prem logic
+
 const createChapterService = async (payload) => {
   try {
     const { course_id } = payload
+    const { type: courseType } = await findCourseById(course_id)
     const { count: totalChapterByCourse } = await countChapterByCourseId(course_id)
 
     const index = totalChapterByCourse + 1
-    const chapter = await create({ ...payload, index })
 
+    const isLockedContition = courseType === 'Premium' && totalChapterByCourse >= 2
+
+    const chapter = await create({ ...payload, index, is_locked: isLockedContition })
     return chapter
   } catch (error) {
     throw new ApplicationError(error.message, 500)
@@ -33,9 +37,13 @@ const getDetailChapterServices = async (id) => {
   try {
     const chapters = await findById(id)
 
+    if (!chapters) {
+      throw new ApplicationError('Chapter id not found', 404)
+    }
+
     return chapters
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
