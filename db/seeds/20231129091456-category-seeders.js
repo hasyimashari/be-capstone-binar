@@ -6,37 +6,37 @@ module.exports = {
     const dataCategory = [
       {
         category: 'Android',
-        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813814/and_hrlwhs.png',
+        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1701790473/android_pfk0yg.png',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         category: 'Data Science',
-        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813837/data_science_et36aw.png',
+        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1701790499/data_science_rqfyt9.png',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         category: 'UI/UX',
-        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813830/uiux_qxbp0m.png',
+        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1701790472/ui_ux_wal75a.png',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         category: 'Product Manager',
-        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813823/pm_vipxkl.png',
+        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1701790472/pm_zq2xbg.png',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         category: 'Web Development',
-        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813816/web_yznmro.png',
+        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1701790472/web_dev_fqanff.png',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
         category: 'IOS',
-        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813840/ios_ukp63i.png',
+        image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1701790472/ios_rpmrsu.png',
         createdAt: new Date(),
         updatedAt: new Date()
       }

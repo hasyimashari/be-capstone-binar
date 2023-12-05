@@ -47,11 +47,10 @@ const getAllCourseServices = async (filter) => {
         getTotalDuration(course.id)
       ])
 
-      return {
-        ...course.dataValues,
-        total_chapter: totalChapter,
-        total_duration: totalDuration
-      }
+      course.dataValues.total_chapter = totalChapter
+      course.dataValues.total_duration = totalDuration
+
+      return course
     })
 
     const conditions = (i) => {
@@ -87,6 +86,14 @@ const detailCourseServices = async (id) => {
     if (!course) {
       throw new ApplicationError('Course id not found', 404)
     }
+
+    const [totalChapter, totalDuration] = await Promise.all([
+      getTotalChapter(course.id),
+      getTotalDuration(course.id)
+    ])
+
+    course.dataValues.total_chapter = totalChapter
+    course.dataValues.total_duration = totalDuration
 
     return course
   } catch (error) {
