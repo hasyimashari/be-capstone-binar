@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.OTP, {
         foreignKey: 'userId'
       })
+      User.belongsToMany(models.Course, {
+        through: 'Order',
+        foreignKey: 'user_id'
+      })
     }
   }
   User.init({

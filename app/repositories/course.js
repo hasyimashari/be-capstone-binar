@@ -4,7 +4,7 @@ const create = (argRequest) => {
   return Course.create(argRequest)
 }
 
-const findAll = () => {
+const findAll = (order) => {
   return Course.findAll({
     include: [
       {
@@ -24,7 +24,10 @@ const findAll = () => {
         'createdAt',
         'updatedAt'
       ]
-    }
+    },
+    order: [
+      ['createdAt', order || 'ASC']
+    ]
   })
 }
 

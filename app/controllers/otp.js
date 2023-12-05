@@ -8,7 +8,9 @@ const sendOtp = async (req, res) => {
   try {
     const otp = Math.floor(Math.random() * 900000) + 100000
     const expire_time = new Date().getTime() + 300000
+
     const { email, id, name } = req.user
+
     const config = {
       service: 'gmail',
       auth: {
@@ -38,7 +40,7 @@ const sendOtp = async (req, res) => {
             text: otp
           }
         },
-        outro: 'Kode Verifikasi hanya berlaku hanya dalam waktu 5 menit'
+        outro: 'Verification code is only valid for 5 minutes'
       }
     }
 
@@ -63,7 +65,10 @@ const sendOtp = async (req, res) => {
       .then(() => {
         return res
           .status(200)
-          .json({ status: 'OK', message: 'Email sent successfully' })
+          .json({
+            status: 'OK',
+            message: 'Email sent'
+          })
       })
       .catch((error) => {
         return res
@@ -71,7 +76,10 @@ const sendOtp = async (req, res) => {
           .json({ message: error.message })
       })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(error.statusCode || 500).json({
+      status: 'FAIL',
+      message: error.message
+    })
   }
 }
 
@@ -79,9 +87,15 @@ const confirimCodeOtp = async (req, res) => {
   try {
     const userId = req.user.id
     await confimOtpServices(userId, req.body)
-    res.status(200).json({ status: 'OK', message: 'Success' })
+    res.status(200).json({
+      status: 'OK',
+      message: 'Confirm OTP code success'
+    })
   } catch (error) {
-    res.status(500).json({ status: 'FAIL', message: error.message })
+    res.status(500).json({
+      status: 'FAIL',
+      message: error.message
+    })
   }
 }
 

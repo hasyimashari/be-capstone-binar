@@ -11,6 +11,7 @@ const courseRouter = require('./routes/course.js')
 const chapterRouter = require('./routes/chapter.js')
 const modulRouter = require('./routes/modul.js')
 const otpRouter = require('./routes/otp.js')
+const orderRouter = require('./routes/order.js')
 
 const PORT = process.env.PORT
 
@@ -32,6 +33,7 @@ app.use('/api', courseRouter)
 app.use('/api', chapterRouter)
 app.use('/api', modulRouter)
 app.use('/api', otpRouter)
+app.use('/api', orderRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

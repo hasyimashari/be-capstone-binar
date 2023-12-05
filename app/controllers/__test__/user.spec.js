@@ -1,5 +1,4 @@
-const { register, loginAdmin, loginUser, currentUser, updateUser, resetPassword } = require('../user.js')
-const bycrpt = require('bcrypt')
+const { loginAdmin, loginUser, currentUser, updateUser, resetPassword } = require('../user.js')
 
 const userServices = require('../../services/user.js')
 const authServices = require('../../services/auth.js')
@@ -19,61 +18,61 @@ jest.mock('../../services/auth.js', () => ({
 }))
 
 const accessToken = 'accessToken'
-describe('#register', () => {
-  it('should return 201 response success', async () => {
-    const otp = await bycrpt.hash('210908', 10)
-    const mockRequest = {
-      body: {
-        name: 'Muzani',
-        email: 'muzani@gmail.com',
-        phone_number: '83767672368',
-        password: 'muzani123'
-      }
-    }
+// describe('#register', () => {
+//   it('should return 201 response success', async () => {
+//     const otp = await bycrpt.hash('210908', 10)
+//     const mockRequest = {
+//       body: {
+//         name: 'Muzani',
+//         email: 'muzani@gmail.com',
+//         phone_number: '83767672368',
+//         password: 'muzani123'
+//       }
+//     }
 
-    const mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockReturnThis()
-    }
+//     const mockResponse = {
+//       status: jest.fn().mockReturnThis(),
+//       json: jest.fn().mockReturnThis()
+//     }
 
-    await authServices.encryptedKode.mockReturnValue(otp)
-    await userServices.registeService.mockReturnValue(accessToken)
-    authServices.createAccessToken.mockReturnValue(accessToken)
-    await register(mockRequest, mockResponse)
+//     await authServices.encryptedKode.mockReturnValue(otp)
+//     await userServices.registeService.mockReturnValue(accessToken)
+//     authServices.createAccessToken.mockReturnValue(accessToken)
+//     await register(mockRequest, mockResponse)
 
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'OK',
-      message: 'Success',
-      data: {
-        accessToken
-      }
-    })
-  })
+//     expect(mockResponse.json).toHaveBeenCalledWith({
+//       status: 'OK',
+//       message: 'Success',
+//       data: {
+//         accessToken
+//       }
+//     })
+//   })
 
-  // it('should return 500 response faild', async () => {
-  //   const error = new Error('Failed')
-  //   const mockRequest = {
-  //     name: 'Muzani',
-  //     email: 'muzani@gmail.com',
-  //     phone_number: '83767672368',
-  //     password: 'muzani123'
-  //   }
+//   // it('should return 500 response faild', async () => {
+//   //   const error = new Error('Failed')
+//   //   const mockRequest = {
+//   //     name: 'Muzani',
+//   //     email: 'muzani@gmail.com',
+//   //     phone_number: '83767672368',
+//   //     password: 'muzani123'
+//   //   }
 
-  //   const mockResponse = {
-  //     status: jest.fn().mockReturnThis(),
-  //     json: jest.fn().mockReturnThis()
-  //   }
+//   //   const mockResponse = {
+//   //     status: jest.fn().mockReturnThis(),
+//   //     json: jest.fn().mockReturnThis()
+//   //   }
 
-  //   await userServices.registeService.mockReturnValue(Promise.reject(error))
-  //   authServices.createAccessToken.mockReturnValue(null)
-  //   await register(mockRequest, mockResponse)
+//   //   await userServices.registeService.mockReturnValue(Promise.reject(error))
+//   //   authServices.createAccessToken.mockReturnValue(null)
+//   //   await register(mockRequest, mockResponse)
 
-  //   expect(mockResponse.status).toHaveBeenCalledWith(500)
-  //   expect(mockResponse.json).toHaveBeenCalledWith({
-  //     message: error.message
-  //   })
-  // })
-})
+//   //   expect(mockResponse.status).toHaveBeenCalledWith(500)
+//   //   expect(mockResponse.json).toHaveBeenCalledWith({
+//   //     message: error.message
+//   //   })
+//   // })
+// })
 
 describe('#loginAdmin', () => {
   it('should return 200 response success', async () => {

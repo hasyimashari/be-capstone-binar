@@ -42,9 +42,13 @@ const getDetailModuleService = async (id) => {
   try {
     const module = await findById(id)
 
+    if (!module) {
+      throw new ApplicationError('Module id not found', 404)
+    }
+
     return module
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 

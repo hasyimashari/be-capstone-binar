@@ -15,18 +15,22 @@ const confimOtpServices = async (userId, requestBody) => {
   try {
     const { code1, code2, code3, code4, code5, code6 } = requestBody
     const codes = `${code1}${code2}${code3}${code4}${code5}${code6}`
+
     const codeOtp = await findOtp(userId)
     const compareCode = await bcrypt.compare(codes, codeOtp.code)
+
     if (!compareCode) {
-      throw new ApplicationError('Kode OTP salah', 403)
+      throw new ApplicationError('Wrong OTP code', 400)
     }
+
     if (codeOtp.expire_time < new Date().getTime()) {
-      throw new ApplicationError('Kode OTP tidak berlaku', 400)
+      throw new ApplicationError('OTP code is not valid', 400)
     }
+
     await updateOtp({ is_verified: true }, userId)
     return codeOtp
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 

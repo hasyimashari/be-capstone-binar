@@ -35,7 +35,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        category: 'Android',
+        category: 'IOS',
         image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813840/ios_ukp63i.png',
         createdAt: new Date(),
         updatedAt: new Date()
