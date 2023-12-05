@@ -30,9 +30,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     user_id: DataTypes.UUID,
     course_id: DataTypes.UUID,
-    status: DataTypes.ENUM('Sudah Bayar', 'Belum Bayar'),
+    status: DataTypes.ENUM('SUDAH BAYAR', 'BELUM BAYAR'),
     order_method: DataTypes.STRING,
-    order_date: DataTypes.DATE
+    payment_date: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Order'

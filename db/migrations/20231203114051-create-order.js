@@ -15,7 +15,8 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
       },
       course_id: {
         type: Sequelize.UUID,
@@ -23,20 +24,20 @@ module.exports = {
         references: {
           model: 'Courses',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
       },
       status: {
-        type: Sequelize.ENUM('Sudah Bayar', 'Belum Bayar'),
-        allowNull: false
+        type: Sequelize.ENUM('SUDAH BAYAR', 'BELUM BAYAR'),
+        defaultValue: 'BELUM BAYAR'
       },
       order_method: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
-      order_date: {
+      payment_date: {
         type: Sequelize.DATE,
-        defaultValue: new Date(),
-        allowNull: false
+        allowNull: true
       },
       createdAt: {
         allowNull: false,
