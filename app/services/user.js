@@ -15,12 +15,15 @@ const registeService = async (argRequest) => {
     const { name, email, phone_number, password } = argRequest
     const role = 'member'
     const user = await findByEmail(email)
+
     if (user) {
-      throw new ApplicationError('Email terdaftar', 401)
+      throw new ApplicationError('Email has been registered', 400)
     }
+
     if (password.length < 8) {
-      throw new ApplicationError('Password minimal 8 karakter', 401)
+      throw new ApplicationError('Password must be at least 8 character', 400)
     }
+
     const hashPassword = await encryptedKode(password)
     const newUser = await create({
       name,
@@ -29,33 +32,34 @@ const registeService = async (argRequest) => {
       password: hashPassword,
       role
     })
+
     return newUser
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
 const loginUserSevices = async (argRequest) => {
   try {
-    const { argument1, password } = argRequest
+    const { emailOrPhone, password } = argRequest
     let user
-    if (argument1.includes('@')) {
-      user = await findByEmail(argument1)
+    if (emailOrPhone.includes('@')) {
+      user = await findByEmail(emailOrPhone)
     } else {
-      user = await findByPhoneNumber(argument1)
+      user = await findByPhoneNumber(emailOrPhone)
     }
 
     if (!user) {
-      throw new ApplicationError('User tidak di temukan', 401)
+      throw new ApplicationError('User not found', 404)
     }
 
     const matchPassword = await comparePassword(password, user.password)
     if (!matchPassword) {
-      throw new ApplicationError('Password salah', 401)
+      throw new ApplicationError('Wrong passwrod', 400)
     }
     return user
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
@@ -64,16 +68,16 @@ const loginAdminSevices = async (argRequest) => {
     const { id, password } = argRequest
     const user = await findByPk(id)
     if (id !== user.id) {
-      throw new ApplicationError('id salah', 401)
+      throw new ApplicationError('Wrong id', 400)
     }
 
     const matchPassword = await comparePassword(password, user.password)
     if (!matchPassword) {
-      throw new ApplicationError('Maaf Password anda salah', 401)
+      throw new ApplicationError('Wrong password', 401)
     }
     return user
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
@@ -81,11 +85,12 @@ const detailUserServices = async (id) => {
   try {
     const user = await findByPk(id)
     if (!user) {
-      throw new ApplicationError('User tidak di temukan', 500)
+      throw new ApplicationError('User not found', 404)
     }
+
     return user
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
@@ -101,24 +106,30 @@ const updateUserServices = async (argRequest, id) => {
 const updatePasswordServices = async (argRequest, id) => {
   try {
     const { old_password, new_password, confirm_password } = argRequest
+
     const currentUser = await findByPk(id)
     const currentPassword = currentUser.password
+
     const matchPassword = await comparePassword(old_password, currentPassword)
+
     if (!matchPassword) {
-      throw new ApplicationError('Password lama salah', 401)
+      throw new ApplicationError('Old password wrong', 400)
     }
+
     if (new_password !== confirm_password) {
-      throw new ApplicationError('Password baru salah', 401)
+      throw new ApplicationError('New password wrong', 400)
     }
+
     const hashNew_password = await encryptedKode(new_password)
     const updateUserPassword = await updateUser(
       { password: hashNew_password },
       id
     )
+
     return updateUserPassword
   } catch (error) {
     console.log(error)
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
@@ -136,7 +147,7 @@ const resetPasswordServices = async (argRequest, tokenResetPassword) => {
     const { new_password, confirm_password } = argRequest
 
     if (new_password !== confirm_password) {
-      throw new ApplicationError('Password salah', 400)
+      throw new ApplicationError('Wrong password', 400)
     }
 
     const hashPassword = await encryptedKode(new_password)
@@ -144,9 +155,10 @@ const resetPasswordServices = async (argRequest, tokenResetPassword) => {
       { password: hashPassword },
       tokenResetPassword
     )
+
     return passwords
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 

@@ -8,4 +8,5 @@ router.post('/login', loginUser)
 router.post('/admin/login', loginAdmin)
 router.post('/reset/password', sendLinkPassword)
 router.put('/reset/password/:tokenResetPassword', resetPassword)
+
 module.exports = router
