@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 const { create, findByPk, findAll, findAllforAdmin, updateCourseRepo, deleteCourseRepo } = require('../repositories/course.js')
 const { findByCourseId: findChapterByCourseId, countChapterByCourseId } = require('../repositories/chapter.js')
 
@@ -28,9 +29,17 @@ const getTotalDuration = async (id) => {
   return totalDuration
 }
 
-const getAllCourseServices = async () => {
+const getAllCourseServices = async (filter) => {
   try {
-    const courses = await findAll()
+    const orderConditions = {
+      'Paling Baru': 'ASC',
+      'Promo': 'DESC'
+    }
+
+    const { filter: orderFilter, ...restFilter } = filter
+    const order = orderConditions[orderFilter]
+
+    const courses = await findAll(order)
 
     const additionalData = courses.map(async (course) => {
       const [totalChapter, totalDuration] = await Promise.all([
@@ -45,9 +54,17 @@ const getAllCourseServices = async () => {
       }
     })
 
-    const modifiedData = await Promise.all(additionalData)
+    const conditions = (i) => {
+      const categoryCondition = !restFilter.category || restFilter.category.includes(i.category.category)
+      const levelCondition = !restFilter.level || restFilter.level.includes(i.level)
 
-    return modifiedData
+      return categoryCondition && levelCondition
+    }
+
+    const modifiedCourses = await Promise.all(additionalData)
+    const modifiedCourseFiltered = modifiedCourses.filter(conditions)
+
+    return modifiedCourseFiltered
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }
@@ -66,9 +83,14 @@ const getAllCourseforAdminServices = async () => {
 const detailCourseServices = async (id) => {
   try {
     const course = await findByPk(id)
+
+    if (!course) {
+      throw new ApplicationError('Course id not found', 404)
+    }
+
     return course
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 

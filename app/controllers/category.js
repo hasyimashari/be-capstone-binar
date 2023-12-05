@@ -4,7 +4,7 @@ const getAllCcategories = async (req, res) => {
   try {
     const response = await getAllCategoryServices()
     res.status(200).json({
-      status: 'Ok',
+      status: 'OK',
       message: 'Get categories data success',
       data: response
     })

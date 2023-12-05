@@ -1,12 +1,18 @@
-const { createCourseServices, getAllCourseServices, getAllCourseforAdminServices, detailCourseServices, updateCourseServices, deteleCourseServices } = require('../services/course.js')
+const {
+  createCourseServices,
+  getAllCourseServices,
+  getAllCourseforAdminServices,
+  updateCourseServices,
+  deteleCourseServices
+} = require('../services/course.js')
 
 const createCourse = async (req, res) => {
   try {
     const response = await createCourseServices(req.body)
 
     res.status(201).json({
-      status: 'Ok',
-      message: 'Create module success',
+      status: 'OK',
+      message: 'Create course success',
       data: response
     })
   } catch (error) {
@@ -19,10 +25,11 @@ const createCourse = async (req, res) => {
 
 const getAllCourse = async (req, res) => {
   try {
-    const response = await getAllCourseServices()
+    const filter = req.query
+    const response = await getAllCourseServices(filter)
 
     res.status(200).json({
-      status: 'Ok',
+      status: 'OK',
       message: 'Get all courses success',
       data: response
     })
@@ -34,12 +41,12 @@ const getAllCourse = async (req, res) => {
   }
 }
 
-const getAllCourseforAdmin = async (req, res) => {
+const getAllCourseAdmin = async (req, res) => {
   try {
     const response = await getAllCourseforAdminServices()
 
     res.status(200).json({
-      status: 'Ok',
+      status: 'OK',
       message: 'Get all courses success',
       data: response
     })
@@ -53,12 +60,12 @@ const getAllCourseforAdmin = async (req, res) => {
 
 const detailCourse = async (req, res) => {
   try {
-    const id = req.params.id
-    const response = await detailCourseServices(id)
+    const { course } = req
+
     res.status(200).json({
       status: 'OK',
       message: 'Get detail course success',
-      data: response
+      data: course
     })
   } catch (error) {
     res.status(error.statusCode || 500).json({
@@ -70,12 +77,13 @@ const detailCourse = async (req, res) => {
 
 const updateCourse = async (req, res) => {
   try {
-    const { id } = req.params
+    const { id } = req.course
+    const payload = req.body
     // eslint-disable-next-line no-unused-vars
-    const [_, response] = await updateCourseServices(req.body, id)
+    const [_, response] = await updateCourseServices(payload, id)
 
-    res.status(200).json({
-      status: 'Ok',
+    res.status(201).json({
+      status: 'OK',
       message: 'Update course success',
       data: response
     })
@@ -89,8 +97,9 @@ const updateCourse = async (req, res) => {
 
 const deleteCourse = async (req, res) => {
   try {
-    const id = req.params.id
+    const { id } = req.course
     await deteleCourseServices(id)
+
     res.status(200).json({
       status: 'OK',
       message: 'Detele course success'
@@ -107,7 +116,7 @@ module.exports = {
   createCourse,
   detailCourse,
   getAllCourse,
-  getAllCourseforAdmin,
+  getAllCourseAdmin,
   updateCourse,
   deleteCourse
 }
