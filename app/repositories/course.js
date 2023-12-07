@@ -61,7 +61,7 @@ const findByPk = (id) => {
       {
         model: Category,
         as: 'category',
-        attributes: ['category']
+        attributes: ['category', 'image']
       }, {
         model: Chapter,
         as: 'chapters',

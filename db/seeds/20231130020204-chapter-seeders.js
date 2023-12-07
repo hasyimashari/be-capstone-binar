@@ -1,5 +1,6 @@
 'use strict'
 const { Course } = require('../../app/models')
+const { Category } = require('../../app/models')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -13,37 +14,33 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    const getRandomCourseId = async () => {
+    const getRandomCourse = async () => {
       const getRandomCourse = await Course.findOne({
         order: Sequelize.literal('random()')
       })
 
-      return getRandomCourse.dataValues.id
+      return getRandomCourse.dataValues
     }
 
-    await queryInterface.bulkInsert('Chapters', [
-      {
-        course_id: await getRandomCourseId(),
-        index: 0,
-        name: 'chapter lorem ipsum',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        course_id: await getRandomCourseId(),
-        index: 0,
-        name: 'chapter lorem ipsum',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        course_id: await getRandomCourseId(),
-        index: 0,
-        name: 'chapter lorem ipsum',
+    const rawDummyChapter = [...Array(12)].map(async (_, index) => {
+      const { id: course_id, type: course_type, category_id } = await getRandomCourse()
+      const { category: category_name } = await Category.findByPk(category_id)
+
+      const is_locked = course_type === 'Premium' && index >= 1
+
+      return {
+        course_id,
+        index,
+        name: `${category_name} introduction`,
+        is_locked,
         createdAt: new Date(),
         updatedAt: new Date()
       }
-    ], {})
+    })
+
+    const dummyChapter = await Promise.all(rawDummyChapter)
+
+    await queryInterface.bulkInsert('Chapters', dummyChapter, {})
   },
 
   async down (queryInterface, Sequelize) {

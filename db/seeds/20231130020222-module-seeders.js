@@ -13,44 +13,31 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    const getRandomChapterId = async () => {
+    const getRandomChapter = async () => {
       const getRandomChapter = await Chapter.findOne({
         order: Sequelize.literal('random()')
       })
 
-      return getRandomChapter.dataValues.id
+      return getRandomChapter.dataValues
     }
 
-    await queryInterface.bulkInsert('Modules', [
-      {
-        chapter_id: await getRandomChapterId(),
-        index: 0,
-        name: 'modul lorem ipsum',
-        video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
-        duration: 10,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        chapter_id: await getRandomChapterId(),
-        index: 0,
-        name: 'modul lorem ipsum',
-        video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
-        duration: 12,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        chapter_id: await getRandomChapterId(),
-        index: 0,
-        name: 'modul lorem ipsum',
+    const rawDummyModule = [...Array(24)].map(async (_, index) => {
+      const { id: chapter_id } = await getRandomChapter()
+
+      return {
+        chapter_id,
+        index,
+        name: 'introduction',
         video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
         duration: 15,
         createdAt: new Date(),
         updatedAt: new Date()
       }
-    ], {}
-    )
+    })
+
+    const dummyModule = await Promise.all(rawDummyModule)
+
+    await queryInterface.bulkInsert('Modules', dummyModule, {})
   },
 
   async down (queryInterface, Sequelize) {
