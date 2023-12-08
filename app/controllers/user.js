@@ -100,7 +100,7 @@ const loginUser = async (req, res) => {
 
     res.status(200).json({
       status: 'OK',
-      message: 'Login success',
+      message: 'Login Success',
       data: {
         accessToken
       }
@@ -116,12 +116,12 @@ const loginUser = async (req, res) => {
 const loginAdmin = async (req, res) => {
   try {
     const response = await loginAdminSevices(req.body)
-    const { id, name, email, role } = response.dataValues
+    const { id, name, email, role } = response
 
     const accessToken = createAccessToken({ id, name, email, role })
     res.status(200).json({
       status: 'OK',
-      message: 'Login success',
+      message: 'Login Success',
       data: {
         accessToken
       }

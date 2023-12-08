@@ -33,7 +33,7 @@ describe('#createChapter', () => {
 
     expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'Ok',
+      status: 'OK',
       message: 'Create chapter success',
       data: chapter
     })
@@ -81,7 +81,7 @@ describe('#getAllChapters', () => {
 
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'Ok',
+      status: 'OK',
       message: 'Get all chapter success',
       data: [chapter]
     })
@@ -104,7 +104,7 @@ describe('#getAllChapters', () => {
 
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'Ok',
+      status: 'OK',
       message: 'Get all chapter success',
       data: [chapter]
     })

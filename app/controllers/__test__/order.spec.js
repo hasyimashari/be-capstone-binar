@@ -40,7 +40,7 @@ describe('#createOrder', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success',
+      message: 'Create order success',
       data: order
     })
   })
@@ -89,7 +89,7 @@ describe('#getAllOrder', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success',
+      message: 'Get all order success',
       data: order
     })
   })
@@ -134,7 +134,7 @@ describe('#detailOrder', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success',
+      message: 'Get detail order success',
       data: order
     })
   })
