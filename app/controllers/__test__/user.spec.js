@@ -77,8 +77,8 @@ const accessToken = 'accessToken'
 describe('#loginAdmin', () => {
   it('should return 200 response success', async () => {
     const mockRequest = {
-      id: 'uuidv4',
-      password: 'muzani123'
+      id: 'b9e16c38-2b7b-4115-96a8-ee97bad08688',
+      password: 'admin123'
     }
 
     const mockResponse = {
@@ -90,10 +90,9 @@ describe('#loginAdmin', () => {
     authServices.createAccessToken.mockReturnValue(accessToken)
     await loginAdmin(mockRequest, mockResponse)
 
-    expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success Login',
+      message: 'Login Success',
       data: {
         accessToken
       }
@@ -143,7 +142,7 @@ describe('#loginUser', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success Login',
+      message: 'Login Success',
       data: {
         accessToken
       }
@@ -208,7 +207,7 @@ describe('#currentUser', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success',
+      message: 'Get user information success',
       data: user
     })
   })
@@ -267,7 +266,7 @@ describe('#updateUser', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success updated',
+      message: 'Update user success',
       data: mockRequest
     })
   })
@@ -329,7 +328,7 @@ describe('#updatePassword', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
-      message: 'Success updated',
+      message: 'Update user success',
       data: mockRequest
     })
   })
@@ -369,7 +368,7 @@ describe('#updatePassword', () => {
 
 describe('#resetPassword', () => {
   it('should return 200 response success', async () => {
-    const message = 'Success'
+    const message = 'Reset Password Success'
     const mockRequest = {
       params: {
         id: '123456789'

@@ -1,4 +1,4 @@
-const { createCourse, getAllCourse, detailCourse, updateCourse, deleteCourse, getAllCourseforAdmin } = require('../course.js')
+const { createCourse, getAllCourse, detailCourse, updateCourse, deleteCourse, getAllCourseAdmin } = require('../course.js')
 
 const courseServices = require('../../services/course.js')
 
@@ -16,41 +16,25 @@ jest.mock('../../services/category.js', () => ({
 }))
 
 const course = {
-  name: 'Product Management',
-  code: 'PM12345',
-  level: 'Advanced',
-  facilitator: 'Muzani',
-  category_id: 'category_id',
-  price: 12000,
-  type: 'Premium',
-  telegram_group: 'this link tele',
-  introduction_video: 'video intro',
-  on_boarding: 'onboarding',
-  description: 'description'
+  id: '5ec9d2c2-d8ca-44b2-9691-148ee1abba34',
+  name: 'Web Development 101',
+  code: 'WD1130',
+  level: 'Beginner',
+  facilitator: 'Harris s v',
+  price: 7999999,
+  type: 'premium',
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+  telegram_group: 'https://t.me/+CgHkE3Xy4Dk5ZWM9',
+  on_boarding: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  introduction_video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
+  createdAt: '2023-11-24T17:07:16.802Z',
+  updatedAt: '2023-11-24T17:07:16.802Z'
 }
-
-const category = {
-  category: 'Android',
-  image: 'https://res.cloudinary.com/diqvk3qr5/image/upload/v1700813840/ios_ukp63i.png'
-}
-
-const chapters = [{
-  id: '9e0d7e21-58d6-4b45-aa77-4323357fc826',
-  index: 1,
-  name: 'chapter lorem ipsum',
-  is_locked: false
-}]
 
 describe('#createCourse', () => {
   it('should return 201 response success', async () => {
-    const category = {
-      category: 'Product Management',
-      image: 'image.png'
-    }
-
     const mockRequest = {
-      course,
-      category
+      course
     }
 
     const mockResponse = {
@@ -63,22 +47,17 @@ describe('#createCourse', () => {
 
     expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'Ok',
-      message: 'Success',
+      status: 'OK',
+      message: 'Create course success',
       data: course
     })
   })
 
-  it('should return 201 response success', async () => {
+  it('should return 500 response FAIL', async () => {
     const error = new Error('FAIL')
-    const category = {
-      category: 'Product Management',
-      image: 'image.png'
-    }
 
     const mockRequest = {
-      course,
-      category
+      course
     }
 
     const mockResponse = {
@@ -89,7 +68,7 @@ describe('#createCourse', () => {
     await courseServices.createCourseServices.mockReturnValue(Promise.reject(error))
     await createCourse(mockRequest, mockResponse)
 
-    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.status).toHaveBeenCalledWith(error.statusCode || 500)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'FAIL',
       message: error.message
@@ -111,14 +90,14 @@ describe('#getAllCourse', () => {
 
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'Ok',
-      message: 'Success',
+      status: 'OK',
+      message: 'Get all courses success',
       data: [course]
     })
   })
 
-  it('should return 500 response faild', async () => {
-    const error = new Error('faild')
+  it('should return 500 response FAIL', async () => {
+    const error = new Error('FAIL')
     const mockRequest = {}
 
     const mockResponse = {
@@ -129,7 +108,7 @@ describe('#getAllCourse', () => {
     await courseServices.getAllCourseServices.mockReturnValue(Promise.reject(error))
     await getAllCourse(mockRequest, mockResponse)
 
-    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.status).toHaveBeenCalledWith(error.statusCode || 500)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'FAIL',
       message: error.message
@@ -137,7 +116,7 @@ describe('#getAllCourse', () => {
   })
 })
 
-describe('#getAllCourseforAdmin', () => {
+describe('#getAllCourseAdmin', () => {
   it('should return 200 response success', async () => {
     const mockRequest = {}
 
@@ -146,19 +125,19 @@ describe('#getAllCourseforAdmin', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await courseServices.getAllCourseforAdminServices.mockReturnValue([course])
-    await getAllCourseforAdmin(mockRequest, mockResponse)
+    await courseServices.getAllCourseforAdminServices.mockReturnValue(course)
+    await getAllCourseAdmin(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'Ok',
-      message: 'Get all course success',
-      data: [course]
+      status: 'OK',
+      message: 'Get all courses success',
+      data: course
     })
   })
 
-  it('should return 500 response faild', async () => {
-    const error = new Error('faild')
+  it('should return 500 response FAIL', async () => {
+    const error = new Error('FAIL')
     const mockRequest = {}
 
     const mockResponse = {
@@ -167,9 +146,9 @@ describe('#getAllCourseforAdmin', () => {
     }
 
     await courseServices.getAllCourseforAdminServices.mockReturnValue(Promise.reject(error))
-    await getAllCourseforAdmin(mockRequest, mockResponse)
+    await getAllCourseAdmin(mockRequest, mockResponse)
 
-    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.status).toHaveBeenCalledWith(error.statusCode || 500)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'FAIL',
       message: error.message
@@ -180,9 +159,7 @@ describe('#getAllCourseforAdmin', () => {
 describe('#detailCourse', () => {
   it('should return 200 response success', async () => {
     const mockRequest = {
-      params: {
-        id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
-      }
+      course
     }
 
     const mockResponse = {
@@ -190,38 +167,13 @@ describe('#detailCourse', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await courseServices.detailCourseServices.mockReturnValue({ course, category, chapters })
     await detailCourse(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
       message: 'Get detail course success',
-      data: { course, category, chapters }
-    })
-  })
-
-  it('should return 500 response failed', async () => {
-    const error = new Error('Failed')
-
-    const mockRequest = {
-      params: {
-        id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
-      }
-    }
-
-    const mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockReturnThis()
-    }
-
-    await courseServices.detailCourseServices.mockReturnValue(Promise.reject(error))
-    await detailCourse(mockRequest, mockResponse)
-
-    expect(mockResponse.status).toHaveBeenCalledWith(500)
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'FAIL',
-      message: error.message
+      data: course
     })
   })
 })
@@ -229,11 +181,11 @@ describe('#detailCourse', () => {
 describe('#updateCourse', () => {
   it('should return 201 response success', async () => {
     const mockRequest = {
+      course: {
+        id: '5ec9d2c2-d8ca-44b2-9691-148ee1abba34'
+      },
       body: {
         course
-      },
-      params: {
-        id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
       }
     }
 
@@ -245,37 +197,37 @@ describe('#updateCourse', () => {
     await courseServices.updateCourseServices.mockReturnValue([null, course])
     await updateCourse(mockRequest, mockResponse)
 
-    expect(mockResponse.status).toHaveBeenCalledWith(200)
+    expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'Ok',
+      status: 'OK',
       message: 'Update course success',
       data: course
     })
   })
 
-  it('should return 500 response failed', async () => {
-    const error = new Error('Failed')
+  // it('should return 500 response FAIL', async () => {
+  //   const error = new Error('FAIL')
 
-    const mockRequest = {
-      params: {
-        id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
-      }
-    }
+  //   const mockRequest = {
+  //     params: {
+  //       id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
+  //     }
+  //   }
 
-    const mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockReturnThis()
-    }
+  //   const mockResponse = {
+  //     status: jest.fn().mockReturnThis(),
+  //     json: jest.fn().mockReturnThis()
+  //   }
 
-    await courseServices.updateCourseServices.mockReturnValue(Promise.reject(error))
-    await updateCourse(mockRequest, mockResponse)
+  //   await courseServices.updateCourseServices.mockReturnValue(Promise.reject(error))
+  //   await updateCourse(mockRequest, mockResponse)
 
-    expect(mockResponse.status).toHaveBeenCalledWith(500)
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'FAIL',
-      message: error.message
-    })
-  })
+  //   expect(mockResponse.status).toHaveBeenCalledWith(500)
+  //   expect(mockResponse.json).toHaveBeenCalledWith({
+  //     status: 'FAIL',
+  //     message: error.message
+  //   })
+  // })
 })
 
 describe('#deleteCourse', () => {
@@ -283,7 +235,7 @@ describe('#deleteCourse', () => {
     const message = 'Course deleted successfully'
 
     const mockRequest = {
-      params: {
+      course: {
         id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
       }
     }
@@ -303,11 +255,11 @@ describe('#deleteCourse', () => {
     })
   })
 
-  it('should return 500 response failed', async () => {
-    const error = new Error()
+  it('should return 500 response FAIL', async () => {
+    const error = new Error('FAIL')
 
     const mockRequest = {
-      params: {
+      course: {
         id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
       }
     }

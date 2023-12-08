@@ -8,7 +8,7 @@ jest.mock('../../services/otp.js', () => ({
 
 describe('#confirimCodeOtp', () => {
   it('should return 200 response success', async () => {
-    const message = 'Success'
+    const message = 'Confirm OTP code success'
 
     const mockRequest = {
       user: {
