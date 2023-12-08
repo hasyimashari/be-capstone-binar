@@ -43,7 +43,7 @@ const findAllOrderByUserId = (user_id) => {
           {
             model: Category,
             as: 'category',
-            attributes: ['category']
+            attributes: ['category', 'image']
           }
         ]
       },

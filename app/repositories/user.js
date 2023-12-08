@@ -21,7 +21,11 @@ const findByPhoneNumber = (argument1) => {
 }
 
 const findByPk = (id) => {
-  return User.findByPk(id)
+  return User.findByPk(id, {
+    attributes: {
+      exclude: ['password', 'tokenResetPassword', 'createdAt', 'updatedAt']
+    }
+  })
 }
 
 const updateUser = (argRequest, id) => {
