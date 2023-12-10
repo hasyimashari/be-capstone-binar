@@ -7,6 +7,7 @@ const uploadStorage = multer({ storage }).single('photo')
 
 // Upload to clodinary
 const uploadToCloudinary = (req, res, next) => {
+  // If user not upload photo
   if (req.file == null) {
     const fileBase64 = req.detailUser.photo
     cloudinary.uploader.upload(fileBase64, function (err, result) {
@@ -18,6 +19,7 @@ const uploadToCloudinary = (req, res, next) => {
       req.photo = result.url
       next()
     })
+    // user must uplaod image photo
   } else {
     const fileBase64 = req.file.buffer.toString('base64')
     const file = `data:${req.file.mimetype};base64,${fileBase64}`
