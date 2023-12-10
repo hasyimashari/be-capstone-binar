@@ -6,7 +6,6 @@ const {
   loginAdminSevices,
   updateUserServices,
   updatePasswordServices,
-  detailUserServices,
   updateTokenPasswordServices,
   resetPasswordServices
 } = require('../services/user.js')
@@ -136,9 +135,7 @@ const loginAdmin = async (req, res) => {
 
 const currentUser = async (req, res) => {
   try {
-    const user = req.user
-    const response = await detailUserServices(user.id)
-
+    const response = req.detailUser
     res.status(200).json({
       status: 'OK',
       message: 'Get user information success',
@@ -166,6 +163,7 @@ const updateUser = async (req, res) => {
       data: response
     })
   } catch (error) {
+    console.log(error)
     res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message

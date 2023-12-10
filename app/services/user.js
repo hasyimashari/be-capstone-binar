@@ -100,6 +100,7 @@ const updateUserServices = async (argRequest, id) => {
     const newUser = await updateUser(argRequest, id)
     return newUser
   } catch (error) {
+    console.log(error)
     throw new ApplicationError(error.message, 500)
   }
 }
