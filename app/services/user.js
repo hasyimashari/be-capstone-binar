@@ -2,6 +2,7 @@ const {
   create,
   findByEmail,
   findByPk,
+  findByPkAdmin,
   updateUser,
   updateResetTokenPasswordRepo,
   resetPasswordRepo,
@@ -66,7 +67,7 @@ const loginUserSevices = async (argRequest) => {
 const loginAdminSevices = async (argRequest) => {
   try {
     const { id, password } = argRequest
-    const user = await findByPk(id)
+    const user = await findByPkAdmin(id)
     if (id !== user.id) {
       throw new ApplicationError('Wrong id', 400)
     }

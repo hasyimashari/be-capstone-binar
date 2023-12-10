@@ -28,6 +28,10 @@ const findByPk = (id) => {
   })
 }
 
+const findByPkAdmin = (id) => {
+  return User.findByPk(id)
+}
+
 const updateUser = (argRequest, id) => {
   return User.update(argRequest, {
     where: { id },
@@ -54,6 +58,7 @@ module.exports = {
   findByEmail,
   findByPhoneNumber,
   findByPk,
+  findByPkAdmin,
   updateUser,
   updateResetTokenPasswordRepo,
   resetPasswordRepo
