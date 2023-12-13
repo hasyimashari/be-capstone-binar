@@ -13,10 +13,11 @@ const { authorization, onlyAdmin } = require('../middleware/auth.js')
 
 const router = express.Router()
 
-router.post('/trackers', authorization, isCourseExistInPayload, createUserTracker)
 router.get('/trackers', authorization, getUserTracker)
+router.post('/trackers', authorization, isCourseExistInPayload, createUserTracker)
 router.get('/trackers/:id', authorization, isUserTrackerExist, getUserTrackerDetail)
 router.put('/trackers/:id', authorization, isUserTrackerExist, updateUserTracker)
-router.get('/counts', authorization, onlyAdmin, getTotalData)
+
+router.get('/admin/counts', authorization, onlyAdmin, getTotalData)
 
 module.exports = router

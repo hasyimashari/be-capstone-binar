@@ -28,7 +28,8 @@ const createUserTracker = async (req, res) => {
 const getUserTracker = async (req, res) => {
   try {
     const { id: user_id } = req.user
-    const userTracker = await getTrackerByUserServices(user_id)
+    const filter = req.query
+    const userTracker = await getTrackerByUserServices(user_id, filter)
 
     res.status(200).json({
       status: 'OK',

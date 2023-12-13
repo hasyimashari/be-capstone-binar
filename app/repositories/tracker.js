@@ -4,7 +4,7 @@ const create = (payload) => {
   return Tracker.create(payload)
 }
 
-const findByUserId = (user_id) => {
+const findByUserId = (user_id, order) => {
   return Tracker.findAll({
     where: { user_id },
     include: [
@@ -33,8 +33,11 @@ const findByUserId = (user_id) => {
       }
     ],
     attributes: {
-      exclude: ['user_id', 'course_id', 'createdAt', 'updatedAt']
-    }
+      exclude: ['user_id', 'course_id', 'last_opened_chapter', 'last_opened_module', 'total_modules_viewed', 'createdAt', 'updatedAt']
+    },
+    order: [
+      ['createdAt', order || 'DESC']
+    ]
   })
 }
 

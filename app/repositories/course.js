@@ -26,7 +26,7 @@ const findAll = (order) => {
       ]
     },
     order: [
-      ['createdAt', order || 'ASC']
+      ['createdAt', order || 'DESC']
     ]
   })
 }
