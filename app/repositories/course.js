@@ -43,10 +43,6 @@ const findAllforAdmin = () => {
     attributes: {
       exclude: [
         'category_id',
-        'description',
-        'telegram_group',
-        'on_boarding',
-        'introduction_video',
         'createdAt',
         'updatedAt'
       ]
@@ -73,8 +69,15 @@ const findByPk = (id) => {
           'code',
           'category_id',
           'createdAt',
-          'updatedAt']
+          'updatedAt'
+        ]
       }
+  })
+}
+
+const countCourse = (where = {}) => {
+  return Course.findAndCountAll({
+    where
   })
 }
 
@@ -96,6 +99,7 @@ module.exports = {
   findAll,
   findAllforAdmin,
   findByPk,
+  countCourse,
   updateCourseRepo,
   deleteCourseRepo
 }

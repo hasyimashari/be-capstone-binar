@@ -15,11 +15,21 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: false
     })
+    queryInterface.addColumn('Courses', 'total_chapter', {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
+    })
+    queryInterface.addColumn('Courses', 'total_duration', {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
+    })
   },
 
   async down (queryInterface, Sequelize) {
     queryInterface.removeColumn('Courses', 'telegram_group')
     queryInterface.removeColumn('Courses', 'on_boarding')
     queryInterface.removeColumn('Courses', 'introduction_video')
+    queryInterface.removeColumn('Courses', 'total_chapter')
+    queryInterface.removeColumn('Courses', 'total_duration')
   }
 }

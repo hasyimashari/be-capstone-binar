@@ -32,6 +32,12 @@ const findByPkAdmin = (id) => {
   return User.findByPk(id)
 }
 
+const countUser = () => {
+  return User.findAndCountAll({
+    where: { role: 'member' }
+  })
+}
+
 const updateUser = (argRequest, id) => {
   return User.update(argRequest, {
     where: { id },
@@ -59,6 +65,7 @@ module.exports = {
   findByPhoneNumber,
   findByPk,
   findByPkAdmin,
+  countUser,
   updateUser,
   updateResetTokenPasswordRepo,
   resetPasswordRepo

@@ -36,7 +36,9 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     telegram_group: DataTypes.STRING,
     on_boarding: DataTypes.TEXT,
-    introduction_video: DataTypes.STRING
+    introduction_video: DataTypes.STRING,
+    total_chapter: DataTypes.INTEGER,
+    total_duration: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Course'
