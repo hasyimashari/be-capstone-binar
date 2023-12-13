@@ -6,7 +6,8 @@ const {
   updateUser,
   updateResetTokenPasswordRepo,
   resetPasswordRepo,
-  findByPhoneNumber
+  findByPhoneNumber,
+  findByPkWithPW
 } = require('../repositories/user.js')
 const { encryptedKode, comparePassword } = require('./auth.js')
 const { ApplicationError } = require('../../error')
@@ -109,9 +110,10 @@ const updatePasswordServices = async (argRequest, id) => {
   try {
     const { old_password, new_password, confirm_password } = argRequest
 
-    const currentUser = await findByPk(id)
+    const currentUser = await findByPkWithPW(id)
     const currentPassword = currentUser.password
 
+    console.log(old_password, currentPassword)
     const matchPassword = await comparePassword(old_password, currentPassword)
 
     if (!matchPassword) {
