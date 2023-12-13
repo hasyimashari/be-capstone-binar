@@ -175,23 +175,16 @@ describe('#loginUser', () => {
 
 describe('#currentUser', () => {
   it('should return 200 success get current user', async () => {
-    const user = {
-      id: '67bb4c0a-b902-4dfd-a85f-eb829775b202',
-      name: 'Muzani',
-      email: 'muzani@gamil.com',
-      phone_number: '+6283767672368',
-      password: 'muzani123',
-      country: 'Indonesia',
-      city: 'Cirebon',
-      photo: 'photo.jpg',
-      role: 'member'
-    }
-
     const mockRequest = {
-      user: {
+      detailUser: {
         id: '67bb4c0a-b902-4dfd-a85f-eb829775b202',
-        name: 'muzani',
-        email: 'muzani@gmail.com',
+        name: 'Muzani',
+        email: 'muzani@gamil.com',
+        phone_number: '+6283767672368',
+        password: 'muzani123',
+        country: 'Indonesia',
+        city: 'Cirebon',
+        photo: 'photo.jpg',
         role: 'member'
       }
     }
@@ -201,40 +194,13 @@ describe('#currentUser', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await userServices.detailUserServices.mockReturnValue(user)
     await currentUser(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
       message: 'Get user information success',
-      data: user
-    })
-  })
-
-  it('should return 500 response faild', async () => {
-    const error = new Error('Failed')
-    const mockRequest = {
-      user: {
-        id: '67bb4c0a-b902-4dfd-a85f-eb829775b202',
-        name: 'muzani',
-        email: 'muzani@gmail.com',
-        role: 'member'
-      }
-    }
-
-    const mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockReturnThis()
-    }
-
-    await userServices.detailUserServices.mockReturnValue(Promise.reject(error))
-    await currentUser(mockRequest, mockResponse)
-
-    expect(mockResponse.status).toHaveBeenCalledWith(500)
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'FAIL',
-      message: error.message
+      data: mockRequest.detailUser
     })
   })
 })

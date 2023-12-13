@@ -1,4 +1,4 @@
-const { Chapter, Module } = require('../models')
+const { Course, Chapter, Module } = require('../models')
 
 const create = (payload) => {
   return Chapter.create(payload)
@@ -6,8 +6,13 @@ const create = (payload) => {
 
 const findAll = () => {
   return Chapter.findAll({
+    include: {
+      model: Course,
+      as: 'course',
+      attributes: ['id', 'name']
+    },
     attributes: {
-      exclude: ['createdAt', 'updatedAt']
+      exclude: ['course_id', 'createdAt', 'updatedAt']
     }
   })
 }
@@ -16,13 +21,18 @@ const findById = (id) => {
   return Chapter.findByPk(id, {
     include: [
       {
+        model: Course,
+        as: 'course',
+        attributes: ['id', 'name']
+      },
+      {
         model: Module,
         as: 'modules',
         attributes: ['id', 'index', 'name', 'video', 'duration']
       }
     ],
     attributes: {
-      exclude: ['createdAt', 'updatedAt']
+      exclude: ['course_id', 'createdAt', 'updatedAt']
     }
   })
 }

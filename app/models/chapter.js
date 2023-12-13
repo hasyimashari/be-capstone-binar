@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       })
       Chapter.belongsTo(models.Course, {
         foreignKey: 'course_id',
-        as: 'chapters'
+        as: 'course'
       })
     }
   }

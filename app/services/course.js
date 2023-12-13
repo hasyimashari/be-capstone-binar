@@ -1,6 +1,5 @@
 /* eslint-disable quote-props */
 const { create, findByPk, findAll, findAllforAdmin, updateCourseRepo, deleteCourseRepo } = require('../repositories/course.js')
-const { findByCourseId: findChapterByCourseId, countChapterByCourseId } = require('../repositories/chapter.js')
 
 const { ApplicationError } = require('../../error')
 
@@ -11,22 +10,6 @@ const createCourseServices = async (argRequest) => {
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }
-}
-
-const getTotalChapter = async (id) => {
-  const { count } = await countChapterByCourseId(id)
-
-  return count
-}
-
-const getTotalDuration = async (id) => {
-  const chapters = await findChapterByCourseId(id)
-
-  const totalDuration = chapters.reduce((sum, chapter) => {
-    return sum + chapter.total_module_duration
-  }, 0)
-
-  return totalDuration
 }
 
 const getAllCourseServices = async (filter) => {
@@ -41,18 +24,6 @@ const getAllCourseServices = async (filter) => {
 
     const courses = await findAll(order)
 
-    const additionalData = courses.map(async (course) => {
-      const [totalChapter, totalDuration] = await Promise.all([
-        getTotalChapter(course.id),
-        getTotalDuration(course.id)
-      ])
-
-      course.dataValues.total_chapter = totalChapter
-      course.dataValues.total_duration = totalDuration
-
-      return course
-    })
-
     const conditions = (i) => {
       const nameCondition = !restFilter.name || i.name.includes(restFilter.name)
       const categoryCondition = !restFilter.category || restFilter.category.includes(i.category.category)
@@ -62,10 +33,9 @@ const getAllCourseServices = async (filter) => {
       return nameCondition && categoryCondition && typeCondition && levelCondition
     }
 
-    const modifiedCourses = await Promise.all(additionalData)
-    const modifiedCourseFiltered = modifiedCourses.filter(conditions)
+    const courseFiltered = courses.filter(conditions)
 
-    return modifiedCourseFiltered
+    return courseFiltered
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }
@@ -88,14 +58,6 @@ const detailCourseServices = async (id) => {
     if (!course) {
       throw new ApplicationError('Course id not found', 404)
     }
-
-    const [totalChapter, totalDuration] = await Promise.all([
-      getTotalChapter(course.id),
-      getTotalDuration(course.id)
-    ])
-
-    course.dataValues.total_chapter = totalChapter
-    course.dataValues.total_duration = totalDuration
 
     return course
   } catch (error) {

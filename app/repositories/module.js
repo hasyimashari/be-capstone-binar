@@ -1,4 +1,4 @@
-const { Module } = require('../models')
+const { Chapter, Module } = require('../models')
 
 const create = (payload) => {
   return Module.create(payload)
@@ -6,19 +6,26 @@ const create = (payload) => {
 
 const findAll = () => {
   return Module.findAll({
+    include: {
+      model: Chapter,
+      as: 'chapter',
+      attributes: ['id', 'name']
+    },
     attributes: {
-      exclude: ['createdAt', 'updatedAt']
+      exclude: ['chapter_id', 'createdAt', 'updatedAt']
     }
   })
 }
 
 const findById = (id) => {
   return Module.findByPk(id, {
-    attributes:
-    {
-      exclude: [
-        'createdAt',
-        'updatedAt']
+    include: {
+      model: Chapter,
+      as: 'chapter',
+      attributes: ['id', 'name']
+    },
+    attributes: {
+      exclude: ['chapter_id', 'createdAt', 'updatedAt']
     }
   })
 }

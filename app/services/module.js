@@ -1,5 +1,6 @@
 const { create, findAll, findById, findByChapterId, countModuleByChapterId, updateModuleById, deleteModulebyId } = require('../repositories/module.js')
-const chapterRepositories = require('../repositories/chapter.js')
+const { findById: findChapterById, updateChapterById } = require('../repositories/chapter.js')
+const { findByPk: findCourseById, updateCourseRepo } = require('../repositories/course')
 
 const { ApplicationError } = require('../../error/index.js')
 
@@ -7,15 +8,19 @@ const createModuleService = async (payload) => {
   try {
     const { chapter_id, duration } = payload
 
-    const { total_module_duration: totalModuleDuration } = await chapterRepositories.findById(chapter_id)
+    const { total_module_duration: totalModuleDuration, course: { id: course_id } } = await findChapterById(chapter_id)
     const total_module_duration = totalModuleDuration + duration
+
+    const { total_duration: totalDuration } = await findCourseById(course_id)
+    const total_duration = totalDuration + duration
 
     const { count: totalModuleByChapter } = await countModuleByChapterId(chapter_id)
     const index = totalModuleByChapter + 1
 
     const module = await create({ ...payload, index })
     if (module) {
-      await chapterRepositories.updateChapterById({ total_module_duration }, chapter_id)
+      await updateChapterById({ total_module_duration }, chapter_id)
+      await updateCourseRepo({ total_duration }, course_id)
     }
 
     return module
@@ -58,13 +63,17 @@ const updateModuleService = async (payload, id) => {
     const { chapter_id, duration } = module
     const { duration: newDuration } = payload
 
-    const { total_module_duration: totalModuleDuration } = await chapterRepositories.findById(chapter_id)
+    const { total_module_duration: totalModuleDuration, course_id } = await findChapterById(chapter_id)
     const total_module_duration = totalModuleDuration - duration + newDuration
+
+    const { total_duration: totalDuration } = await findCourseById(course_id)
+    const total_duration = totalDuration - duration + newDuration
 
     // eslint-disable-next-line no-unused-vars
     const [_, updatedModule] = await updateModuleById(payload, id)
     if (updatedModule) {
-      await chapterRepositories.updateChapterById({ total_module_duration }, chapter_id)
+      await updateChapterById({ total_module_duration }, chapter_id)
+      await updateCourseRepo({ total_duration }, course_id)
     }
 
     return updatedModule
@@ -78,12 +87,16 @@ const deleteModuleService = async (id) => {
     const module = await findById(id)
     const { chapter_id, duration } = module
 
-    const { total_module_duration: totalModuleDuration } = await chapterRepositories.findById(chapter_id)
+    const { total_module_duration: totalModuleDuration, course_id } = await findChapterById(chapter_id)
     const total_module_duration = totalModuleDuration - duration
+
+    const { total_duration: totalDuration } = await findCourseById(course_id)
+    const total_duration = totalDuration - duration
 
     const deleted = await deleteModulebyId(id)
     if (deleted) {
-      await chapterRepositories.updateChapterById({ total_module_duration }, chapter_id)
+      await updateChapterById({ total_module_duration }, chapter_id)
+      await updateCourseRepo({ total_duration }, course_id)
     }
   } catch (error) {
     throw new ApplicationError(error.message, 500)
