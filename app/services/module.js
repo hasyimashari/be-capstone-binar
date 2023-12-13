@@ -60,10 +60,10 @@ const getDetailModuleService = async (id) => {
 const updateModuleService = async (payload, id) => {
   try {
     const module = await findById(id)
-    const { chapter_id, duration } = module
+    const { chapter: { id: chapter_id }, duration } = module
     const { duration: newDuration } = payload
 
-    const { total_module_duration: totalModuleDuration, course_id } = await findChapterById(chapter_id)
+    const { total_module_duration: totalModuleDuration, course: { id: course_id } } = await findChapterById(chapter_id)
     const total_module_duration = totalModuleDuration - duration + newDuration
 
     const { total_duration: totalDuration } = await findCourseById(course_id)
@@ -85,9 +85,9 @@ const updateModuleService = async (payload, id) => {
 const deleteModuleService = async (id) => {
   try {
     const module = await findById(id)
-    const { chapter_id, duration } = module
+    const { chapter: { id: chapter_id }, duration } = module
 
-    const { total_module_duration: totalModuleDuration, course_id } = await findChapterById(chapter_id)
+    const { total_module_duration: totalModuleDuration, course: { id: course_id } } = await findChapterById(chapter_id)
     const total_module_duration = totalModuleDuration - duration
 
     const { total_duration: totalDuration } = await findCourseById(course_id)
