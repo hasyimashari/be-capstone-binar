@@ -9,13 +9,13 @@ const createModuleService = async (payload) => {
     const { chapter_id, duration } = payload
 
     const { total_module_duration: totalModuleDuration, course: { id: course_id } } = await findChapterById(chapter_id)
-    const total_module_duration = totalModuleDuration + duration
+    const total_module_duration = Number(totalModuleDuration) + Number(duration)
 
     const { total_duration: totalDuration } = await findCourseById(course_id)
-    const total_duration = totalDuration + duration
+    const total_duration = Number(totalDuration) + Number(duration)
 
     const { count: totalModuleByChapter } = await countModuleByChapterId(chapter_id)
-    const index = totalModuleByChapter + 1
+    const index = Number(totalModuleByChapter) + 1
 
     const module = await create({ ...payload, index })
     if (module) {
@@ -64,10 +64,10 @@ const updateModuleService = async (payload, id) => {
     const { duration: newDuration } = payload
 
     const { total_module_duration: totalModuleDuration, course: { id: course_id } } = await findChapterById(chapter_id)
-    const total_module_duration = totalModuleDuration - duration + newDuration
+    const total_module_duration = Number(totalModuleDuration) - Number(duration) + Number(newDuration)
 
     const { total_duration: totalDuration } = await findCourseById(course_id)
-    const total_duration = totalDuration - duration + newDuration
+    const total_duration = Number(totalDuration) - Number(duration) + Number(newDuration)
 
     // eslint-disable-next-line no-unused-vars
     const [_, updatedModule] = await updateModuleById(payload, id)
@@ -88,10 +88,10 @@ const deleteModuleService = async (id) => {
     const { chapter: { id: chapter_id }, duration } = module
 
     const { total_module_duration: totalModuleDuration, course: { id: course_id } } = await findChapterById(chapter_id)
-    const total_module_duration = totalModuleDuration - duration
+    const total_module_duration = Number(totalModuleDuration) - Number(duration)
 
     const { total_duration: totalDuration } = await findCourseById(course_id)
-    const total_duration = totalDuration - duration
+    const total_duration = Number(totalDuration) - Number(duration)
 
     const deleted = await deleteModulebyId(id)
     if (deleted) {
