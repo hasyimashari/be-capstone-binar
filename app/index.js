@@ -12,6 +12,7 @@ const chapterRouter = require('./routes/chapter.js')
 const modulRouter = require('./routes/modul.js')
 const otpRouter = require('./routes/otp.js')
 const orderRouter = require('./routes/order.js')
+const trackerRouter = require('./routes/tracker.js')
 const appRouter = require('./routes/app.js')
 
 const PORT = process.env.PORT
@@ -28,6 +29,7 @@ app.use('/api', chapterRouter)
 app.use('/api', modulRouter)
 app.use('/api', otpRouter)
 app.use('/api', orderRouter)
+app.use('/api', trackerRouter)
 app.use(appRouter)
 
 app.listen(PORT, () => {
