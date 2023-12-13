@@ -15,8 +15,8 @@ const createCourseServices = async (argRequest) => {
 const getAllCourseServices = async (filter) => {
   try {
     const orderConditions = {
-      'Paling Baru': 'ASC',
-      'Promo': 'DESC'
+      'Paling Baru': 'DESC',
+      'Promo': 'ASC'
     }
 
     const { filter: orderFilter, ...restFilter } = filter

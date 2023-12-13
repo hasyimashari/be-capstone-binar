@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 const { create, findByUserId, findByUserAndCourseId, update } = require('../repositories/tracker')
 const { findByCourseId } = require('../repositories/chapter')
 const { countModuleByChapterId } = require('../repositories/module')
@@ -44,11 +45,35 @@ const createUserTrackerService = async (user_id, payload) => {
   }
 }
 
-const getTrackerByUserServices = async (user_id) => {
+const getTrackerByUserServices = async (user_id, filter) => {
   try {
-    const userTrakcer = await findByUserId(user_id)
+    const orderConditions = {
+      'Paling Baru': 'DESC',
+      'Promo': 'ASC'
+    }
 
-    return userTrakcer
+    const progressConditionFunc = {
+      'Selesai': (progress) => progress === 100,
+      'In Progress': (progress) => progress !== 100
+    }
+
+    const { filter: orderFilter, ...restFilter } = filter
+    const order = orderConditions[orderFilter]
+
+    const userTrakcer = await findByUserId(user_id, order)
+
+    const conditions = (i) => {
+      const nameCondition = !restFilter.name || i.course.name.includes(restFilter.name)
+      const categoryCondition = !restFilter.category || restFilter.category.includes(i.course.category.category)
+      const levelCondition = !restFilter.level || restFilter.level.includes(i.course.level)
+      const progressCondition = !restFilter.progress || progressConditionFunc[restFilter.progress](i.progress_course)
+
+      return nameCondition && categoryCondition && levelCondition && progressCondition
+    }
+
+    const userTrackerFiltered = userTrakcer.filter(conditions)
+
+    return userTrackerFiltered
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }
