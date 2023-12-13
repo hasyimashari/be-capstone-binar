@@ -28,6 +28,14 @@ const findByPk = (id) => {
   })
 }
 
+const findByPkWithPW = (id) => {
+  return User.findByPk(id, {
+    attributes: {
+      exclude: ['tokenResetPassword', 'createdAt', 'updatedAt']
+    }
+  })
+}
+
 const findByPkAdmin = (id) => {
   return User.findByPk(id)
 }
@@ -64,6 +72,7 @@ module.exports = {
   findByEmail,
   findByPhoneNumber,
   findByPk,
+  findByPkWithPW,
   findByPkAdmin,
   countUser,
   updateUser,
