@@ -57,10 +57,9 @@ const getDetailModuleService = async (id) => {
   }
 }
 
-const updateModuleService = async (payload, id) => {
+const updateModuleService = async (payload, module) => {
   try {
-    const module = await findById(id)
-    const { chapter: { id: chapter_id }, duration } = module
+    const { id, chapter: { id: chapter_id }, duration } = module
     const { duration: newDuration } = payload
 
     const { total_module_duration: totalModuleDuration, course: { id: course_id } } = await findChapterById(chapter_id)
@@ -82,10 +81,9 @@ const updateModuleService = async (payload, id) => {
   }
 }
 
-const deleteModuleService = async (id) => {
+const deleteModuleService = async (module) => {
   try {
-    const module = await findById(id)
-    const { chapter: { id: chapter_id }, duration } = module
+    const { id, duration, chapter: { id: chapter_id } } = module
 
     const { total_module_duration: totalModuleDuration, course: { id: course_id } } = await findChapterById(chapter_id)
     const total_module_duration = Number(totalModuleDuration) - Number(duration)

@@ -1,4 +1,4 @@
-const { createModuleService, getAllModulesService, getDetailModuleService, updateModuleService, deleteModuleService } = require('../services/module.js')
+const { createModuleService, getAllModulesService, updateModuleService, deleteModuleService } = require('../services/module.js')
 
 const createModule = async (req, res) => {
   try {
@@ -37,8 +37,7 @@ const getAllModule = async (req, res) => {
 
 const getDetailModule = async (req, res) => {
   try {
-    const { id } = req.params
-    const module = await getDetailModuleService(id)
+    const module = req.module
 
     res.status(200).json({
       status: 'OK',
@@ -55,14 +54,14 @@ const getDetailModule = async (req, res) => {
 
 const updateModule = async (req, res) => {
   try {
-    const { id } = req.params
+    const module = req.module
     const payload = req.body
 
-    const module = await updateModuleService(payload, id)
+    const updatedModule = await updateModuleService(payload, module)
     res.status(201).json({
       status: 'OK',
       message: 'Update module success',
-      data: module
+      data: updatedModule
     })
   } catch (error) {
     res.status(error.statusCode || 500).json({
@@ -74,8 +73,9 @@ const updateModule = async (req, res) => {
 
 const deleteModule = async (req, res) => {
   try {
-    const { id } = req.params
-    await deleteModuleService(id)
+    const module = req.module
+    await deleteModuleService(module)
+
     res.status(200).json({
       status: 'OK',
       message: 'Delete module success'

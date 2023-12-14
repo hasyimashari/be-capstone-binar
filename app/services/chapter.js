@@ -63,9 +63,17 @@ const updateChapterServices = async (payload, id) => {
   }
 }
 
-const deleteChapterService = async (id) => {
+const deleteChapterService = async (chapter) => {
   try {
-    await deleteChapterbyId(id)
+    const { id, total_module_duration, course: { id: course_id } } = chapter
+
+    const { total_duration: totalDuration } = await findCourseById(course_id)
+    const total_duration = Number(totalDuration) - Number(total_module_duration)
+
+    const deleted = await deleteChapterbyId(id)
+    if (deleted) {
+      await updateCourseRepo({ total_duration }, course_id)
+    }
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }

@@ -3,9 +3,9 @@ const { getDetailModuleService } = require('../services/module')
 const isModuleExist = async (req, res, next) => {
   try {
     const { id } = req.params
-    const chapter = await getDetailModuleService(id)
+    const module = await getDetailModuleService(id)
 
-    req.chapter = chapter
+    req.module = module
     next()
   } catch (error) {
     res.status(error.statusCode || 500).json({

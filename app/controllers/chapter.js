@@ -1,7 +1,6 @@
 const {
   createChapterService,
   getAllChaptersService,
-  getDetailChapterServices,
   updateChapterServices,
   deleteChapterService
 } = require('../services/chapter')
@@ -43,8 +42,7 @@ const getAllChapter = async (req, res) => {
 
 const getDetailChapter = async (req, res) => {
   try {
-    const { id } = req.params
-    const chapter = await getDetailChapterServices(id)
+    const chapter = req.chapter
 
     res.status(200).json({
       status: 'OK',
@@ -61,14 +59,14 @@ const getDetailChapter = async (req, res) => {
 
 const updateChapter = async (req, res) => {
   try {
-    const { id } = req.params
+    const { id } = req.chapter
     const payload = req.body
 
-    const chapter = await updateChapterServices(payload, id)
+    const updatedChapter = await updateChapterServices(payload, id)
     res.status(201).json({
       status: 'OK',
       message: 'Update chapter success',
-      data: chapter
+      data: updatedChapter
     })
   } catch (error) {
     res.status(error.statusCode || 500).json({
@@ -80,8 +78,9 @@ const updateChapter = async (req, res) => {
 
 const deleteChapter = async (req, res) => {
   try {
-    const { id } = req.params
-    await deleteChapterService(id)
+    const chapter = req.chapter
+
+    await deleteChapterService(chapter)
     res.status(200).json({
       status: 'OK',
       message: 'Delete chapter success'
