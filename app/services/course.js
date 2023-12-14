@@ -67,8 +67,10 @@ const detailCourseServices = async (id) => {
 
 const updateCourseServices = async (argRequest, id) => {
   try {
-    const course = await updateCourseRepo(argRequest, id)
-    return course
+    // eslint-disable-next-line no-unused-vars
+    const [_, updatedCourse] = await updateCourseRepo(argRequest, id)
+
+    return updatedCourse
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }
