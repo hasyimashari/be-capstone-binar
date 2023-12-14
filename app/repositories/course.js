@@ -37,7 +37,7 @@ const findAllforAdmin = () => {
       {
         model: Category,
         as: 'category',
-        attributes: ['category']
+        attributes: ['id', 'category']
       }
     ],
     attributes: {
