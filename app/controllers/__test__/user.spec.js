@@ -17,10 +17,14 @@ jest.mock('../../services/auth.js', () => ({
   encryptedKode: jest.fn()
 }))
 
+jest.mock('../../services/otp.js', () => ({
+  createOtpServices: jest.fn()
+}))
+
 const accessToken = 'accessToken'
 // describe('#register', () => {
 //   it('should return 201 response success', async () => {
-//     const otp = await bycrpt.hash('210908', 10)
+//     const otp = 122122
 //     const mockRequest = {
 //       body: {
 //         name: 'Muzani',
@@ -38,11 +42,13 @@ const accessToken = 'accessToken'
 //     await authServices.encryptedKode.mockReturnValue(otp)
 //     await userServices.registeService.mockReturnValue(accessToken)
 //     authServices.createAccessToken.mockReturnValue(accessToken)
+//     await otpServices.createOtpServices.mockReturnValue(otp)
 //     await register(mockRequest, mockResponse)
 
+//     expect(mockResponse.status).toHaveBeenCalledWith(201)
 //     expect(mockResponse.json).toHaveBeenCalledWith({
 //       status: 'OK',
-//       message: 'Success',
+//       message: 'Email sent',
 //       data: {
 //         accessToken
 //       }
