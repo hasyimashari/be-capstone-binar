@@ -60,7 +60,7 @@ const getAllCourseAdmin = async (req, res) => {
 
 const detailCourse = async (req, res) => {
   try {
-    const { course } = req
+    const course = req.course
 
     res.status(200).json({
       status: 'OK',
@@ -79,13 +79,13 @@ const updateCourse = async (req, res) => {
   try {
     const { id } = req.course
     const payload = req.body
-    // eslint-disable-next-line no-unused-vars
-    const [_, response] = await updateCourseServices(payload, id)
+
+    const rupdatedCourse = await updateCourseServices(payload, id)
 
     res.status(201).json({
       status: 'OK',
       message: 'Update course success',
-      data: response
+      data: rupdatedCourse
     })
   } catch (error) {
     res.status(error.statusCode || 500).json({
