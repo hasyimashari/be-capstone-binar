@@ -70,12 +70,12 @@ const loginAdminSevices = async (argRequest) => {
     const { id, password } = argRequest
     const user = await findByPkAdmin(id)
     if (id !== user.id) {
-      throw new ApplicationError('Wrong id', 400)
+      throw new ApplicationError('Id not found', 404)
     }
 
     const matchPassword = await comparePassword(password, user.password)
     if (!matchPassword) {
-      throw new ApplicationError('Wrong password', 401)
+      throw new ApplicationError('Wrong password', 400)
     }
     return user
   } catch (error) {
