@@ -3,29 +3,46 @@ const {
   findAllOrder,
   findAllOrderByUserId,
   findByIdOrder,
+  findByUserAndCourseId,
   updateOrderRepo
 } = require('../repositories/order.js')
 
 const { ApplicationError } = require('../../error')
 
-const createOrderServices = async (payload) => {
+const createOrderServices = async (user_id, payload) => {
   try {
-    const order = await createOrderRepo({ ...payload })
+    const { course_id } = payload
+
+    const isOrdered = await findByUserAndCourseId({ user_id, course_id })
+    if (isOrdered) {
+      throw new ApplicationError('Cant order the same course', 400)
+    }
+
+    const order = await createOrderRepo({ ...payload, user_id })
     return order
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
-const getAllOrderServices = async (user_id) => {
+const getAllOrderServices = async (filter, user_id) => {
   try {
     if (user_id) {
       const orders = await findAllOrderByUserId(user_id)
       return orders
     }
 
+    const condition = (i) => {
+      const statusCondition = !filter.status || i.status.includes(filter.status)
+      const orderMethodCondition = !filter.method || i.order_method?.includes(filter.method)
+
+      return statusCondition && orderMethodCondition
+    }
+
     const orders = await findAllOrder()
-    return orders
+    const filteredOrders = orders.filter(condition)
+
+    return filteredOrders
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }
