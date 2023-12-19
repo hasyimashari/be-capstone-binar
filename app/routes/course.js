@@ -9,12 +9,12 @@ const {
 } = require('../controllers/course.js')
 const { isCategoryExist } = require('../middleware/category.js')
 const { isCourseExist } = require('../middleware/course.js')
-const { authorization, onlyAdmin } = require('../middleware/auth.js')
+const { authorization, onlyAdmin, isAuthorization } = require('../middleware/auth.js')
 
 const router = express.Router()
 
 router.get('/courses', getAllCourse)
-router.get('/courses/:id', isCourseExist, detailCourse)
+router.get('/courses/:id', isAuthorization, isCourseExist, detailCourse)
 
 router.post('/admin/courses', authorization, onlyAdmin, isCategoryExist, createCourse)
 router.get('/admin/courses', authorization, onlyAdmin, getAllCourseAdmin)

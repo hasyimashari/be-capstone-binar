@@ -14,7 +14,7 @@ const { isAuthorization, authorization, onlyAdmin } = require('../middleware/aut
 
 const router = express.Router()
 
-router.get('/chapters/:id', isChapterExist, getDetailChapter)
+router.get('/chapters/:id', isAuthorization, isChapterExist, getDetailChapter)
 
 router.post('/admin/chapters', authorization, onlyAdmin, isCourseExistInPayload, createChapter)
 router.get('/admin/chapters', authorization, onlyAdmin, getAllChapter)

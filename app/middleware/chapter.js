@@ -1,9 +1,9 @@
-const { getDetailChapterServices } = require('../services/chapter')
+const { findChapterServices } = require('../services/chapter')
 
 const isChapterExist = async (req, res, next) => {
   try {
     const { id } = req.params
-    const chapter = await getDetailChapterServices(id)
+    const chapter = await findChapterServices(id)
 
     req.chapter = chapter
     next()
@@ -18,7 +18,7 @@ const isChapterExist = async (req, res, next) => {
 const isChapterExistInPayload = async (req, res, next) => {
   try {
     const { chapter_id: id } = req.body
-    await getDetailChapterServices(id)
+    await findChapterServices(id)
 
     next()
   } catch (error) {

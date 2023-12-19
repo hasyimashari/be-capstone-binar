@@ -31,7 +31,7 @@ const findAll = (order) => {
   })
 }
 
-const findAllforAdmin = () => {
+const findAllforAdmin = (order) => {
   return Course.findAll({
     include: [
       {
@@ -46,7 +46,10 @@ const findAllforAdmin = () => {
         'createdAt',
         'updatedAt'
       ]
-    }
+    },
+    order: [
+      ['createdAt', order || 'DESC']
+    ]
   })
 }
 

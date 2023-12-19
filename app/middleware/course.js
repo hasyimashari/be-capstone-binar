@@ -1,9 +1,9 @@
-const { detailCourseServices } = require('../services/course')
+const { findCourseServices } = require('../services/course')
 
 const isCourseExist = async (req, res, next) => {
   try {
     const { id } = req.params
-    const course = await detailCourseServices(id)
+    const course = await findCourseServices(id)
 
     req.course = course
     next()
@@ -18,7 +18,7 @@ const isCourseExist = async (req, res, next) => {
 const isCourseExistInPayload = async (req, res, next) => {
   try {
     const { course_id: id } = req.body
-    await detailCourseServices(id)
+    await findCourseServices(id)
 
     next()
   } catch (error) {
