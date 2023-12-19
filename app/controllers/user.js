@@ -126,7 +126,6 @@ const loginAdmin = async (req, res) => {
       }
     })
   } catch (error) {
-    console.log(error)
     res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message
@@ -164,7 +163,6 @@ const updateUser = async (req, res) => {
       data: response
     })
   } catch (error) {
-    console.log(error)
     res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message
@@ -206,6 +204,7 @@ const sendLinkPassword = async (req, res) => {
 
   const response = {
     body: {
+      name,
       intro: 'Reset Password',
       action: {
         instructions: 'Clik button to page reset password',

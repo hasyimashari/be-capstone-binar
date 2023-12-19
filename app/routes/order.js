@@ -16,6 +16,6 @@ router.post('/orders', authorization, createOrder)
 router.get('/orders', authorization, getAllOrderByUser)
 router.get('/admin/orders', getAllOrder)
 router.get('/admin/orders/:id', isOrderExist, detailOrder)
-router.put('/orders/:id', isOrderExist, updateOrder)
+router.put('/orders/:id', authorization, isOrderExist, updateOrder)
 
 module.exports = router

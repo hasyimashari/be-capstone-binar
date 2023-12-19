@@ -4,6 +4,9 @@ const {
   getAllOrderServices,
   updateOrderServices
 } = require('../services/order.js')
+const transporter = require('../../utils/transporter.js')
+const { historyOrderMessage } = require('../../messageMail')
+require('dotenv').config()
 
 const createOrder = async (req, res) => {
   try {
@@ -80,13 +83,35 @@ const updateOrder = async (req, res) => {
   try {
     const { order } = req
     const payload = req.body
-
+    const user = req.user
     const response = await updateOrderServices(order, payload)
-    res.status(201).json({
-      status: 'OK',
-      message: 'Update order success',
-      data: response
-    })
+    const historyOrder = await detailOrderServices(order.id)
+    const { id, payment_date } = historyOrder
+    const { name: nameCourse, price } = historyOrder.course
+
+    const message = {
+      from: process.env.EMAIL,
+      to: user.email,
+      subject: 'Details Orders',
+      html: historyOrderMessage({ nameUser: user.name, id, nameCourse, payment_date, price })
+    }
+
+    transporter
+      .sendMail(message)
+      .then(() => {
+        return res
+          .status(200)
+          .json({
+            status: 'OK',
+            message: 'Email sent',
+            data: response
+          })
+      })
+      .catch((error) => {
+        return res
+          .status(500)
+          .json({ message: error.message })
+      })
   } catch (error) {
     res.status(500).json({
       status: 'FAIL',

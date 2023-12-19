@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">49.51% </span>
+                <span class="strong">49.01% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>51/103</span>
+                <span class='fraction'>50/102</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">49.51% </span>
+                <span class="strong">49.01% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>51/103</span>
+                <span class='fraction'>50/102</span>
             </div>
         
             
@@ -165,9 +165,7 @@
 <a name='L100'></a><a href='#L100'>100</a>
 <a name='L101'></a><a href='#L101'>101</a>
 <a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L103'></a><a href='#L103'>103</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -225,7 +223,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -247,6 +244,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -272,7 +270,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const {
   createChapterService,
   getAllChaptersService,
-  getDetailChapterServices,
   updateChapterServices,
   deleteChapterService
 } = require('../services/chapter')
@@ -314,8 +311,7 @@ const getAllChapter = async (req, res) =&gt; {
 &nbsp;
 const getDetailChapter = <span class="fstat-no" title="function not covered" >async (req, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const { id } = req.params</span>
-<span class="cstat-no" title="statement not covered" >    const chapter = await getDetailChapterServices(id)</span>
+<span class="cstat-no" title="statement not covered" >    const chapter = req.chapter</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    res.status(200).json({</span>
 <span class="cstat-no" title="statement not covered" >      status: 'OK',</span>
@@ -332,14 +328,14 @@ const getDetailChapter = <span class="fstat-no" title="function not covered" >as
 &nbsp;
 const updateChapter = <span class="fstat-no" title="function not covered" >async (req, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const { id } = req.params</span>
+<span class="cstat-no" title="statement not covered" >    const { id } = req.chapter</span>
 <span class="cstat-no" title="statement not covered" >    const payload = req.body</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const chapter = await updateChapterServices(payload, id)</span>
+<span class="cstat-no" title="statement not covered" >    const updatedChapter = await updateChapterServices(payload, id)</span>
 <span class="cstat-no" title="statement not covered" >    res.status(201).json({</span>
 <span class="cstat-no" title="statement not covered" >      status: 'OK',</span>
 <span class="cstat-no" title="statement not covered" >      message: 'Update chapter success',</span>
-<span class="cstat-no" title="statement not covered" >      data: chapter</span>
+<span class="cstat-no" title="statement not covered" >      data: updatedChapter</span>
 <span class="cstat-no" title="statement not covered" >    })</span>
 <span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >    res.status(error.statusCode || 500).json({</span>
@@ -351,8 +347,9 @@ const updateChapter = <span class="fstat-no" title="function not covered" >async
 &nbsp;
 const deleteChapter = <span class="fstat-no" title="function not covered" >async (req, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    const { id } = req.params</span>
-<span class="cstat-no" title="statement not covered" >    await deleteChapterService(id)</span>
+<span class="cstat-no" title="statement not covered" >    const chapter = req.chapter</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    await deleteChapterService(chapter)</span>
 <span class="cstat-no" title="statement not covered" >    res.status(200).json({</span>
 <span class="cstat-no" title="statement not covered" >      status: 'OK',</span>
 <span class="cstat-no" title="statement not covered" >      message: 'Delete chapter success'</span>
@@ -379,7 +376,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-18T13:51:39.604Z
+                at 2023-12-18T16:37:15.627Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

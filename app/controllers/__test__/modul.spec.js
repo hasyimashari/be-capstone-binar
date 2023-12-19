@@ -120,9 +120,7 @@ describe('#getAllModule', () => {
 describe('#getDetailModule', () => {
   it('should return 201 response success', async () => {
     const mockRequest = {
-      params: {
-        id: '5ec9d2c2-d8ca-44b2-9691-148ee1abba34'
-      }
+      module: modules
     }
 
     const mockResponse = {
@@ -130,7 +128,6 @@ describe('#getDetailModule', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await moduleServices.getDetailModuleService.mockReturnValue(modules)
     await getDetailModule(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(200)
@@ -140,30 +137,4 @@ describe('#getDetailModule', () => {
       data: modules
     })
   })
-
-  // it('should return 500 response success', async () => {
-  //   const error = new Error('Failed')
-
-  //   const mockRequest = {
-  //     params: {
-  //       id: 'Thisisimodule'
-  //     }
-  //   }
-
-  //   const mockResponse = {
-  //     status: jest.fn().mockReturnThis(),
-  //     json: jest.fn().mockReturnThis()
-  //   }
-
-  //   await moduleServices.getDetailModuleServices.mockReturnValue(
-  //     Promise.reject(error)
-  //   )
-  //   await getDetailModule(mockRequest, mockResponse)
-
-  //   expect(mockResponse.status).toHaveBeenCalledWith(500)
-  //   expect(mockResponse.json).toHaveBeenCalledWith({
-  //     status: 'FAIL',
-  //     message: error.message
-  //   })
-  // })
 })
