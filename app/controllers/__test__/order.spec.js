@@ -1,4 +1,4 @@
-const { createOrder, getAllOrder, detailOrder } = require('../order.js')
+const { createOrder, getAllOrder, detailOrder, getAllOrderByUser } = require('../order.js')
 
 const orderServices = require('../../services/order.js')
 
@@ -24,9 +24,7 @@ describe('#createOrder', () => {
       },
       user: {
         id: 'bedd0f06-6f0d-4cb0-8158-8b51848f876881'
-      },
-      order_method: 'Credit Card',
-      status: 'Sudah Bayar'
+      }
     }
 
     const mockResponse = {
@@ -53,9 +51,7 @@ describe('#createOrder', () => {
       },
       user: {
         id: 'bedd0f06-6f0d-4cb0-8158-8b51848f876881'
-      },
-      order_method: 'Credit Card',
-      status: 'Sudah Bayar'
+      }
     }
 
     const mockResponse = {
@@ -139,7 +135,7 @@ describe('#detailOrder', () => {
     })
   })
 
-  it('should retrun 200 response success', async () => {
+  it('should retrun 500 response FAIL', async () => {
     const error = new Error('faild')
 
     const mockRequest = {
@@ -155,6 +151,53 @@ describe('#detailOrder', () => {
 
     await orderServices.detailOrderServices.mockReturnValue(Promise.reject(error))
     await detailOrder(mockRequest, mockResponse)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
+      message: error.message
+    })
+  })
+})
+
+describe('#getAllOrderByUser', () => {
+  it('should return 200 with response success', async () => {
+    const mockRequest = {
+      user: {
+        id: 'bedd0f06-6f0d-4cb0-8158-8b51878687979'
+      }
+    }
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
+
+    await orderServices.getAllOrderServices.mockReturnValue(order)
+    await getAllOrderByUser(mockRequest, mockResponse)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(200)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'OK',
+      message: 'Get all order success',
+      data: order
+    })
+  })
+  it('should return 500 with response FAIL', async () => {
+    const error = new Error('FAIL')
+    const mockRequest = {
+      user: {
+        id: 'bedd0f06-6f0d-4cb0-8158-8b51878687979'
+      }
+    }
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
+
+    await orderServices.getAllOrderServices.mockReturnValue(Promise.reject(error))
+    await getAllOrderByUser(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({

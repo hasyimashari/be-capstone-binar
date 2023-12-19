@@ -1,11 +1,13 @@
-const { createModule, getAllModule, getDetailModule } = require('../module.js')
+const { createModule, getAllModule, getDetailModule, updateModule, deleteModule } = require('../module.js')
 
 const moduleServices = require('../../services/module.js')
 
 jest.mock('../../services/module.js', () => ({
   createModuleService: jest.fn(),
   getAllModulesService: jest.fn(),
-  getDetailModuleService: jest.fn()
+  getDetailModuleService: jest.fn(),
+  updateModuleService: jest.fn(),
+  deleteModuleService: jest.fn()
 }))
 
 const modules = {
@@ -41,31 +43,28 @@ describe('#createModule', () => {
     })
   })
 
-  // it('should return 500 response failed', async () => {
-  //   const error = new Error('Failed')
+  it('should return 500 response FAIL', async () => {
+    const error = new Error('FAIL')
+    const mockRequest = {
+      body: {
+        modules
+      }
+    }
 
-  //   const mockRequest = {
-  //     body: {
-  //       modules
-  //     }
-  //   }
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
 
-  //   const mockResponse = {
-  //     status: jest.fn().mockReturnThis(),
-  //     json: jest.fn().mockReturnThis()
-  //   }
+    await moduleServices.createModuleService.mockReturnValue(Promise.reject(error))
+    await createModule(mockRequest, mockResponse)
 
-  //   await moduleServices.createModuleService.mockReturnValue(
-  //     Promise.reject(error)
-  //   )
-  //   await createModule(mockRequest, mockResponse)
-
-  //   expect(mockResponse.status).toHaveBeenCalledWith(500)
-  //   expect(mockResponse.json).toHaveBeenCalledWith({
-  //     status: 'FAIL',
-  //     message: error.message
-  //   })
-  // })
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
+      message: error.message
+    })
+  })
 })
 
 describe('#getAllModule', () => {
@@ -84,6 +83,7 @@ describe('#getAllModule', () => {
     await moduleServices.getAllModulesService.mockReturnValue([modules])
     await getAllModule(mockRequest, mockResponse)
 
+    expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
       message: 'Get all modules success',
@@ -91,30 +91,28 @@ describe('#getAllModule', () => {
     })
   })
 
-  // it('should return 500 response failed', async () => {
-  //   const error = new Error('Failed')
-  //   const mockRequest = {
-  //     query: {
-  //       chapter_id: 'thisischapterid'
-  //     }
-  //   }
+  it('should return 500 response failed', async () => {
+    const error = new Error('FAIL')
+    const mockRequest = {
+      query: {
+        chapter_id: 'thisischapterid'
+      }
+    }
 
-  //   const mockResponse = {
-  //     status: jest.fn().mockReturnThis(),
-  //     json: jest.fn().mockReturnThis()
-  //   }
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
 
-  //   await moduleServices.getAllModulesService.mockReturnValue(
-  //     Promise.reject(error)
-  //   )
-  //   await getAllModule(mockRequest, mockResponse)
+    await moduleServices.getAllModulesService.mockReturnValue(Promise.reject(error))
+    await getAllModule(mockRequest, mockResponse)
 
-  //   expect(mockResponse.status).toHaveBeenCalledWith(500)
-  //   expect(mockResponse.json).toHaveBeenCalledWith({
-  //     status: 'FAIL',
-  //     message: error.message
-  //   })
-  // })
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
+      message: error.message
+    })
+  })
 })
 
 describe('#getDetailModule', () => {
@@ -135,6 +133,98 @@ describe('#getDetailModule', () => {
       status: 'OK',
       message: 'Get detail module success',
       data: modules
+    })
+  })
+})
+
+describe('#updateModule', () => {
+  it('should return 200 with response success', async () => {
+    const mockRequest = {
+      module,
+      body: {
+        modules
+      }
+    }
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
+
+    await moduleServices.updateModuleService.mockReturnValue(modules)
+    await updateModule(mockRequest, mockResponse)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(201)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'OK',
+      message: 'Update module success',
+      data: modules
+    })
+  })
+  it('should return 500 with response FAIL', async () => {
+    const error = new Error('FAIL')
+    const mockRequest = {
+      module,
+      body: {
+        modules
+      }
+    }
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
+
+    await moduleServices.updateModuleService.mockReturnValue(Promise.reject(error))
+    await updateModule(mockRequest, mockResponse)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
+      message: error.message
+    })
+  })
+})
+
+describe('#deleteModule', () => {
+  it('should return 200 with response success', async () => {
+    const message = 'Delete module success'
+    const mockRequest = {
+      module
+    }
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
+
+    await moduleServices.deleteModuleService.mockReturnValue(message)
+    await deleteModule(mockRequest, mockResponse)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(200)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'OK',
+      message
+    })
+  })
+  it('should return 500 with response FAIL', async () => {
+    const error = new Error('FAIL')
+    const mockRequest = {
+      module
+    }
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
+
+    await moduleServices.deleteModuleService.mockReturnValue(Promise.reject(error))
+    await deleteModule(mockRequest, mockResponse)
+
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
+      message: error.message
     })
   })
 })
