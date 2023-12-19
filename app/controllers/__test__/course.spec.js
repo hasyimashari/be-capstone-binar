@@ -185,7 +185,7 @@ describe('#updateCourse', () => {
         id: '5ec9d2c2-d8ca-44b2-9691-148ee1abba34'
       },
       body: {
-        course
+        payload: course
       }
     }
 
@@ -194,7 +194,7 @@ describe('#updateCourse', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await courseServices.updateCourseServices.mockReturnValue([null, course])
+    await courseServices.updateCourseServices.mockReturnValue(course)
     await updateCourse(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(201)

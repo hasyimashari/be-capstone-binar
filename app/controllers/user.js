@@ -163,7 +163,6 @@ const updateUser = async (req, res) => {
       data: response
     })
   } catch (error) {
-    console.log(error)
     res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message
@@ -205,13 +204,14 @@ const sendLinkPassword = async (req, res) => {
 
   const response = {
     body: {
+      name,
       intro: 'Reset Password',
       action: {
         instructions: 'Clik button to page reset password',
         button: {
           color: '#22BC66',
           text: 'Click this to reset password',
-          link: `https://befinalprojectbinar-production.up.railway.app/api/reset/password/${tokenResetPassword}`
+          link: `https://devacademy.vercel.app/reset/password/${tokenResetPassword}`
         }
       },
       outro:

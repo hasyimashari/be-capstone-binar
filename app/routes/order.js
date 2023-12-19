@@ -14,7 +14,7 @@ const router = express.Router()
 
 router.post('/orders', authorization, createOrder)
 router.get('/orders', authorization, getAllOrderByUser)
-router.put('/orders/:id', isOrderExist, updateOrder)
+router.put('/orders/:id', authorization, isOrderExist, updateOrder)
 
 router.get('/admin/orders', authorization, onlyAdmin, getAllOrder)
 router.get('/admin/orders/:id', authorization, onlyAdmin, isOrderExist, detailOrder)

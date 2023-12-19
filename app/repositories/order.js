@@ -65,7 +65,7 @@ const findByIdOrder = async (id) => {
       {
         model: Course,
         as: 'course',
-        attributes: ['id', 'name'],
+        attributes: ['id', 'name', 'price'],
         include: [
           {
             model: Category,
