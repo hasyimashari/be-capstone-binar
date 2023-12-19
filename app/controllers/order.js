@@ -92,7 +92,7 @@ const updateOrder = async (req, res) => {
     const message = {
       from: process.env.EMAIL,
       to: user.email,
-      subject: 'Details Orders',
+      subject: 'Konfirmasi Pemesanan',
       html: historyOrderMessage({ nameUser: user.name, id, nameCourse, payment_date, price })
     }
 

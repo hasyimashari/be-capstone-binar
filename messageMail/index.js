@@ -79,7 +79,6 @@ const historyOrderMessage = ({ nameUser, id, nameCourse, payment_date, price }) 
               <th>No. Pesanan</th>
               <th>Tanggal Pemesanan</th>
               <th>Nama Course</th>
-              <th>Jumlah</th>
               <th>Total Harga</th>
             </tr>
           </thead>
@@ -88,7 +87,6 @@ const historyOrderMessage = ({ nameUser, id, nameCourse, payment_date, price }) 
               <td>${id}</td>
               <td>${payment_date.getFullYear()}/${payment_date.getMonth()}/${payment_date.getDay()}</td>
               <td>${nameCourse}</td>
-              <td>1</td>
               <td>${price}</td>
             </tr>
           </tbody>
