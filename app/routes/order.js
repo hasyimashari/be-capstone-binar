@@ -1,5 +1,4 @@
 const express = require('express')
-const { authorization } = require('../middleware/auth.js')
 // eslint-disable-next-line no-unused-vars
 const {
   createOrder,
@@ -9,13 +8,15 @@ const {
   updateOrder
 } = require('../controllers/order.js')
 const { isOrderExist } = require('../middleware/order.js')
+const { authorization, onlyAdmin } = require('../middleware/auth.js')
 
 const router = express.Router()
 
 router.post('/orders', authorization, createOrder)
 router.get('/orders', authorization, getAllOrderByUser)
-router.get('/admin/orders', getAllOrder)
-router.get('/admin/orders/:id', isOrderExist, detailOrder)
 router.put('/orders/:id', isOrderExist, updateOrder)
+
+router.get('/admin/orders', authorization, onlyAdmin, getAllOrder)
+router.get('/admin/orders/:id', authorization, onlyAdmin, isOrderExist, detailOrder)
 
 module.exports = router
