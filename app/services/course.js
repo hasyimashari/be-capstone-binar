@@ -99,7 +99,6 @@ const getDetailCourse = async (user, course) => {
       const { id: course_id } = course
       const { id: user_id } = user
 
-      // eslint-disable-next-line no-unused-vars
       const tracker = await findByUserAndCourseId({ user_id, course_id })
       const chapters = await findByCourseId(course_id)
 
@@ -117,6 +116,18 @@ const getDetailCourse = async (user, course) => {
 
       return course
     }
+
+    const { id: course_id } = course
+
+    const chapters = await findByCourseId(course_id)
+
+    chapters.map((chapter) => {
+      chapter.dataValues.is_locked = true
+
+      return chapter
+    })
+
+    course.dataValues.chapters = chapters
 
     return course
   } catch (error) {
