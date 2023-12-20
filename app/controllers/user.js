@@ -7,7 +7,8 @@ const {
   updateUserServices,
   updatePasswordServices,
   updateTokenPasswordServices,
-  resetPasswordServices
+  resetPasswordServices,
+  findUserByEmailServices
 } = require('../services/user.js')
 
 const crypto = require('crypto')
@@ -68,13 +69,11 @@ const register = async (req, res) => {
     transporter
       .sendMail(message)
       .then(() => {
-        return res
-          .status(200)
-          .json({
-            status: 'OK',
-            message: 'Email sent',
-            data: { accessToken }
-          })
+        return res.status(200).json({
+          status: 'OK',
+          message: 'Email sent',
+          data: { accessToken }
+        })
       })
       .catch((error) => {
         return res.status(500).json({
@@ -190,57 +189,65 @@ const updatePassword = async (req, res) => {
 }
 
 const sendLinkPassword = async (req, res) => {
-  const email = req.body.email
-  const tokenResetPassword = crypto.randomBytes(10).toString('hex')
-  await updateTokenPasswordServices({ tokenResetPassword }, email)
+  try {
+    const email = req.body.email
+    const tokenResetPassword = crypto.randomBytes(10).toString('hex')
+    const currentUser = await findUserByEmailServices(email)
+    await updateTokenPasswordServices({ tokenResetPassword }, email)
 
-  const MailGenerator = new Mailgen({
-    theme: 'default',
-    product: {
-      name: 'Dev Academy',
-      link: 'https://mailgen.js/'
-    }
-  })
-
-  const response = {
-    body: {
-      name,
-      intro: 'Reset Password',
-      action: {
-        instructions: 'Clik button to page reset password',
-        button: {
-          color: '#22BC66',
-          text: 'Click this to reset password',
-          link: `https://devacademy.vercel.app/reset/password/${tokenResetPassword}`
-        }
-      },
-      outro:
-        "Need help, or have questions? Just reply to this email, we'd love to help."
-    }
-  }
-
-  const mail = MailGenerator.generate(response)
-  const message = {
-    from: process.env.EMAIL,
-    to: email,
-    subject: 'Reset Password',
-    html: mail
-  }
-
-  transporter
-    .sendMail(message)
-    .then(() => {
-      return res.status(200).json({
-        status: 'OK',
-        message: 'Email Sent'
-      })
+    const MailGenerator = new Mailgen({
+      theme: 'default',
+      product: {
+        name: 'Dev Academy',
+        link: 'https://mailgen.js/'
+      }
     })
-    .catch((error) => {
-      res.status(500).json({
-        status: 'FAIL',
-        message: error.message
+
+    const response = {
+      body: {
+        name: currentUser.name,
+        intro: 'Reset Password',
+        action: {
+          instructions: 'Clik button to page reset password',
+          button: {
+            color: '#22BC66',
+            text: 'Click this to reset password',
+            link: `https://devacademy.vercel.app/reset/password/${tokenResetPassword}`
+          }
+        },
+        outro:
+          "Need help, or have questions? Just reply to this email, we'd love to help."
+      }
+    }
+
+    const mail = MailGenerator.generate(response)
+    const message = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: 'Reset Password',
+      html: mail
+    }
+
+    transporter
+      .sendMail(message)
+      .then(() => {
+        return res.status(200).json({
+          status: 'OK',
+          message: 'Email Sent'
+        })
       })
+      .catch((error) => {
+        res.status(500).json({
+          status: 'FAIL',
+          message: error.message
+        })
+      })
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      status: 'FAIL',
+      message: error.message
     })
+  }
 }
 
 const resetPassword = async (req, res) => {

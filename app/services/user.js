@@ -166,6 +166,18 @@ const resetPasswordServices = async (argRequest, tokenResetPassword) => {
   }
 }
 
+const findUserByEmailServices = async (email) => {
+  try {
+    const user = await findByEmail(email)
+    if (!user) {
+      throw new ApplicationError('Email not Found', 404)
+    }
+    return user
+  } catch (error) {
+    throw new ApplicationError(error.message, error.statusCode || 500)
+  }
+}
+
 module.exports = {
   registeService,
   loginUserSevices,
@@ -174,5 +186,6 @@ module.exports = {
   updateUserServices,
   updatePasswordServices,
   updateTokenPasswordServices,
-  resetPasswordServices
+  resetPasswordServices,
+  findUserByEmailServices
 }

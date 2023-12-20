@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.05% </span>
+                <span class="strong">46.23% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>128/272</span>
+                <span class='fraction'>129/279</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.05% </span>
+                <span class="strong">46.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>128/272</span>
+                <span class='fraction'>129/279</span>
             </div>
         
             
@@ -335,7 +335,14 @@
 <a name='L270'></a><a href='#L270'>270</a>
 <a name='L271'></a><a href='#L271'>271</a>
 <a name='L272'></a><a href='#L272'>272</a>
-<a name='L273'></a><a href='#L273'>273</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L273'></a><a href='#L273'>273</a>
+<a name='L274'></a><a href='#L274'>274</a>
+<a name='L275'></a><a href='#L275'>275</a>
+<a name='L276'></a><a href='#L276'>276</a>
+<a name='L277'></a><a href='#L277'>277</a>
+<a name='L278'></a><a href='#L278'>278</a>
+<a name='L279'></a><a href='#L279'>279</a>
+<a name='L280'></a><a href='#L280'>280</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -356,8 +363,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -527,6 +533,14 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -616,7 +630,8 @@ const {
   updateUserServices,
   updatePasswordServices,
   updateTokenPasswordServices,
-  resetPasswordServices
+  resetPasswordServices,
+  findUserByEmailServices
 } = require('../services/user.js')
 &nbsp;
 const crypto = require('crypto')
@@ -677,13 +692,11 @@ const register = <span class="fstat-no" title="function not covered" >async (req
 <span class="cstat-no" title="statement not covered" >    transporter</span>
 <span class="cstat-no" title="statement not covered" >      .sendMail(message)</span>
 <span class="cstat-no" title="statement not covered" >      .then(() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        return res</span>
-<span class="cstat-no" title="statement not covered" >          .status(200)</span>
-<span class="cstat-no" title="statement not covered" >          .json({</span>
-<span class="cstat-no" title="statement not covered" >            status: 'OK',</span>
-<span class="cstat-no" title="statement not covered" >            message: 'Email sent',</span>
-<span class="cstat-no" title="statement not covered" >            data: { accessToken }</span>
-<span class="cstat-no" title="statement not covered" >          })</span>
+<span class="cstat-no" title="statement not covered" >        return res.status(200).json({</span>
+<span class="cstat-no" title="statement not covered" >          status: 'OK',</span>
+<span class="cstat-no" title="statement not covered" >          message: 'Email sent',</span>
+<span class="cstat-no" title="statement not covered" >          data: { accessToken }</span>
+<span class="cstat-no" title="statement not covered" >        })</span>
 <span class="cstat-no" title="statement not covered" >      })</span>
 <span class="cstat-no" title="statement not covered" >      .catch((error) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        return res.status(500).json({</span>
@@ -799,57 +812,65 @@ const updatePassword = <span class="fstat-no" title="function not covered" >asyn
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 const sendLinkPassword = <span class="fstat-no" title="function not covered" >async (req, res) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const email = req.body.email</span>
-<span class="cstat-no" title="statement not covered" >  const tokenResetPassword = crypto.randomBytes(10).toString('hex')</span>
-<span class="cstat-no" title="statement not covered" >  await updateTokenPasswordServices({ tokenResetPassword }, email)</span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+<span class="cstat-no" title="statement not covered" >    const email = req.body.email</span>
+<span class="cstat-no" title="statement not covered" >    const tokenResetPassword = crypto.randomBytes(10).toString('hex')</span>
+<span class="cstat-no" title="statement not covered" >    const currentUser = await findUserByEmailServices(email)</span>
+<span class="cstat-no" title="statement not covered" >    await updateTokenPasswordServices({ tokenResetPassword }, email)</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  const MailGenerator = new Mailgen({</span>
-<span class="cstat-no" title="statement not covered" >    theme: 'default',</span>
-<span class="cstat-no" title="statement not covered" >    product: {</span>
-<span class="cstat-no" title="statement not covered" >      name: 'Dev Academy',</span>
-<span class="cstat-no" title="statement not covered" >      link: 'https://mailgen.js/'</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >  })</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  const response = {</span>
-<span class="cstat-no" title="statement not covered" >    body: {</span>
-<span class="cstat-no" title="statement not covered" >      name,</span>
-<span class="cstat-no" title="statement not covered" >      intro: 'Reset Password',</span>
-<span class="cstat-no" title="statement not covered" >      action: {</span>
-<span class="cstat-no" title="statement not covered" >        instructions: 'Clik button to page reset password',</span>
-<span class="cstat-no" title="statement not covered" >        button: {</span>
-<span class="cstat-no" title="statement not covered" >          color: '#22BC66',</span>
-<span class="cstat-no" title="statement not covered" >          text: 'Click this to reset password',</span>
-<span class="cstat-no" title="statement not covered" >          link: `https://devacademy.vercel.app/reset/password/${tokenResetPassword}`</span>
-<span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >      },</span>
-<span class="cstat-no" title="statement not covered" >      outro:</span>
-<span class="cstat-no" title="statement not covered" >        "Need help, or have questions? Just reply to this email, we'd love to help."</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  const mail = MailGenerator.generate(response)</span>
-<span class="cstat-no" title="statement not covered" >  const message = {</span>
-<span class="cstat-no" title="statement not covered" >    from: process.env.EMAIL,</span>
-<span class="cstat-no" title="statement not covered" >    to: email,</span>
-<span class="cstat-no" title="statement not covered" >    subject: 'Reset Password',</span>
-<span class="cstat-no" title="statement not covered" >    html: mail</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  transporter</span>
-<span class="cstat-no" title="statement not covered" >    .sendMail(message)</span>
-<span class="cstat-no" title="statement not covered" >    .then(() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(200).json({</span>
-<span class="cstat-no" title="statement not covered" >        status: 'OK',</span>
-<span class="cstat-no" title="statement not covered" >        message: 'Email Sent'</span>
-<span class="cstat-no" title="statement not covered" >      })</span>
+<span class="cstat-no" title="statement not covered" >    const MailGenerator = new Mailgen({</span>
+<span class="cstat-no" title="statement not covered" >      theme: 'default',</span>
+<span class="cstat-no" title="statement not covered" >      product: {</span>
+<span class="cstat-no" title="statement not covered" >        name: 'Dev Academy',</span>
+<span class="cstat-no" title="statement not covered" >        link: 'https://mailgen.js/'</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    })</span>
-<span class="cstat-no" title="statement not covered" >    .catch((error) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      res.status(500).json({</span>
-<span class="cstat-no" title="statement not covered" >        status: 'FAIL',</span>
-<span class="cstat-no" title="statement not covered" >        message: error.message</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const response = {</span>
+<span class="cstat-no" title="statement not covered" >      body: {</span>
+<span class="cstat-no" title="statement not covered" >        name: currentUser.name,</span>
+<span class="cstat-no" title="statement not covered" >        intro: 'Reset Password',</span>
+<span class="cstat-no" title="statement not covered" >        action: {</span>
+<span class="cstat-no" title="statement not covered" >          instructions: 'Clik button to page reset password',</span>
+<span class="cstat-no" title="statement not covered" >          button: {</span>
+<span class="cstat-no" title="statement not covered" >            color: '#22BC66',</span>
+<span class="cstat-no" title="statement not covered" >            text: 'Click this to reset password',</span>
+<span class="cstat-no" title="statement not covered" >            link: `https://devacademy.vercel.app/reset/password/${tokenResetPassword}`</span>
+<span class="cstat-no" title="statement not covered" >          }</span>
+<span class="cstat-no" title="statement not covered" >        },</span>
+<span class="cstat-no" title="statement not covered" >        outro:</span>
+<span class="cstat-no" title="statement not covered" >          "Need help, or have questions? Just reply to this email, we'd love to help."</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const mail = MailGenerator.generate(response)</span>
+<span class="cstat-no" title="statement not covered" >    const message = {</span>
+<span class="cstat-no" title="statement not covered" >      from: process.env.EMAIL,</span>
+<span class="cstat-no" title="statement not covered" >      to: email,</span>
+<span class="cstat-no" title="statement not covered" >      subject: 'Reset Password',</span>
+<span class="cstat-no" title="statement not covered" >      html: mail</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    transporter</span>
+<span class="cstat-no" title="statement not covered" >      .sendMail(message)</span>
+<span class="cstat-no" title="statement not covered" >      .then(() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        return res.status(200).json({</span>
+<span class="cstat-no" title="statement not covered" >          status: 'OK',</span>
+<span class="cstat-no" title="statement not covered" >          message: 'Email Sent'</span>
+<span class="cstat-no" title="statement not covered" >        })</span>
 <span class="cstat-no" title="statement not covered" >      })</span>
+<span class="cstat-no" title="statement not covered" >      .catch((error) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        res.status(500).json({</span>
+<span class="cstat-no" title="statement not covered" >          status: 'FAIL',</span>
+<span class="cstat-no" title="statement not covered" >          message: error.message</span>
+<span class="cstat-no" title="statement not covered" >        })</span>
+<span class="cstat-no" title="statement not covered" >      })</span>
+<span class="cstat-no" title="statement not covered" >  } catch (error) {</span>
+<span class="cstat-no" title="statement not covered" >    res.status(error.statusCode || 500).json({</span>
+<span class="cstat-no" title="statement not covered" >      status: 'FAIL',</span>
+<span class="cstat-no" title="statement not covered" >      message: error.message</span>
 <span class="cstat-no" title="statement not covered" >    })</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;
 const resetPassword = async (req, res) =&gt; {
@@ -886,7 +907,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-19T16:18:20.192Z
+                at 2023-12-20T06:49:39.670Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
