@@ -8,7 +8,8 @@ jest.mock('../../services/course.js', () => ({
   getAllCourseforAdminServices: jest.fn(),
   detailCourseServices: jest.fn(),
   updateCourseServices: jest.fn(),
-  deteleCourseServices: jest.fn()
+  deteleCourseServices: jest.fn(),
+  getDetailCourse: jest.fn()
 }))
 
 jest.mock('../../services/category.js', () => ({
@@ -29,6 +30,13 @@ const course = {
   introduction_video: 'https://www.youtube.com/watch?v=xvFZjo5PgG0',
   createdAt: '2023-11-24T17:07:16.802Z',
   updatedAt: '2023-11-24T17:07:16.802Z'
+}
+
+const user = {
+  id: '80c55a44-e778-4b69-bcf4-bf71b1834bf9',
+  name: 'John Smith',
+  email: 'john.smith@gmail.com',
+  role: 'member'
 }
 
 describe('#createCourse', () => {
@@ -159,7 +167,8 @@ describe('#getAllCourseAdmin', () => {
 describe('#detailCourse', () => {
   it('should return 200 response success', async () => {
     const mockRequest = {
-      course
+      course,
+      user
     }
 
     const mockResponse = {
@@ -167,13 +176,34 @@ describe('#detailCourse', () => {
       json: jest.fn().mockReturnThis()
     }
 
+    await courseServices.getDetailCourse.mockReturnValue(course)
     await detailCourse(mockRequest, mockResponse)
-
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
       message: 'Get detail course success',
       data: course
+    })
+  })
+
+  it('should return 500 response FAIL', async () => {
+    const error = new Error('FAIL')
+    const mockRequest = {
+      course,
+      user
+    }
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
+
+    await courseServices.getDetailCourse.mockReturnValue(Promise.reject(error))
+    await detailCourse(mockRequest, mockResponse)
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
+      message: error.message
     })
   })
 })
@@ -185,7 +215,7 @@ describe('#updateCourse', () => {
         id: '5ec9d2c2-d8ca-44b2-9691-148ee1abba34'
       },
       body: {
-        course
+        payload: course
       }
     }
 
@@ -194,7 +224,7 @@ describe('#updateCourse', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await courseServices.updateCourseServices.mockReturnValue([null, course])
+    await courseServices.updateCourseServices.mockReturnValue(course)
     await updateCourse(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(201)

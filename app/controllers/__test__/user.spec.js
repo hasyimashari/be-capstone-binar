@@ -305,7 +305,7 @@ describe('#updatePassword', () => {
     })
   })
 
-  it('should return 201 response success', async () => {
+  it('should return 500 response FAIL', async () => {
     const error = new Error('Faild')
 
     const mockRequest = {

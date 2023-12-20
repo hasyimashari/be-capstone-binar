@@ -19,9 +19,8 @@ const getProgress = async (course_id, total_modules_viewed) => {
     const totalModuleRaw = await Promise.all(chapters.map(chapter => getTotalModulePerChapter(chapter.id)))
     const totalModule = totalModuleRaw.reduce((sum, count) => sum + count)
 
-    console.log(total_modules_viewed, totalModule)
     const progress = Math.floor((total_modules_viewed / totalModule) * 100)
-    console.log(progress)
+
     return progress
   } catch (error) {
     throw new ApplicationError(error.message, 500)
@@ -98,7 +97,6 @@ const updateUserTrackerServices = async (payload, tracker) => {
     const { id, last_opened_chapter, last_opened_module, total_modules_viewed: totalModulesViewed } = tracker
     const { course_id, last_opened_chapter: updatedLastOpenedChapter, last_opened_module: updatedLastOpenedModule } = payload
 
-    const total_modules_viewed = totalModulesViewed + 1
     const progressCondition = () => {
       const chapterProgressConditon = updatedLastOpenedChapter > last_opened_chapter
       const moduleProressCondition = updatedLastOpenedModule > last_opened_module
@@ -107,10 +105,8 @@ const updateUserTrackerServices = async (payload, tracker) => {
     }
 
     const onProgress = progressCondition()
-    if (!onProgress) {
-      throw new ApplicationError('Can\'t update the progress', 400)
-    }
 
+    const total_modules_viewed = totalModulesViewed + (onProgress ? 1 : 0)
     const progress_course = await getProgress(course_id, total_modules_viewed)
 
     // eslint-disable-next-line no-unused-vars

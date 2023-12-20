@@ -1,7 +1,7 @@
 const getRoot = (req, res) => {
   res.status(200).json({
     status: 'OK',
-    message: 'devAcademy API is up and running'
+    message: 'DevAcademy API is up and running'
   })
 }
 

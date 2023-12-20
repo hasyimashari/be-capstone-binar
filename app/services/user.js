@@ -70,12 +70,12 @@ const loginAdminSevices = async (argRequest) => {
     const { id, password } = argRequest
     const user = await findByPkAdmin(id)
     if (id !== user.id) {
-      throw new ApplicationError('Wrong id', 400)
+      throw new ApplicationError('Id not found', 404)
     }
 
     const matchPassword = await comparePassword(password, user.password)
     if (!matchPassword) {
-      throw new ApplicationError('Wrong password', 401)
+      throw new ApplicationError('Wrong password', 400)
     }
     return user
   } catch (error) {
@@ -166,6 +166,18 @@ const resetPasswordServices = async (argRequest, tokenResetPassword) => {
   }
 }
 
+const findUserByEmailServices = async (email) => {
+  try {
+    const user = await findByEmail(email)
+    if (!user) {
+      throw new ApplicationError('Email not Found', 404)
+    }
+    return user
+  } catch (error) {
+    throw new ApplicationError(error.message, error.statusCode || 500)
+  }
+}
+
 module.exports = {
   registeService,
   loginUserSevices,
@@ -174,5 +186,6 @@ module.exports = {
   updateUserServices,
   updatePasswordServices,
   updateTokenPasswordServices,
-  resetPasswordServices
+  resetPasswordServices,
+  findUserByEmailServices
 }

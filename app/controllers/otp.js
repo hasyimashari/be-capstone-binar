@@ -1,6 +1,6 @@
 const { confimOtpServices, createOtpServices, updateOtpServices, findOtpCode } = require('../services/otp.js')
 const { encryptedKode } = require('../services/auth.js')
-const nodemailer = require('nodemailer')
+const transporter = require('../../utils/transporter.js')
 const Mailgen = require('mailgen')
 require('dotenv').config()
 
@@ -10,17 +10,6 @@ const sendOtp = async (req, res) => {
     const expire_time = new Date().getTime() + 300000
 
     const { email, id, name } = req.user
-
-    const config = {
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD
-      },
-      tls: { rejectUnauthorized: false }
-    }
-
-    const transporter = nodemailer.createTransport(config)
 
     const MailGenerator = new Mailgen({
       theme: 'default',
@@ -73,7 +62,10 @@ const sendOtp = async (req, res) => {
       .catch((error) => {
         return res
           .status(500)
-          .json({ message: error.message })
+          .json({
+            status: 'FAIL',
+            message: error.message
+          })
       })
   } catch (error) {
     res.status(error.statusCode || 500).json({
