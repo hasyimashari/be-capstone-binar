@@ -2,6 +2,7 @@ const {
   createCourseServices,
   getAllCourseServices,
   getAllCourseforAdminServices,
+  getDetailCourse,
   updateCourseServices,
   deteleCourseServices
 } = require('../services/course.js')
@@ -43,7 +44,8 @@ const getAllCourse = async (req, res) => {
 
 const getAllCourseAdmin = async (req, res) => {
   try {
-    const response = await getAllCourseforAdminServices()
+    const filter = req.query
+    const response = await getAllCourseforAdminServices(filter)
 
     res.status(200).json({
       status: 'OK',
@@ -60,12 +62,15 @@ const getAllCourseAdmin = async (req, res) => {
 
 const detailCourse = async (req, res) => {
   try {
+    const user = req.user
     const course = req.course
+
+    const detailCourse = await getDetailCourse(user, course)
 
     res.status(200).json({
       status: 'OK',
       message: 'Get detail course success',
-      data: course
+      data: detailCourse
     })
   } catch (error) {
     res.status(error.statusCode || 500).json({
@@ -77,10 +82,10 @@ const detailCourse = async (req, res) => {
 
 const updateCourse = async (req, res) => {
   try {
-    const { id } = req.course
     const payload = req.body
+    const course = req.course
 
-    const rupdatedCourse = await updateCourseServices(payload, id)
+    const rupdatedCourse = await updateCourseServices(payload, course)
 
     res.status(201).json({
       status: 'OK',

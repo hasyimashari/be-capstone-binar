@@ -86,6 +86,12 @@ const findByIdOrder = async (id) => {
   })
 }
 
+const findByUserAndCourseId = (ids) => {
+  return Order.findOne({
+    where: { ...ids }
+  })
+}
+
 const updateOrderRepo = (payload, id) => {
   return Order.update(payload, {
     where: { id },
@@ -98,5 +104,6 @@ module.exports = {
   findAllOrder,
   findAllOrderByUserId,
   findByIdOrder,
+  findByUserAndCourseId,
   updateOrderRepo
 }

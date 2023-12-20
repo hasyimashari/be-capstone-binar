@@ -5,6 +5,7 @@ const chapterServices = require('../../services/chapter.js')
 jest.mock('../../services/chapter.js', () => ({
   createChapterService: jest.fn(),
   getAllChaptersService: jest.fn(),
+  getDetailChapterServices: jest.fn(),
   updateChapterServices: jest.fn(),
   deleteChapterService: jest.fn()
 }))
@@ -15,6 +16,13 @@ const chapter = {
   name: 'chapter lorem ipsum',
   createdAt: new Date(),
   updatedAt: new Date()
+}
+
+const user = {
+  id: '80c55a44-e778-4b69-bcf4-bf71b1834bf9',
+  name: 'John Smith',
+  email: 'john.smith@gmail.com',
+  role: 'member'
 }
 
 describe('#createChapter', () => {
@@ -116,7 +124,8 @@ describe('#getAllChapters', () => {
 describe('#getDetailChapter', () => {
   it('should return 200 response success', async () => {
     const mockRequest = {
-      chapter
+      chapter,
+      user
     }
 
     const mockResponse = {
@@ -124,12 +133,33 @@ describe('#getDetailChapter', () => {
       json: jest.fn().mockReturnThis()
     }
 
+    await chapterServices.getDetailChapterServices.mockReturnValue(chapter)
     await getDetailChapter(mockRequest, mockResponse)
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
       message: 'Get detail chapter success',
       data: chapter
+    })
+  })
+  it('should return 500 response FAIL', async () => {
+    const error = new Error('FAIL')
+    const mockRequest = {
+      chapter,
+      user
+    }
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
+
+    await chapterServices.getDetailChapterServices.mockReturnValue(Promise.reject(error))
+    await getDetailChapter(mockRequest, mockResponse)
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
+      message: error.message
     })
   })
 })

@@ -1,6 +1,7 @@
 const {
   createChapterService,
   getAllChaptersService,
+  getDetailChapterServices,
   updateChapterServices,
   deleteChapterService
 } = require('../services/chapter')
@@ -42,12 +43,15 @@ const getAllChapter = async (req, res) => {
 
 const getDetailChapter = async (req, res) => {
   try {
+    const user = req.user
     const chapter = req.chapter
+
+    const chapterDetail = await getDetailChapterServices(user, chapter)
 
     res.status(200).json({
       status: 'OK',
       message: 'Get detail chapter success',
-      data: chapter
+      data: chapterDetail
     })
   } catch (error) {
     res.status(error.statusCode || 500).json({

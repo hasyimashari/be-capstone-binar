@@ -13,14 +13,14 @@ const createOrder = async (req, res) => {
     const payload = req.body
     const { id: user_id } = req.user
 
-    const response = await createOrderServices({ ...payload, user_id })
+    const response = await createOrderServices(user_id, payload)
     res.status(201).json({
       status: 'OK',
       message: 'Create order success',
       data: response
     })
   } catch (error) {
-    res.status(500).json({
+    res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message
     })
@@ -29,14 +29,16 @@ const createOrder = async (req, res) => {
 
 const getAllOrder = async (req, res) => {
   try {
-    const response = await getAllOrderServices()
+    const filter = req.query
+    const response = await getAllOrderServices(filter)
+
     res.status(200).json({
       status: 'OK',
       message: 'Get all order success',
       data: response
     })
   } catch (error) {
-    res.status(500).json({
+    res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message
     })
@@ -47,14 +49,14 @@ const getAllOrderByUser = async (req, res) => {
   try {
     const { id: user_id } = req.user
 
-    const response = await getAllOrderServices(user_id)
+    const response = await getAllOrderServices({}, user_id)
     res.status(200).json({
       status: 'OK',
       message: 'Get all order success',
       data: response
     })
   } catch (error) {
-    res.status(500).json({
+    res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message
     })
@@ -72,7 +74,7 @@ const detailOrder = async (req, res) => {
       data: response
     })
   } catch (error) {
-    res.status(500).json({
+    res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message
     })
@@ -113,7 +115,7 @@ const updateOrder = async (req, res) => {
           .json({ message: error.message })
       })
   } catch (error) {
-    res.status(500).json({
+    res.status(error.statusCode || 500).json({
       status: 'FAIL',
       message: error.message
     })

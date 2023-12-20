@@ -1,6 +1,7 @@
 const { create, findAll, findById, findByCourseId, countChapterByCourseId, updateChapterById, deleteChapterbyId } = require('../repositories/chapter')
 const { findByPk: findCourseById, updateCourseRepo } = require('../repositories/course')
 const { ApplicationError } = require('../../error')
+const { findByUserAndCourseId } = require('../repositories/tracker')
 
 const createChapterService = async (payload) => {
   try {
@@ -38,7 +39,7 @@ const getAllChaptersService = async (course_id) => {
   }
 }
 
-const getDetailChapterServices = async (id) => {
+const findChapterServices = async (id) => {
   try {
     const chapters = await findById(id)
 
@@ -47,6 +48,27 @@ const getDetailChapterServices = async (id) => {
     }
 
     return chapters
+  } catch (error) {
+    throw new ApplicationError(error.message, error.statusCode || 500)
+  }
+}
+
+const getDetailChapterServices = async (user, chapter) => {
+  try {
+    if (user) {
+      const { is_locked: lockedCondtion, course: { id: course_id } } = chapter
+      const { id: user_id } = user
+
+      const tracker = await findByUserAndCourseId({ user_id, course_id })
+
+      if (lockedCondtion && tracker) {
+        chapter.is_locked = false
+      }
+
+      return chapter
+    }
+
+    return chapter
   } catch (error) {
     throw new ApplicationError(error.message, error.statusCode || 500)
   }
@@ -82,6 +104,7 @@ const deleteChapterService = async (chapter) => {
 module.exports = {
   createChapterService,
   getAllChaptersService,
+  findChapterServices,
   getDetailChapterServices,
   updateChapterServices,
   deleteChapterService
