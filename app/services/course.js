@@ -7,7 +7,7 @@ const {
   updateCourseRepo,
   deleteCourseRepo
 } = require('../repositories/course.js')
-const { findByCourseId } = require('../repositories/chapter.js')
+const { findByCourseId, updateChapterById } = require('../repositories/chapter.js')
 const { findByUserAndCourseId } = require('../repositories/tracker.js')
 
 const { ApplicationError } = require('../../error')
@@ -124,8 +124,38 @@ const getDetailCourse = async (user, course) => {
   }
 }
 
-const updateCourseServices = async (argRequest, id) => {
+const updateCourseServices = async (argRequest, course) => {
   try {
+    const { id, type: typeCurrentCourse } = course
+    const { type: typePayloadCourse } = argRequest
+
+    const isSameType = typeCurrentCourse === typePayloadCourse
+    const isCurrentPrem = typeCurrentCourse === 'Premium'
+
+    if (!isSameType && isCurrentPrem) {
+      const chapters = await findByCourseId(id)
+
+      const rawUpdatedChapters = chapters.map(async (chapter) => {
+        const { id } = chapter
+        const payload = { is_locked: false }
+
+        await updateChapterById(payload, id)
+      })
+
+      await Promise.all(rawUpdatedChapters)
+    } else if (!isSameType && !isCurrentPrem) {
+      const chapters = await findByCourseId(id)
+
+      const rawUpdatedChapters = chapters.map(async (chapter) => {
+        const { id, index } = chapter
+        const payload = { is_locked: index >= 2 }
+
+        await updateChapterById(payload, id)
+      })
+
+      await Promise.all(rawUpdatedChapters)
+    }
+
     // eslint-disable-next-line no-unused-vars
     const [_, updatedCourse] = await updateCourseRepo(argRequest, id)
 

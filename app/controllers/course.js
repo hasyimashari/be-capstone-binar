@@ -82,10 +82,10 @@ const detailCourse = async (req, res) => {
 
 const updateCourse = async (req, res) => {
   try {
-    const { id } = req.course
     const payload = req.body
+    const course = req.course
 
-    const rupdatedCourse = await updateCourseServices(payload, id)
+    const rupdatedCourse = await updateCourseServices(payload, course)
 
     res.status(201).json({
       status: 'OK',
