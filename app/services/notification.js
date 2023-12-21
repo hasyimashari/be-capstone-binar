@@ -35,4 +35,4 @@ const updateNotifServices = async (id) => {
   }
 }
 
-module.exports = { createNotifServices, findAllNotifServices, findNotifByIdServices, updateNotifServices }
+module.exports = { findAllNotifServices, findNotifByIdServices, updateNotifServices }
