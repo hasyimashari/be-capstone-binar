@@ -4,8 +4,9 @@ const {
   getAllOrderServices,
   updateOrderServices
 } = require('../services/order.js')
-const transporter = require('../../utils/transporter.js')
 const { historyOrderMessage } = require('../../messageMail')
+const { createNotifServices } = require('../services/notification.js')
+const transporter = require('../../utils/transporter.js')
 require('dotenv').config()
 
 const createOrder = async (req, res) => {
@@ -88,6 +89,8 @@ const updateOrder = async (req, res) => {
     const user = req.user
     const response = await updateOrderServices(order, payload)
     const historyOrder = await detailOrderServices(order.id)
+    await createNotifServices(user)
+
     const { id, payment_date } = historyOrder
     const { name: nameCourse, price } = historyOrder.course
 
