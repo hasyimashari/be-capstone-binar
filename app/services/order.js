@@ -7,6 +7,7 @@ const {
   updateOrderRepo
 } = require('../repositories/order.js')
 
+const { createNotifRepo } = require('../repositories/notification.js')
 const { ApplicationError } = require('../../error')
 
 const createOrderServices = async (user_id, payload) => {
@@ -61,7 +62,7 @@ const detailOrderServices = async (id) => {
   }
 }
 
-const updateOrderServices = async (order, payload) => {
+const updateOrderServices = async (user, order, payload) => {
   try {
     const { id, payment_date: paymentDate } = order
 
@@ -70,6 +71,16 @@ const updateOrderServices = async (order, payload) => {
 
     // eslint-disable-next-line no-unused-vars
     const [_, updatedOrder] = await updateOrderRepo({ status, payment_date, ...payload }, id)
+
+    if (updatedOrder) {
+      const { id: user_id } = user
+
+      const title = 'Notifikasi'
+      const message = 'Selamat pembelian course telah berhasil'
+
+      await createNotifRepo({ user_id, title, message })
+    }
+
     return updatedOrder
   } catch (error) {
     throw new ApplicationError(error.message, 500)

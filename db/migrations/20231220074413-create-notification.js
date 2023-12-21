@@ -35,11 +35,6 @@ module.exports = {
         allowNull: false,
         defaultValue: false
       },
-      date_notif: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: new Date()
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

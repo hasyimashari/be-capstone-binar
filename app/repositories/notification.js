@@ -8,15 +8,27 @@ const findAllNotifByUser = (user_id) => {
   return Notification.findAll({
     where: { user_id },
     attributes: {
-      exclude: ['user_id']
+      exclude: ['user_id', 'updatedAt']
     }
   })
 }
 
-const updateNotifRepo = (id) => {
-  return Notification.update({ is_readed: true }, {
-    where: { id }, returning: true
-  })
+const findById = (id) => {
+  return Notification.findByPk(id)
 }
 
-module.exports = { createNotifRepo, findAllNotifByUser, updateNotifRepo }
+const updateNotifRepo = (id) => {
+  return Notification.update(
+    { is_readed: true },
+    {
+      where: { id }, returning: true
+    }
+  )
+}
+
+module.exports = {
+  createNotifRepo,
+  findAllNotifByUser,
+  findById,
+  updateNotifRepo
+}
