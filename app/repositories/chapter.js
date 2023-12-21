@@ -42,7 +42,10 @@ const findByCourseId = (course_id) => {
     where: { course_id },
     attributes: {
       exclude: ['course_id', 'createdAt', 'updatedAt']
-    }
+    },
+    order: [
+      ['createdAt', order || 'DESC']
+    ]
   })
 }
 
