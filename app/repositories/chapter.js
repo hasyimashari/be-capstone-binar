@@ -44,7 +44,7 @@ const findByCourseId = (course_id) => {
       exclude: ['course_id', 'createdAt', 'updatedAt']
     },
     order: [
-      ['createdAt', 'ASC']
+      ['index', 'ASC']
     ]
   })
 }
