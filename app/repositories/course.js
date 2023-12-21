@@ -64,10 +64,7 @@ const findByPk = (id) => {
       }, {
         model: Chapter,
         as: 'chapters',
-        attributes: ['id', 'index', 'name', 'is_locked'],
-        order: [
-          ['createdAt', order || 'DESC']
-        ]
+        attributes: ['id', 'index', 'name', 'is_locked']
       }],
     attributes:
       {
