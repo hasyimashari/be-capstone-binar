@@ -65,10 +65,6 @@ const getDetailChapterServices = async (user, chapter) => {
         chapter.is_locked = false
       }
 
-      if (!tracker) {
-        chapter.is_locked = true
-      }
-
       return chapter
     }
 
