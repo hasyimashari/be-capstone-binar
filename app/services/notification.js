@@ -1,23 +1,24 @@
-const { createNotifRepo, findAllNotifByUser, updateNotifRepo } = require('../repositories/notification.js')
+const { findAllNotifByUser, findById, updateNotifRepo } = require('../repositories/notification.js')
 const { ApplicationError } = require('../../error')
 
-const createNotifServices = async (user) => {
+const findAllNotifServices = async (user) => {
   try {
-    const title = 'Notifikasi'
-    const message = 'Selamat pembelian course telah berhasil'
     const { id: user_id } = user
+    const notif = await findAllNotifByUser(user_id)
 
-    const notif = await createNotifRepo({ user_id, title, message })
     return notif
   } catch (error) {
     throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
-const findAllNotifServices = async (user) => {
+const findNotifByIdServices = async (id) => {
   try {
-    const { id: user_id } = user
-    const notif = await findAllNotifByUser(user_id)
+    const notif = await findById(id)
+    if (!notif) {
+      throw new ApplicationError('Notification id not found', 404)
+    }
+
     return notif
   } catch (error) {
     throw new ApplicationError(error.message, error.statusCode || 500)
@@ -27,10 +28,11 @@ const findAllNotifServices = async (user) => {
 const updateNotifServices = async (id) => {
   try {
     const notif = await updateNotifRepo(id)
+
     return notif
   } catch (error) {
-    throw new ApplicationError(error.message, error.statusCode || 500)
+    throw new ApplicationError(error.message, 500)
   }
 }
 
-module.exports = { createNotifServices, findAllNotifServices, updateNotifServices }
+module.exports = { createNotifServices, findAllNotifServices, findNotifByIdServices, updateNotifServices }

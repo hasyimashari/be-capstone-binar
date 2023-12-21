@@ -9,6 +9,7 @@ const {
   findByPhoneNumber,
   findByPkWithPW
 } = require('../repositories/user.js')
+const { createNotifRepo } = require('../repositories/notification.js')
 const { encryptedKode, comparePassword } = require('./auth.js')
 const { ApplicationError } = require('../../error')
 
@@ -99,6 +100,14 @@ const detailUserServices = async (id) => {
 const updateUserServices = async (argRequest, id) => {
   try {
     const newUser = await updateUser(argRequest, id)
+
+    if (newUser) {
+      const title = 'Notifikasi'
+      const message = 'Porfil telah berhasil di ubah'
+
+      await createNotifRepo({ id, title, message })
+    }
+
     return newUser
   } catch (error) {
     console.log(error)
@@ -113,7 +122,6 @@ const updatePasswordServices = async (argRequest, id) => {
     const currentUser = await findByPkWithPW(id)
     const currentPassword = currentUser.password
 
-    console.log(old_password, currentPassword)
     const matchPassword = await comparePassword(old_password, currentPassword)
 
     if (!matchPassword) {
@@ -125,10 +133,14 @@ const updatePasswordServices = async (argRequest, id) => {
     }
 
     const hashNew_password = await encryptedKode(new_password)
-    const updateUserPassword = await updateUser(
-      { password: hashNew_password },
-      id
-    )
+    const updateUserPassword = await updateUser({ password: hashNew_password }, id)
+
+    if (updateUserPassword) {
+      const title = 'Notifikasi'
+      const message = 'Password telah berhasil di ubah'
+
+      await createNotifRepo({ id, title, message })
+    }
 
     return updateUserPassword
   } catch (error) {

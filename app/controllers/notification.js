@@ -7,6 +7,7 @@ const getAllNotifByUser = async (req, res) => {
   try {
     const user = req.user
     const response = await findAllNotifServices(user)
+
     res.status(200).json({
       status: 'OK',
       message: 'Get all notifications success',
@@ -22,8 +23,9 @@ const getAllNotifByUser = async (req, res) => {
 
 const updateNotif = async (req, res) => {
   try {
-    const { id } = req.params
+    const { id } = req.notif
     await updateNotifServices(id)
+
     res.status(201).json({
       status: 'OK',
       message: 'Notification already readed'
