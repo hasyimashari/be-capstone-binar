@@ -8,7 +8,7 @@ const getRoot = (req, res) => {
 const notFound = (req, res) => {
   res.status(404).json({
     status: 'FAIL',
-    message: 'End point not found or worng method'
+    message: 'End point not found or wrong method'
   })
 }
 
