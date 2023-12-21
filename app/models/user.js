@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
         through: 'Order',
         foreignKey: 'user_id'
       })
+      User.hasMany(models.Notification, {
+        foreignKey: 'user_id'
+      })
     }
   }
   User.init({
