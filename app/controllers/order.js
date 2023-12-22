@@ -92,12 +92,13 @@ const updateOrder = async (req, res) => {
 
     const { id, payment_date } = historyOrder
     const { name: nameCourse, price } = historyOrder.course
+    const total_price = price + ((11 / 100) * price)
 
     const message = {
       from: process.env.EMAIL,
       to: user.email,
       subject: 'Konfirmasi Pemesanan',
-      html: historyOrderMessage({ nameUser: user.name, id, nameCourse, payment_date, price })
+      html: historyOrderMessage({ nameUser: user.name, id, nameCourse, payment_date, total_price })
     }
 
     transporter

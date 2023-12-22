@@ -1,4 +1,4 @@
-const historyOrderMessage = ({ nameUser, id, nameCourse, payment_date, price }) => {
+const historyOrderMessage = ({ nameUser, id, nameCourse, payment_date, total_price }) => {
   const message = `
   <!DOCTYPE html>
   <html>
@@ -85,9 +85,9 @@ const historyOrderMessage = ({ nameUser, id, nameCourse, payment_date, price }) 
           <tbody>
             <tr>
               <td>${id}</td>
-              <td>${payment_date.getFullYear()}/${payment_date.getMonth()}/${payment_date.getDay()}</td>
+              <td>${payment_date.getFullYear()}/${payment_date.getMonth() + 1}/${payment_date.getDate()}</td>
               <td>${nameCourse}</td>
-              <td>${price}</td>
+              <td>${total_price}</td>
             </tr>
           </tbody>
         </table>
