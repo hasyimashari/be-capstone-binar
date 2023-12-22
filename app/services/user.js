@@ -105,7 +105,8 @@ const updateUserServices = async (argRequest, id) => {
       const title = 'Notifikasi'
       const message = 'Porfil telah berhasil di ubah'
 
-      await createNotifRepo({ id, title, message })
+
+      await createNotifRepo({ user_id: id, title, message })
     }
 
     return newUser
@@ -139,7 +140,8 @@ const updatePasswordServices = async (argRequest, id) => {
       const title = 'Notifikasi'
       const message = 'Password telah berhasil di ubah'
 
-      await createNotifRepo({ id, title, message })
+
+      await createNotifRepo({ user_id: id, title, message })
     }
 
     return updateUserPassword
