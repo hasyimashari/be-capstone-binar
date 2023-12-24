@@ -65,6 +65,11 @@ const detailOrderServices = async (id) => {
 const updateOrderServices = async (user, order, payload) => {
   try {
     const { id, payment_date: paymentDate } = order
+    const { order_method } = payload
+
+    if (!order_method) {
+      throw new ApplicationError('Order method can\'t be null', 400)
+    }
 
     const status = 'SUDAH BAYAR'
     const payment_date = paymentDate || new Date()
@@ -83,7 +88,7 @@ const updateOrderServices = async (user, order, payload) => {
 
     return updatedOrder
   } catch (error) {
-    throw new ApplicationError(error.message, 500)
+    throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }
 
