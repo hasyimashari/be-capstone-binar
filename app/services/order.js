@@ -8,6 +8,7 @@ const {
 } = require('../repositories/order.js')
 
 const { createNotifRepo } = require('../repositories/notification.js')
+const { create: createTracker } = require('../repositories/tracker.js')
 const { ApplicationError } = require('../../error')
 
 const createOrderServices = async (user_id, payload) => {
@@ -64,21 +65,30 @@ const detailOrderServices = async (id) => {
 
 const updateOrderServices = async (user, order, payload) => {
   try {
-    const { id, payment_date: paymentDate } = order
+    const { id, status: currentStatus, course: { id: course_id } } = order
     const { order_method } = payload
+
+    const finishedOrder = currentStatus === 'SUDAH BAYAR'
+
+    if (finishedOrder) {
+      throw new ApplicationError('Order has been paid', 400)
+    }
 
     if (!order_method) {
       throw new ApplicationError('Order method can\'t be null', 400)
     }
 
     const status = 'SUDAH BAYAR'
-    const payment_date = paymentDate || new Date()
+    const payment_date = new Date()
 
     // eslint-disable-next-line no-unused-vars
     const [_, updatedOrder] = await updateOrderRepo({ status, payment_date, ...payload }, id)
 
     if (updatedOrder) {
       const { id: user_id } = user
+      const payload = { course_id }
+
+      await createTracker({ user_id, ...payload })
 
       const title = 'Notifikasi'
       const message = 'Selamat pembelian course telah berhasil'

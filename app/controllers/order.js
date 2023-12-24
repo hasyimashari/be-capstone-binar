@@ -115,7 +115,10 @@ const updateOrder = async (req, res) => {
       .catch((error) => {
         return res
           .status(500)
-          .json({ message: error.message })
+          .json({
+            status: 'FAIL',
+            message: error.message
+          })
       })
   } catch (error) {
     res.status(error.statusCode || 500).json({
