@@ -12,7 +12,7 @@ const createChapterService = async (payload) => {
     const total_chapter = totalChapter + 1
     const index = totalChapterByCourse + 1
 
-    const isLockedContition = courseType === 'Premium' && totalChapterByCourse >= 2
+    const isLockedContition = courseType === 'Premium' && totalChapterByCourse >= 1
 
     const chapter = await create({ ...payload, index, is_locked: isLockedContition })
     if (chapter) {
