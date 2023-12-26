@@ -116,7 +116,7 @@ describe('#getAllCourse', () => {
     await courseServices.getAllCourseServices.mockReturnValue(Promise.reject(error))
     await getAllCourse(mockRequest, mockResponse)
 
-    expect(mockResponse.status).toHaveBeenCalledWith(error.statusCode || 500)
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'FAIL',
       message: error.message
@@ -235,29 +235,29 @@ describe('#updateCourse', () => {
     })
   })
 
-  // it('should return 500 response FAIL', async () => {
-  //   const error = new Error('FAIL')
+  it('should return 500 response FAIL', async () => {
+    const error = new Error('FAIL')
 
-  //   const mockRequest = {
-  //     params: {
-  //       id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
-  //     }
-  //   }
+    const mockRequest = {
+      params: {
+        id: '67bb4c0a-b902-4dfd-a85f-eb829775b202'
+      }
+    }
 
-  //   const mockResponse = {
-  //     status: jest.fn().mockReturnThis(),
-  //     json: jest.fn().mockReturnThis()
-  //   }
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn().mockReturnThis()
+    }
 
-  //   await courseServices.updateCourseServices.mockReturnValue(Promise.reject(error))
-  //   await updateCourse(mockRequest, mockResponse)
+    await courseServices.updateCourseServices.mockReturnValue(Promise.reject(error))
+    await updateCourse(mockRequest, mockResponse)
 
-  //   expect(mockResponse.status).toHaveBeenCalledWith(500)
-  //   expect(mockResponse.json).toHaveBeenCalledWith({
-  //     status: 'FAIL',
-  //     message: error.message
-  //   })
-  // })
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      status: 'FAIL',
+      message: error.message
+    })
+  })
 })
 
 describe('#deleteCourse', () => {

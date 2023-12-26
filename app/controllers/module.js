@@ -36,20 +36,13 @@ const getAllModule = async (req, res) => {
 }
 
 const getDetailModule = async (req, res) => {
-  try {
-    const module = req.module
+  const module = req.module
 
-    res.status(200).json({
-      status: 'OK',
-      message: 'Get detail module success',
-      data: module
-    })
-  } catch (error) {
-    res.status(error.statusCode || 500).json({
-      status: 'FAIL',
-      message: error.message
-    })
-  }
+  res.status(200).json({
+    status: 'OK',
+    message: 'Get detail module success',
+    data: module
+  })
 }
 
 const updateModule = async (req, res) => {
