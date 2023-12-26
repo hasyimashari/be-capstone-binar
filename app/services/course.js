@@ -34,10 +34,10 @@ const getAllCourseServices = async (filter) => {
     const courses = await findAll(order)
 
     const conditions = (i) => {
-      const nameCondition = !restFilter.name || i.name.includes(restFilter.name)
-      const categoryCondition = !restFilter.category || restFilter.category.includes(i.category.category)
-      const typeCondition = !restFilter.type || restFilter.type.includes(i.type)
-      const levelCondition = !restFilter.level || restFilter.level.includes(i.level)
+      const nameCondition = !restFilter.name || i.name?.includes(restFilter.name)
+      const categoryCondition = !restFilter.category || restFilter.category?.includes(i.category.category)
+      const typeCondition = !restFilter.type || restFilter.type?.includes(i.type)
+      const levelCondition = !restFilter.level || restFilter.level?.includes(i.level)
 
       return nameCondition && categoryCondition && typeCondition && levelCondition
     }

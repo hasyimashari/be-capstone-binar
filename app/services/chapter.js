@@ -25,15 +25,27 @@ const createChapterService = async (payload) => {
   }
 }
 
-const getAllChaptersService = async (course_id) => {
+const getAllChaptersService = async (queryParams) => {
   try {
+    const { course_id, ...filter } = queryParams
+
+    const conditions = (i) => {
+      const nameCondition = !filter.name || i.name?.includes(filter.name)
+
+      return nameCondition
+    }
+
     if (course_id) {
       const chapters = await findByCourseId(course_id)
-      return chapters
+      const chaptersFiltered = chapters.filter(conditions)
+
+      return chaptersFiltered
     }
 
     const chapters = await findAll()
-    return chapters
+    const chaptersFiltered = chapters.filter(conditions)
+
+    return chaptersFiltered
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }

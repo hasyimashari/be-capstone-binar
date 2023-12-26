@@ -19,8 +19,8 @@ const createModule = async (req, res) => {
 
 const getAllModule = async (req, res) => {
   try {
-    const { chapter_id } = req.query
-    const modules = await getAllModulesService(chapter_id)
+    const queryParams = req.query
+    const modules = await getAllModulesService(queryParams)
 
     res.status(200).json({
       status: 'OK',

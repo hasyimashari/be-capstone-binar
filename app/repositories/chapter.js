@@ -13,7 +13,10 @@ const findAll = () => {
     },
     attributes: {
       exclude: ['course_id', 'createdAt', 'updatedAt']
-    }
+    },
+    order: [
+      ['index', 'ASC']
+    ]
   })
 }
 
