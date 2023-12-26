@@ -8,8 +8,8 @@ module.exports = {
       defaultValue: 0
     })
   },
-
   async down (queryInterface, Sequelize) {
     queryInterface.removeColumn('Chapters', 'total_module_duration')
   }
+
 }

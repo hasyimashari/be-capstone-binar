@@ -75,11 +75,7 @@ describe('#createChapter', () => {
 
 describe('#getAllChapters', () => {
   it('shouls return 200 response success', async () => {
-    const mockRequest = {
-      query: {
-        course_id: 'course_id'
-      }
-    }
+    const mockRequest = { }
 
     const mockResponse = {
       status: jest.fn().mockReturnThis(),
@@ -98,25 +94,21 @@ describe('#getAllChapters', () => {
   })
 
   it('shouls return 500 response FAIL', async () => {
-    const mockRequest = {
-      query: {
-        course_id: 'course_id'
-      }
-    }
+    const error = new Error('Failed')
+    const mockRequest = { }
 
     const mockResponse = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn().mockReturnThis()
     }
 
-    await chapterServices.getAllChaptersService.mockReturnValue([chapter])
+    await chapterServices.getAllChaptersService.mockReturnValue(Promise.reject(error))
     await getAllChapter(mockRequest, mockResponse)
 
-    expect(mockResponse.status).toHaveBeenCalledWith(200)
+    expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
-      status: 'OK',
-      message: 'Get all chapter success',
-      data: [chapter]
+      status: 'FAIL',
+      message: error.message
     })
   })
 })
@@ -135,6 +127,7 @@ describe('#getDetailChapter', () => {
 
     await chapterServices.getDetailChapterServices.mockReturnValue(chapter)
     await getDetailChapter(mockRequest, mockResponse)
+
     expect(mockResponse.status).toHaveBeenCalledWith(200)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
@@ -142,6 +135,7 @@ describe('#getDetailChapter', () => {
       data: chapter
     })
   })
+
   it('should return 500 response FAIL', async () => {
     const error = new Error('FAIL')
     const mockRequest = {
@@ -156,6 +150,7 @@ describe('#getDetailChapter', () => {
 
     await chapterServices.getDetailChapterServices.mockReturnValue(Promise.reject(error))
     await getDetailChapter(mockRequest, mockResponse)
+
     expect(mockResponse.status).toHaveBeenCalledWith(500)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'FAIL',

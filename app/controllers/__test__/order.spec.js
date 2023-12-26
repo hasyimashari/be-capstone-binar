@@ -183,6 +183,7 @@ describe('#getAllOrderByUser', () => {
       data: order
     })
   })
+
   it('should return 500 with response FAIL', async () => {
     const error = new Error('FAIL')
     const mockRequest = {
