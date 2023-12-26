@@ -33,7 +33,7 @@ const findByUserId = (user_id, order) => {
       }
     ],
     attributes: {
-      exclude: ['user_id', 'course_id', 'last_opened_chapter', 'last_opened_module', 'total_modules_viewed', 'createdAt', 'updatedAt']
+      exclude: ['user_id', 'course_id', 'last_opened_chapter', 'last_opened_module', 'total_modules_viewed', 'modules_viewed', 'createdAt', 'updatedAt']
     },
     order: [
       ['createdAt', order || 'DESC']
