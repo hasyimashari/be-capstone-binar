@@ -29,15 +29,27 @@ const createModuleService = async (payload) => {
   }
 }
 
-const getAllModulesService = async (chapter_id) => {
+const getAllModulesService = async (queryParams) => {
   try {
+    const { chapter_id, ...filter } = queryParams
+
+    const conditions = (i) => {
+      const nameCondition = !filter.name || i.name?.includes(filter.name)
+
+      return nameCondition
+    }
+
     if (chapter_id) {
       const modules = await findByChapterId(chapter_id)
-      return modules
+      const modulesFiltered = modules.filter(conditions)
+
+      return modulesFiltered
     }
 
     const modules = await findAll()
-    return modules
+    const modulesFiltered = modules.filter(conditions)
+
+    return modulesFiltered
   } catch (error) {
     throw new ApplicationError(error.message, 500)
   }

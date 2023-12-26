@@ -25,8 +25,8 @@ const createChapter = async (req, res) => {
 
 const getAllChapter = async (req, res) => {
   try {
-    const { course_id } = req.query
-    const chapters = await getAllChaptersService(course_id)
+    const queryParams = req.query
+    const chapters = await getAllChaptersService(queryParams)
 
     res.status(200).json({
       status: 'OK',

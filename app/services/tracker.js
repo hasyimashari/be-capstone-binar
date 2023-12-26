@@ -62,9 +62,9 @@ const getTrackerByUserServices = async (user_id, filter) => {
     const userTrakcer = await findByUserId(user_id, order)
 
     const conditions = (i) => {
-      const nameCondition = !restFilter.name || i.course.name.includes(restFilter.name)
-      const categoryCondition = !restFilter.category || restFilter.category.includes(i.course.category.category)
-      const levelCondition = !restFilter.level || restFilter.level.includes(i.course.level)
+      const nameCondition = !restFilter.name || i.course.name?.includes(restFilter.name)
+      const categoryCondition = !restFilter.category || restFilter.category?.includes(i.course.category.category)
+      const levelCondition = !restFilter.level || restFilter.level?.includes(i.course.level)
       const progressCondition = !restFilter.progress || progressConditionFunc[restFilter.progress](i.progress_course)
 
       return nameCondition && categoryCondition && levelCondition && progressCondition
