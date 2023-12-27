@@ -1,7 +1,9 @@
 /* eslint-disable quote-props */
+const { create: createReadedModule, findByUserId: findReadedModuleByUserId } = require('../repositories/readedModules')
 const { create, findByUserId, findByUserAndCourseId, update } = require('../repositories/tracker')
-const { findByCourseId } = require('../repositories/chapter')
+
 const { countModuleByChapterId, findById: findModuleById } = require('../repositories/module')
+const { findByCourseId } = require('../repositories/chapter')
 const { countCourse } = require('../repositories/course')
 const { countUser } = require('../repositories/user')
 
@@ -30,7 +32,6 @@ const getProgress = async (course_id, total_modules_viewed) => {
 const createUserTrackerService = async (user_id, payload) => {
   try {
     const { course_id } = payload
-    const modules_viewed = ''
 
     const isCourseInTrackers = await findByUserAndCourseId({ user_id, course_id })
 
@@ -38,7 +39,7 @@ const createUserTrackerService = async (user_id, payload) => {
       throw new ApplicationError('Course is in progress', 400)
     }
 
-    const userTracker = await create({ user_id, modules_viewed, ...payload })
+    const userTracker = await create({ user_id, ...payload })
 
     return userTracker
   } catch (error) {
@@ -96,8 +97,11 @@ const getUserTrackerServices = async (user_id, course_id) => {
 
 const updateUserTrackerServices = async (payload, tracker) => {
   try {
-    const { id, total_modules_viewed: totalModulesViewed, modules_viewed: currentModulesViewed } = tracker
-    const { course_id, module_id } = payload
+    const { id, total_modules_viewed: totalModulesViewed } = tracker
+    const { user_id, course_id, module_id } = payload
+
+    const currentModulesViewedRaw = await findReadedModuleByUserId(user_id)
+    const currentModulesViewed = currentModulesViewedRaw.map((readedModules) => readedModules.dataValues.module_id)
 
     const isModuleExist = await findModuleById(module_id)
     if (!isModuleExist) {
@@ -105,13 +109,17 @@ const updateUserTrackerServices = async (payload, tracker) => {
     }
 
     const isModulesViewed = currentModulesViewed?.includes(module_id)
-    const modules_viewed = currentModulesViewed + (currentModulesViewed && !isModulesViewed ? ',' : '') + (isModulesViewed ? '' : module_id)
 
     const total_modules_viewed = totalModulesViewed + (isModulesViewed ? 0 : 1)
     const progress_course = await getProgress(course_id, total_modules_viewed)
 
     // eslint-disable-next-line no-unused-vars
-    const [_, updatedUserTracker] = await update({ ...payload, total_modules_viewed, progress_course, modules_viewed }, id)
+    const [_, updatedUserTracker] = await update({ ...payload, total_modules_viewed, progress_course }, id)
+    if (updatedUserTracker && !isModulesViewed) {
+      const payload = { user_id, module_id }
+
+      await createReadedModule(payload)
+    }
 
     return updatedUserTracker
   } catch (error) {
