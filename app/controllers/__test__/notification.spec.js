@@ -71,7 +71,7 @@ describe('#updateNotif', () => {
   it('should return 201 response success', async () => {
     const message = 'Notification already readed'
     const mockRequest = {
-      params: {
+      notif: {
         id: '80c55a44-e778-4b69-bcf4-bf71b1834bf9'
       }
     }
@@ -94,7 +94,7 @@ describe('#updateNotif', () => {
   it('should return 500 response FAIL', async () => {
     const error = new Error('FAIL')
     const mockRequest = {
-      params: {
+      notif: {
         id: '80c55a44-e778-4b69-bcf4-bf71b1834bf9'
       }
     }
