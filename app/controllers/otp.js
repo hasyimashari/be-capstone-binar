@@ -42,7 +42,7 @@ const sendOtp = async (req, res) => {
     }
 
     const hashCode = await encryptedKode(otp.toString())
-    const currentOtPCode = await findOtpCode(userId)
+    const currentOtPCode = await findOtpCode(id)
 
     if (currentOtPCode) {
       await updateOtpServices({ code: hashCode, expire_time }, id)

@@ -26,9 +26,7 @@ const comparePassword = async (pasword, hashPassowrd) => {
 
 const createAccessToken = (payload) => {
   try {
-    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN, {
-      expiresIn: '6h'
-    })
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN)
     return accessToken
   } catch (error) {
     throw new ApplicationError(error.message, 500)
