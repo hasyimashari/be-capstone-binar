@@ -27,8 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     last_opened_chapter: DataTypes.INTEGER,
     last_opened_module: DataTypes.INTEGER,
     total_modules_viewed: DataTypes.INTEGER,
-    progress_course: DataTypes.INTEGER,
-    modules_viewed: DataTypes.TEXT
+    progress_course: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Tracker'
