@@ -35,7 +35,7 @@ const getAllOrderServices = async (filter, user_id) => {
     }
 
     const condition = (i) => {
-      const statusCondition = !filter.status || i.status.includes(filter.status)
+      const statusCondition = !filter.status || i.status?.includes(filter.status)
       const orderMethodCondition = !filter.method || i.order_method?.includes(filter.method)
 
       return statusCondition && orderMethodCondition

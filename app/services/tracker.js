@@ -1,7 +1,9 @@
 /* eslint-disable quote-props */
+const { create: createReadedModule, findByUserId: findReadedModuleByUserId } = require('../repositories/readedModules')
 const { create, findByUserId, findByUserAndCourseId, update } = require('../repositories/tracker')
+
+const { countModuleByChapterId, findById: findModuleById } = require('../repositories/module')
 const { findByCourseId } = require('../repositories/chapter')
-const { countModuleByChapterId } = require('../repositories/module')
 const { countCourse } = require('../repositories/course')
 const { countUser } = require('../repositories/user')
 
@@ -30,6 +32,7 @@ const getProgress = async (course_id, total_modules_viewed) => {
 const createUserTrackerService = async (user_id, payload) => {
   try {
     const { course_id } = payload
+
     const isCourseInTrackers = await findByUserAndCourseId({ user_id, course_id })
 
     if (isCourseInTrackers) {
@@ -62,9 +65,9 @@ const getTrackerByUserServices = async (user_id, filter) => {
     const userTrakcer = await findByUserId(user_id, order)
 
     const conditions = (i) => {
-      const nameCondition = !restFilter.name || i.course.name.includes(restFilter.name)
-      const categoryCondition = !restFilter.category || restFilter.category.includes(i.course.category.category)
-      const levelCondition = !restFilter.level || restFilter.level.includes(i.course.level)
+      const nameCondition = !restFilter.name || i.course.name?.includes(restFilter.name)
+      const categoryCondition = !restFilter.category || restFilter.category?.includes(i.course.category.category)
+      const levelCondition = !restFilter.level || restFilter.level?.includes(i.course.level)
       const progressCondition = !restFilter.progress || progressConditionFunc[restFilter.progress](i.progress_course)
 
       return nameCondition && categoryCondition && levelCondition && progressCondition
@@ -94,23 +97,29 @@ const getUserTrackerServices = async (user_id, course_id) => {
 
 const updateUserTrackerServices = async (payload, tracker) => {
   try {
-    const { id, last_opened_chapter, last_opened_module, total_modules_viewed: totalModulesViewed } = tracker
-    const { course_id, last_opened_chapter: updatedLastOpenedChapter, last_opened_module: updatedLastOpenedModule } = payload
+    const { id, total_modules_viewed: totalModulesViewed } = tracker
+    const { user_id, course_id, module_id } = payload
 
-    const progressCondition = () => {
-      const chapterProgressConditon = updatedLastOpenedChapter > last_opened_chapter
-      const moduleProressCondition = updatedLastOpenedModule > last_opened_module
+    const currentModulesViewedRaw = await findReadedModuleByUserId(user_id)
+    const currentModulesViewed = currentModulesViewedRaw.map((readedModules) => readedModules.dataValues.module_id)
 
-      return chapterProgressConditon || moduleProressCondition
+    const isModuleExist = await findModuleById(module_id)
+    if (!isModuleExist) {
+      throw new ApplicationError('Module Id not found', 404)
     }
 
-    const onProgress = progressCondition()
+    const isModulesViewed = currentModulesViewed?.includes(module_id)
 
-    const total_modules_viewed = totalModulesViewed + (onProgress ? 1 : 0)
+    const total_modules_viewed = totalModulesViewed + (isModulesViewed ? 0 : 1)
     const progress_course = await getProgress(course_id, total_modules_viewed)
 
     // eslint-disable-next-line no-unused-vars
     const [_, updatedUserTracker] = await update({ ...payload, total_modules_viewed, progress_course }, id)
+    if (updatedUserTracker && !isModulesViewed) {
+      const payload = { user_id, module_id }
+
+      await createReadedModule(payload)
+    }
 
     return updatedUserTracker
   } catch (error) {
