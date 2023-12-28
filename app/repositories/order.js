@@ -38,7 +38,7 @@ const findAllOrderByUserId = (user_id) => {
       {
         model: Course,
         as: 'course',
-        attributes: ['id', 'name'],
+        attributes: ['id', 'name', 'level', 'facilitator', 'total_chapter', 'total_duration'],
         include: [
           {
             model: Category,
