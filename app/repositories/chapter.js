@@ -31,7 +31,10 @@ const findById = (id) => {
       {
         model: Module,
         as: 'modules',
-        attributes: ['id', 'index', 'name', 'video', 'duration']
+        attributes: ['id', 'index', 'name', 'video', 'duration'],
+        order: [
+          ['index', 'ASC']
+        ]
       }
     ],
     attributes: {
