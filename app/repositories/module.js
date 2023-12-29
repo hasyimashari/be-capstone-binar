@@ -29,7 +29,10 @@ const findById = (id) => {
     },
     attributes: {
       exclude: ['chapter_id', 'createdAt', 'updatedAt']
-    }
+    },
+    order: [
+      ['index', 'ASC']
+    ]
   })
 }
 
@@ -38,10 +41,7 @@ const findByChapterId = (chapter_id) => {
     where: { chapter_id },
     attributes: {
       exclude: ['chapter_id', 'createdAt', 'updatedAt']
-    },
-    order: [
-      ['index', 'ASC']
-    ]
+    }
   })
 }
 
