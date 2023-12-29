@@ -46,10 +46,7 @@ const findByUserAndCourseId = (ids) => {
     where: { ...ids },
     attributes: {
       exclude: ['user_id', 'course_id', 'createdAt', 'updatedAt']
-    },
-    order: [
-      ['index', 'ASC']
-    ]
+    }
   })
 }
 
