@@ -31,15 +31,17 @@ const findById = (id) => {
       {
         model: Module,
         as: 'modules',
-        attributes: ['id', 'index', 'name', 'video', 'duration'],
-        order: [
-          ['index', 'ASC']
-        ]
+        attributes: ['id', 'index', 'name', 'video', 'duration']
       }
     ],
     attributes: {
       exclude: ['course_id', 'createdAt', 'updatedAt']
-    }
+    },
+    order: [
+      [
+        { model: Module, as: 'modules' }, 'index', 'ASC'
+      ]
+    ]
   })
 }
 
