@@ -23,6 +23,7 @@ const createOrderServices = async (user_id, payload) => {
     const order = await createOrderRepo({ ...payload, user_id })
     return order
   } catch (error) {
+    console.log(error)
     throw new ApplicationError(error.message, error.statusCode || 500)
   }
 }

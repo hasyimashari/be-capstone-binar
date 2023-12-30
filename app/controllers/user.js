@@ -178,7 +178,7 @@ const updatePassword = async (req, res) => {
     res.status(201).json({
       status: 'OK',
       message: 'Update password success',
-      data: response
+      data: response[0]
     })
   } catch (error) {
     res.status(error.statusCode || 500).json({
