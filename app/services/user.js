@@ -104,7 +104,7 @@ const updateUserServices = async (argRequest, id) => {
 
     if (newUser) {
       const title = 'Notifikasi'
-      const message = 'Porfil telah berhasil di ubah'
+      const message = 'Profile telah berhasil di ubah'
 
 
       await createNotifRepo({ user_id: id, title, message })

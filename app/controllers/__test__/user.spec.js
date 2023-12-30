@@ -30,6 +30,16 @@ jest.mock('nodemailer', () => ({
 }))
 
 const accessToken = 'accessToken'
+const user = [
+  {
+    name: 'Muzani',
+    email: 'muzani@gmail.com',
+    phone_number: '83767672368',
+    country: 'Indonesia',
+    city: 'Cirebon',
+    photo: 'image.png'
+  }
+]
 describe('#register', () => {
   it('should register success', async () => {
     const req = {
@@ -65,29 +75,6 @@ describe('#register', () => {
       data: { accessToken: 'mockedAccessToken' }
     })
   })
-  // it('should return 500 response faild', async () => {
-  //   const error = new Error('Failed')
-  //   const mockRequest = {
-  //     name: 'Muzani',
-  //     email: 'muzani@gmail.com',
-  //     phone_number: '83767672368',
-  //     password: 'muzani123'
-  //   }
-
-  //   const mockResponse = {
-  //     status: jest.fn().mockReturnThis(),
-  //     json: jest.fn().mockReturnThis()
-  //   }
-
-  //   await userServices.registeService.mockReturnValue(Promise.reject(error))
-  //   authServices.createAccessToken.mockReturnValue(null)
-  //   await register(mockRequest, mockResponse)
-
-  //   expect(mockResponse.status).toHaveBeenCalledWith(500)
-  //   expect(mockResponse.json).toHaveBeenCalledWith({
-  //     message: error.message
-  //   })
-  // })
 })
 
 describe('#loginAdmin', () => {
@@ -242,14 +229,14 @@ describe('#updateUser', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await userServices.updateUserServices.mockReturnValue([null, mockRequest])
+    await userServices.updateUserServices.mockReturnValue([null, user])
     await updateUser(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
       message: 'Update user success',
-      data: mockRequest
+      data: user[0]
     })
   })
 
@@ -304,14 +291,14 @@ describe('#updatePassword', () => {
       json: jest.fn().mockReturnThis()
     }
 
-    await userServices.updateUserServices.mockReturnValue([null, mockRequest])
+    await userServices.updateUserServices.mockReturnValue([null, user])
     await updateUser(mockRequest, mockResponse)
 
     expect(mockResponse.status).toHaveBeenCalledWith(201)
     expect(mockResponse.json).toHaveBeenCalledWith({
       status: 'OK',
       message: 'Update user success',
-      data: mockRequest
+      data: user[0]
     })
   })
 
