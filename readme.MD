@@ -13,5 +13,5 @@
 ### documentation
 - [swagger documentation](https://attractive-goat-sweatpants.cyclic.app/api-docs/)
 
-### api
+### active api
 - [DevAcademy API](https://befinalprojectbinar-production.up.railway.app/api)
