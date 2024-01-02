@@ -10,9 +10,6 @@
 - [swagger](https://editor.swagger.io/)
 - [postgresql](https://www.postgresql.org/)
 
-### ERD
-![ERD](https://drive.google.com/file/d/1wIx_Nta2eAz7h4POvp-NR5uxD2WObYG5/view?usp=sharing)
-
 ### documentation
 - [swagger documentation](https://attractive-goat-sweatpants.cyclic.app/api-docs/)
 
